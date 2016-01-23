@@ -1,0 +1,91 @@
+.form-group {
+    margin-top: 10px;
+}
+
+.form-control {
+	padding: 4px 8px;
+    font-size: 1.2em;
+    line-height: 100%;
+    outline: 0;
+    margin: 0 0 3px;
+    background-color: #fff;
+    min-width:300px;
+}
+
+.form-label {
+    width: 150px;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.gap-30 {
+	height:30px;
+	display:block;
+}
+.gap-50 {
+	height:50px;
+	display:block;
+}
+
+span.booking_status {
+    display: inline-block;
+    padding: 3px;
+    width: 3px;
+    height: 3px;
+    background-color: #E0E0E0;
+    border-radius: 75px;
+    vertical-align: middle;
+    margin-left:5px;
+}
+
+.wp-list-table .badge { 
+    font-weight:bold; 
+    padding: 2px 5px; 
+    background-color: #E0E0E0;
+    border-radius: 3px; 
+
+}
+
+
+span.booking_status.complete,
+.wp-list-table .badge.complete {
+    background-color: #45920B;
+    color:#FFF;
+}
+
+span.booking_status.unconfirmed,
+.wp-list-table .badge.unconfirmed {
+    background-color: #888888;
+    color:#FFF;
+}
+
+span.booking_status.not-paid,
+.wp-list-table .badge.not-paid {
+    background-color: #FF8100;
+    color:#FFF;
+}
+
+span.booking_status.cancelled,
+.wp-list-table .badge.cancelled {
+    background-color: #FF0000;
+    color:#FFF;
+}
+
+.wp-list-table .badge.new {
+    background-color: #FF8100;
+    font-size: 10px;
+    color:#FFF;
+}
+
+.wp-list-table .column-id { 
+    width: 5%; 
+}
+.wp-list-table .column-date_out, .column-amount_paid, .column-amount, .wp-list-table .column-date_in, .wp-list-table .date_booked {
+    width:8%
+}
+.wp-list-table .column-room, .column-name {
+    width:15%;
+}
+.wp-list-table .column-room a { 
+    font-weight:bold; 
+}
