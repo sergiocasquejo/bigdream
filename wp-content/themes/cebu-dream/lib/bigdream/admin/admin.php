@@ -24,7 +24,10 @@ if (!class_exists('Big_Dream')) {
 		public function enqueue_scripts() {
 			 wp_enqueue_script( 'chart-script', CDR_SYSTEM_DIR_URI . '/assets/vendor/chart.min.js', array('jquery'), true, false );
 			 wp_enqueue_script('admin-script', CDR_SYSTEM_DIR_URI . '/assets/js/admin.js', array('chart-script', 'jquery'), true, true);
-			 wp_localize_script('admin-script', 'BDR', array('AjaxUrl' => admin_url('admin-ajax.php')));
+			 wp_localize_script('admin-script', 'BDR', array(
+			 	'AjaxUrl' => admin_url('admin-ajax.php'),
+			 	'bookings' => get_booking_calendar()
+			 ));
 
 		}
 

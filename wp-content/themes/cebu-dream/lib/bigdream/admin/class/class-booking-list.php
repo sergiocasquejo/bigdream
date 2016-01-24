@@ -165,7 +165,7 @@ class Booking_List_TBL extends WP_List_Table {
 
 		foreach ($statuses as $s) {
 			$slug = sanitize_title_with_dashes($s);
-			$url = add_query_arg('status', $slug);
+			$url = add_query_arg('status', $s);
 			$class = ($current == $slug ? ' class="current"' :'');
 			$views[$slug] = '<a href="'. $url .'" '. $class .' ><span class="booking_status '. $slug .'"></span> '. $s .'</a>';
 		}

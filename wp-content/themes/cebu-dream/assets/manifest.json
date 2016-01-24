@@ -2,6 +2,8 @@
   "dependencies": {
     "main.js": {
       "files": [
+        "scripts/vendor/jquery-ui.min.js",
+        "scripts/vendor/jquery.flexslider.js",
         "scripts/main.js"
       ],
       "main": true

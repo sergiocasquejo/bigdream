@@ -166,29 +166,6 @@ class BigDream_Booking {
 		$output .= '<div id="bdrModalDialog" style="display:none;"></div>';
 
 		echo $output;
-
-		$bookings = json_encode(get_booking_calendar());
-		?>
-		<script type="text/javascript">
-			(function($) {
-			$(document).ready(function() {
-				$('#bookingCalendarView').fullCalendar({
-					header: {
-						left: 'prev,next today',
-						center: 'title',
-						right: 'month,basicWeek,basicDay'
-					},
-					defaultDate: '2016-01-12',
-					editable: false,
-					eventLimit: true, // allow "more" link when too many events
-					events: <?php echo $bookings; ?>
-				});
-				
-			});
-			}(jQuery));
-
-		</script>
-		<?php
 	}
 }
 
