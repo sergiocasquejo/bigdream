@@ -6,6 +6,9 @@
       <a href="<?php bloginfo('url'); ?>" class="brand navbar-brand"></a>
     </div>
     <div class="navbar-right">
+      <?php echo do_shortcode('[google-translator]'); ?>
+    </div>
+    <div class="navbar-right">
       <nav class="collapse navbar-collapse">
         <?php wp_nav_menu( array(
           'theme_location' => 'primary_navigation',
@@ -13,5 +16,7 @@
         ) ); ?>
       </nav>
     </div>
+    
+
   </div>
 </div>

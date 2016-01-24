@@ -319,95 +319,15 @@ select option{
 .grid1_of_3_img{
 		position: relative;	
 }
-/* start footer */
-.footer{
-	padding: 4% 2% 2%;
-}
-.copy{
-	float: left;
-	margin-top: 15px;
-}
-.copy p{
-	color: #9c9c9c;
-	font-size: 0.8725em;
-	line-height: 1.5em;
-}
-.copy p a{
-	color: #52ABDF;
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-}
-.copy p a:hover{
-	color: #9c9c9c;
-}
-/* start soc_icons */
-.soc_icons {
-	text-align: center;
-}
-.soc_icons h2{
-	text-transform: uppercase;
-	font-size: 1.2em;
-	color: #c0c0c0;
-	font-weight: 400;
-	margin-bottom: 10px;
-}
-.soc_icons ul li{
-	display:inline-block;
-	margin-left: 5px;
-}
-.soc_icons ul li:first-child{
-	margin-left: 0;
-}
-.soc_icons ul li a{
-	display: block;
-	background: url('../images/soc_icons.png') no-repeat 0px 0px;
-	width: 46px;
-	height: 46px;
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-}
-.soc_icons ul li a.icon1{
-	background-position:0px 0px;
-}
-.soc_icons ul li a.icon2{
-	background-position:-55px 0px;
-}
-.soc_icons ul li a.icon3{
-	background-position:-110px 0px;
-}
-.soc_icons ul li a.icon4{
-	background-position:-166px 0px;
-}
-.soc_icons ul li a.icon5{
-	background-position:-224px 0px;
-}
-.soc_icons ul li a:hover{
-	zoom: 1;
-	filter: alpha(opacity=50);
-	opacity: 0.7;
-	-webkit-transition: opacity .15s ease-in-out;
-	-moz-transition: opacity .15s ease-in-out;
-	-ms-transition: opacity .15s ease-in-out;
-	-o-transition: opacity .15s ease-in-out;
-	transition: opacity .15s ease-in-out;
-}
+
 /* start f_nav */
-.f_nav{
-	float: right;
-	margin-top: 10px;
-}
 .f_nav li{
 	display: inline-block;
-	margin-left: 20px;
 }
 .f_nav li:first-child{
 	margin-left: 0;
 }
-.f_nav li a{
+.f_nav li span{
 	display:block;
 	color: #9c9c9c;
 	padding: 0 5px;
@@ -418,7 +338,7 @@ select option{
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 }
-.f_nav li a:hover{
+.f_nav li span:hover{
 	color: #52ABDF;
 }
 /* start rooms and suits */

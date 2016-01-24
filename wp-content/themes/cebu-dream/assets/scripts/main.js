@@ -24,8 +24,11 @@
       }
     });
 
-     $( "#datepicker,#datepicker1" ).datepicker();
+    $( "#datepicker,#datepicker1" ).datepicker();
     
+
+      $("#google_language_translator select").selectOrDie();
+
   });
 
 })(window, document, jQuery); // Fully reference jQuery after this point.
