@@ -41,3 +41,41 @@ if (!function_exists('dream_post_type_handler')) {
 		register_post_type( 'room', $args );
 	}
 }
+
+
+add_filter( 'manage_room_posts_columns', 'set_custom_edit_book_columns' );
+add_action( 'manage_room_posts_custom_column' , 'custom_book_column', 10, 2 );
+
+function set_custom_edit_book_columns($columns) {
+    unset( $columns['author'] );
+    $columns['room_status'] = __( 'Room Status', 'bigdream' );
+
+    return $columns;
+}
+
+
+function badge_room_status($status) {
+	$badge = '<span class="badge %s">%s</span>';
+	switch($status) {
+		case 'vacant_dirty':
+			$badge = sprintf($badge, $status, 'Vacant Dirty');
+			break;
+		case 'out_of_order':
+			$badge = sprintf($badge, $status, 'Out of Order');
+			break;
+		case 'vacant_clean':
+		default:
+			$badge = sprintf($badge, $status, 'Vacant Clean');
+	}
+
+	echo $badge;
+}
+function custom_book_column( $column, $post_id ) {
+    switch ( $column ) {
+
+        case 'room_status' :
+            badge_room_status(get_field('room_status', $post_id));
+            break;
+
+    }
+}

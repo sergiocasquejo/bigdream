@@ -50,7 +50,7 @@ class BigDream_Booking {
 		if ($count > 0) {
 
 			echo '<div class="updated">';
-        		echo '<p>' . get_count_newly_booked() . ' Newly booked. <a href="'. admin_url('admin.php?page='. self::LIST_PAGE_SLUG .'&new=0') .'">Click here.</a></p>';
+        		echo '<p>' . get_count_newly_booked() . ' Guest Newly booked. <a href="'. admin_url('admin.php?page='. self::LIST_PAGE_SLUG .'&view=list&new=0') .'">Click here.</a></p>';
     		echo '</div>';
     	}
 	}
@@ -130,8 +130,7 @@ class BigDream_Booking {
 
 		$available_rooms = get_available_rooms();
 		$booking_statuses = json_decode(BOOKING_STATUSES);
-		$guest_title = json_encode(GUEST_TITLE);
-
+		$guest_title = json_decode(GUEST_TITLE);
 
 		include_once CDR_ADMIN_DIR . '/views/edit-booking.html.php';	
 	}

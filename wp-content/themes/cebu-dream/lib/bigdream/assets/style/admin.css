@@ -48,6 +48,7 @@ span.booking_status {
 
 
 span.booking_status.complete,
+span.badge.vacant_clean,
 .wp-list-table .badge.complete {
     background-color: #45920B;
     color:#FFF;
@@ -60,12 +61,14 @@ span.booking_status.unconfirmed,
 }
 
 span.booking_status.not-paid,
+span.badge.vacant_dirty,
 .wp-list-table .badge.not-paid {
     background-color: #FF8100;
     color:#FFF;
 }
 
 span.booking_status.cancelled,
+span.badge.out_of_order,
 .wp-list-table .badge.cancelled {
     background-color: #FF0000;
     color:#FFF;
