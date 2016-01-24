@@ -57,7 +57,8 @@ body {
 }
 .menu  li{
 	display: inline-block;
-	margin:6px 20px;
+    padding: 0px 20px;
+    border-right: solid 1px #555555;
 }
 .menu  li a{
 	display: block;
@@ -260,7 +261,7 @@ select option{
 .date_btn input[type="submit"] {
 	text-transform:capitalize;
 	width: 100% !important;
-	background: #32A2E3;
+	background: #C71838;
 	font-family: 'Open Sans', sans-serif;
 	color: #FFF;
 	padding: 8px;
@@ -570,7 +571,7 @@ p.para{
 	display: inline-block;
 	text-transform: capitalize;
 	width: 25% !important;
-	background: #32A2E3;
+	background: #C71838;
 	font-family: 'Open Sans', sans-serif;
 	color: #FFF;
 	padding: 15px;
@@ -760,7 +761,7 @@ span.next:hover {
 	margin-top: 10px;
 	display: inline-block;
 	text-transform: uppercase;
-	background: #32A2E3;
+	background: #C71838;
 	font-family: 'Open Sans', sans-serif;
 	color: #FFF;
 	padding: 15px;
@@ -795,7 +796,7 @@ span.next:hover {
 .read_more a{
 	display:inline-block;
 	text-transform: capitalize;
-	background: #32A2E3;
+	background: #C71838;
 	font-family: 'Open Sans', sans-serif;
 	color: #FFF;
 	padding: 12px 36px;
@@ -849,7 +850,7 @@ span.next:hover {
     height: 41px;
     position: relative;
     left: 30px;
-    background: #308BC4;
+    background: #C71838;
 }
 /***** Media Quries *****/
 @media only screen and (max-width: 1366px) {

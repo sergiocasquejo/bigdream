@@ -113,8 +113,8 @@ function featured_room_shortcode_handler($atts, $content = null) {
 						$output .= '<span class="next"> </span>';
 					$output .= '</a>';
 				$output .= '</div>';
-				$output .= '<h4><a href="'. get_permalink($p->ID) .'">'. $p->post_title .'<span>120$</span></a></h4>';
-				$output .= '<p>'. wp_trim_words($p->post_content, 40) .'</p>';
+				$output .= '<h4><a href="'. get_permalink($p->ID) .'">'. $p->post_title .'</a></h4>';
+				$output .= '<p>'. wp_trim_words($p->post_content, 20) .'</p>';
 			$output .= '</div>';
 		}
 		$output .= '<div class="clear"></div>';

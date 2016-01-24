@@ -1,3 +1,52 @@
+.navbar-top {
+	background-color:#191919;
+	min-height: 100px;
+	margin-bottom:0;
+	.navbar-toggle {
+		border: solid 1px #C71838;
+		.icon-bar {
+			background-color: #C71838;
+		}
+	}	
+
+
+	.brand {
+	    width: 200px;
+	    height: 80px;
+	    background: url(../images/logo.png) center no-repeat;
+	    background-size: contain;
+	    margin-top: 10px;
+	}
+
+	.navbar-right {
+		margin-top: 25px;
+		.navbar-nav {
+			li {
+				a {
+					color:#FFF;
+
+					&:hover {
+						color:#C71838;
+						background-color:rgba(0, 0, 0, 0);
+					}
+				}
+
+				&:after {
+				    content: '/';
+				    position: absolute;
+				    right: 0;
+				    top:17px;
+				    color:#FFF;
+				    
+				}
+			}
+		}
+	}
+
+	
+}
+
+
 .images-slider {
 	.slides {
 		li {
