@@ -5,10 +5,7 @@
 		<a href="<?php echo admin_url('/admin.php?page='. BigDream_Booking::LIST_PAGE_SLUG. '&view=list'); ?>"><span class="dashicons dashicons-list-view"></span></a>
 	</h1>
 	<?php bigdream_admin_notices(); ?>
-	<?php $booking_list_table->views(); ?>
-	<form method="post">
-	  <input type="hidden" name="page" value="cebu-dream-booking" />
-	  <?php $booking_list_table->search_box('search', 'search_id'); ?>
-	</form>
-	<?php $booking_list_table->display(); ?>
+	<div id='bookingCalendarView'></div>
 </div>
+
+

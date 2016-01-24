@@ -18,6 +18,7 @@ if (!class_exists('Big_Dream')) {
 		public function admin_menu() {
 			global $menu;
 			add_menu_page( 'Big Dream System', 'Big Dream System', 'manage_options', 'big-dream-dashboard', array($this, 'dashboard'), 'dashicons-calendar-alt', BDR_MENU_POSITION );		
+			add_submenu_page( 'big-dream-dashboard', 'Rooms', 'Rooms', 'manage_options', 'edit.php?post_type=room', false );
 		}
 
 		public function enqueue_scripts() {

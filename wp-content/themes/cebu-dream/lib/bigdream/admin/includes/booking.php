@@ -8,8 +8,18 @@ class BigDream_Booking {
 	public function __construct() {
 		add_action( 'admin_menu', array($this, 'admin_menu') );
 		add_action( 'admin_notices', array($this, 'newly_booked_admin_notice'));
-	}
 
+		add_action('admin_footer', array($this, 'admin_footer'));
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
+	}
+	public function enqueue_scripts() {
+		wp_enqueue_style('fullcalendar.min-style', CDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.min.css');
+		wp_enqueue_style('fullcalendar.print.min-style', CDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.print.css', array(), null, 'print');
+
+		wp_enqueue_script('moment.min-script', CDR_SYSTEM_DIR_URI .'/assets/vendor/moment.min.js');
+		wp_enqueue_script('fullcalendar.min-script', CDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.min.js', array('moment.min-script', 'jquery'), false, false);
+
+	}
 	public function admin_menu() {
 		global $menu;
 		$hook = add_submenu_page( 'big-dream-dashboard', 'Bookings', 'Bookings', 'manage_options', self::LIST_PAGE_SLUG, array($this, 'bookings') );
@@ -46,10 +56,14 @@ class BigDream_Booking {
 	}
 
 	public function bookings() {
-		global $booking_list_table;
+		if (isset($_GET['view']) && $_GET['view'] =='list') {
+			global $booking_list_table;
 
-		$booking_list_table->prepare_items();
-		include_once CDR_ADMIN_DIR . '/views/bookings.html.php';	
+			$booking_list_table->prepare_items();
+			include_once CDR_ADMIN_DIR . '/views/bookings.html.php';
+		} else {
+			include_once CDR_ADMIN_DIR . '/views/bookings-calendar-view.html.php';
+		}
 	}
 
 	public function add_edit_booking() {
@@ -128,6 +142,33 @@ class BigDream_Booking {
 		update_to_checked($_GET['bid']);
 		$post = get_booking_by_id($_GET['bid']);
 		include_once CDR_ADMIN_DIR . '/views/view-booking.html.php';	
+	}
+
+
+	public function admin_footer() {
+
+		$bookings = json_encode(get_booking_calendar());
+		?>
+		<script type="text/javascript">
+			(function($) {
+			$(document).ready(function() {
+				$('#bookingCalendarView').fullCalendar({
+					header: {
+						left: 'prev,next today',
+						center: 'title',
+						right: 'month,basicWeek,basicDay'
+					},
+					defaultDate: '2016-01-12',
+					editable: true,
+					eventLimit: true, // allow "more" link when too many events
+					events: <?php echo $bookings; ?>
+				});
+				
+			});
+			}(jQuery));
+
+		</script>
+		<?php
 	}
 }
 

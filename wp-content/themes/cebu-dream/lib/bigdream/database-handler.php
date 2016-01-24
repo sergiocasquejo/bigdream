@@ -34,6 +34,28 @@ if (!function_exists('bigdream_save_booking')) {
 		return $result;
 	}
 }
+function get_booking_calendar() {
+	global $wpdb;
+	$sql = "
+		SELECT 
+			b.booking_ID as id,
+			CONCAT(p.post_title, ' by:  ', b.first_name,' ', b.middle_name, ' ', b.last_name) as title,
+			b.date_in as start, 
+			b.date_out as end, 
+			CASE b.booking_status
+				WHEN 'Complete' THEN '#45920B'
+				WHEN 'Not Paid' THEN '#FF8100'
+				WHEN 'Unconfirmed' THEN '#888888'
+				WHEN 'Cancelled' THEN '#FF0000'
+			END
+			 as color
+		FROM 
+			". $wpdb->prefix . "bookings b  
+		JOIN ". $wpdb->prefix ."posts p 
+			ON p.ID = b.room_ID";
+
+	return $wpdb->get_results($sql, ARRAY_A);
+}
 
 function update_to_checked($id) {
 	global $wpdb;

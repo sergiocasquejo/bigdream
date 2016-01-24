@@ -23,11 +23,11 @@ if (!function_exists('dream_post_type_handler')) {
 
 		$args = array(
 			'labels'             => $labels,
-	                'description'        => __( 'Description.', 'cebudream' ),
+	        'description'        => __( 'Description.', 'cebudream' ),
 			'public'             => true,
 			'publicly_queryable' => true,
 			'show_ui'            => true,
-			'show_in_menu'       => true,
+			'show_in_menu'       => false,
 			'query_var'          => true,
 			'rewrite'            => array( 'slug' => 'room' ),
 			'capability_type'    => 'post',

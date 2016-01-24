@@ -89,3 +89,79 @@ span.booking_status.cancelled,
 .wp-list-table .column-room a { 
     font-weight:bold; 
 }
+
+.col-xs-3 {
+    width: 25%;
+    display: inline-block;
+}
+
+.col-xs-9 {
+    width: 75%;
+    display: inline-block;
+}
+
+.fa-5x {
+    font-size: 5em;
+}
+
+.huge {
+    font-size: 40px;
+}
+.col-lg-3.col-md-6 {
+    display: inline-block;
+    width: 20%;
+    margin-right: 30px;
+}
+
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.panel-primary {
+    border-color: #337ab7;
+}
+
+.panel-green {
+    border-color: #5cb85c;
+}
+
+.panel-yellow {
+    border-color: #f0ad4e;
+}
+
+
+.panel-red {
+    border-color: #d9534f;
+}
+
+.panel-primary>.panel-heading {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+
+.panel-green .panel-heading {
+    border-color: #5cb85c;
+    color: #fff;
+    background-color: #5cb85c;
+}
+
+
+.panel-yellow .panel-heading {
+    border-color: #f0ad4e;
+    color: #fff;
+    background-color: #f0ad4e;
+}
+
+
+.panel-red .panel-heading {
+    border-color: #d9534f;
+    color: #fff;
+    background-color: #d9534f;
+}
+
