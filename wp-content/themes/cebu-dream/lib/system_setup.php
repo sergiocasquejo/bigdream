@@ -17,6 +17,7 @@ define('GUEST_TITLE', json_encode(array('Mr', 'Ms', 'Mrs')));
 require_once "bigdream/functions.php";
 require_once "bigdream/shortcodes.php";
 require_once "bigdream/database-handler.php";
+require_once "bigdream/hooks.php";
 require_once "bigdream/admin/admin.php";
 
 

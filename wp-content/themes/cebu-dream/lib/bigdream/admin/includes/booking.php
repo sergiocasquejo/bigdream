@@ -158,7 +158,7 @@ class BigDream_Booking {
 						right: 'month,basicWeek,basicDay'
 					},
 					defaultDate: '2016-01-12',
-					editable: true,
+					editable: false,
 					eventLimit: true, // allow "more" link when too many events
 					events: <?php echo $bookings; ?>
 				});

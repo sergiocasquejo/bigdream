@@ -48,7 +48,10 @@ add_action( 'manage_room_posts_custom_column' , 'custom_book_column', 10, 2 );
 
 function set_custom_edit_book_columns($columns) {
     unset( $columns['author'] );
+    unset( $columns['date'] );
+    $columns['room_price'] = __( 'Room Price', 'bigdream' );
     $columns['room_status'] = __( 'Room Status', 'bigdream' );
+
 
     return $columns;
 }
@@ -76,6 +79,8 @@ function custom_book_column( $column, $post_id ) {
         case 'room_status' :
             badge_room_status(get_field('room_status', $post_id));
             break;
-
+        case 'room_price':
+        	echo nf(get_field('price', $post_id));
+        	break;
     }
 }
