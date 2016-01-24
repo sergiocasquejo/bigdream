@@ -11,6 +11,9 @@ class BigDream_Booking {
 
 		add_action('admin_footer', array($this, 'admin_footer'));
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
+		// Get booking details
+		add_action('wp_ajax_booking-details', array($this, 'booking_details'));
+		add_action('wp_ajax_nopriv_booking-details', array($this, 'booking_details'));
 	}
 	public function enqueue_scripts() {
 		wp_enqueue_style('fullcalendar.min-style', CDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.min.css');
@@ -24,7 +27,7 @@ class BigDream_Booking {
 		global $menu;
 		$hook = add_submenu_page( 'big-dream-dashboard', 'Bookings', 'Bookings', 'manage_options', self::LIST_PAGE_SLUG, array($this, 'bookings') );
 		add_submenu_page( self::NEW_BOOKING_SLUG, 'Edit Booking', 'Edit Booking', 'manage_options', self::NEW_BOOKING_SLUG, array($this, 'add_edit_booking') );
-		add_submenu_page( self::VIEW_BOOKING_SLUG, 'View Booking', 'View Booking', 'manage_options', self::VIEW_BOOKING_SLUG, array($this, 'view_booking') );
+		//add_submenu_page( self::VIEW_BOOKING_SLUG, 'View Booking', 'View Booking', 'manage_options', self::VIEW_BOOKING_SLUG, array($this, 'booking_details') );
 
 
 		$newitem = get_count_newly_booked();
@@ -66,6 +69,23 @@ class BigDream_Booking {
 		}
 	}
 
+	public function booking_details() {
+		if (defined('DOING_AJAX') && DOING_AJAX) {
+			
+			// Update booking to checked
+			update_to_checked($_GET['bid']);
+			$details = get_booking_by_id($_GET['bid']);
+
+			$featured_image = '';
+			if (has_post_thumbnail($details['room_ID'])) {
+				$featured_image = wp_get_attachment_image_src(get_post_thumbnail_id($details['room_ID']), 'large')[0];
+			}
+
+			include_once CDR_ADMIN_DIR . '/views/booking-details.html.php';
+			exit;
+		}
+	}
+
 	public function add_edit_booking() {
 
 		if ( isset( $_POST['save_booking_field'] ) && wp_verify_nonce( $_POST['save_booking_field'], 'save_booking_action' ) ) {
@@ -95,7 +115,7 @@ class BigDream_Booking {
 			);
 			if (bigdream_save_booking($args)) {
 				bigdream_add_notices('updated', 'Successully Saved.');
-				bigdream_redirect_script('admin.php?page=big-dream-bookings');
+				bigdream_redirect_script('admin.php?page=big-dream-bookings&view=list');
 			} else {
 				bigdream_add_notices('error', 'Error while Saving.');
 			}
@@ -136,15 +156,16 @@ class BigDream_Booking {
 	}
 
 
-	public function view_booking() {
-		// Update booking to checked
-		update_to_checked($_GET['bid']);
-		$post = get_booking_by_id($_GET['bid']);
-		include_once CDR_ADMIN_DIR . '/views/view-booking.html.php';	
-	}
+	
 
 
 	public function admin_footer() {
+		add_thickbox();
+
+		$output = '';
+		$output .= '<div id="bdrModalDialog" style="display:none;"></div>';
+
+		echo $output;
 
 		$bookings = json_encode(get_booking_calendar());
 		?>

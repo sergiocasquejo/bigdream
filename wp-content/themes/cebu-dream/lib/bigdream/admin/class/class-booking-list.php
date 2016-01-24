@@ -70,7 +70,7 @@ class Booking_List_TBL extends WP_List_Table {
 		$room_title .= $item['is_checked'] == 0 ? ' <span class="badge new">New</span>' : '';
 		  $actions = array(
             'edit'      => sprintf('<a href="?page=%s&bid=%s">Edit</a>',BigDream_Booking::NEW_BOOKING_SLUG, $item['booking_ID']),
-            'view'    => sprintf('<a href="?page=%s&bid=%s">View</a>',BigDream_Booking::VIEW_BOOKING_SLUG, $item['booking_ID']),
+            'view'    => sprintf('<a href="?page=%s&bid=%d" class="view-booking-details" data-id="%d">View</a>',BigDream_Booking::VIEW_BOOKING_SLUG, $item['booking_ID'], $item['booking_ID']),
         );
 
   		return sprintf('%1$s %2$s', $room_title, $this->row_actions($actions) );

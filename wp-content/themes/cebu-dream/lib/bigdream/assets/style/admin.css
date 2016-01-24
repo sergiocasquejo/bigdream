@@ -38,7 +38,8 @@ span.booking_status {
     margin-left:5px;
 }
 
-.wp-list-table .badge { 
+.wp-list-table .badge,
+.booking-details .badge { 
     font-weight:bold; 
     padding: 2px 5px; 
     background-color: #E0E0E0;
@@ -49,27 +50,31 @@ span.booking_status {
 
 span.booking_status.complete,
 span.badge.vacant_clean,
-.wp-list-table .badge.complete {
+.wp-list-table .badge.complete,
+.booking-details .badge.complete {
     background-color: #45920B;
     color:#FFF;
 }
 
 span.booking_status.unconfirmed,
-.wp-list-table .badge.unconfirmed {
+.wp-list-table .badge.unconfirmed,
+.booking-details .badge.unconfirmed {
     background-color: #888888;
     color:#FFF;
 }
 
 span.booking_status.not-paid,
 span.badge.vacant_dirty,
-.wp-list-table .badge.not-paid {
+.wp-list-table .badge.not-paid,
+.booking-details .badge.not-paid {
     background-color: #FF8100;
     color:#FFF;
 }
 
 span.booking_status.cancelled,
 span.badge.out_of_order,
-.wp-list-table .badge.cancelled {
+.wp-list-table .badge.cancelled,
+.booking-details .badge.cancelled {
     background-color: #FF0000;
     color:#FFF;
 }
@@ -167,4 +172,35 @@ span.badge.out_of_order,
     color: #fff;
     background-color: #d9534f;
 }
+#TB_title {
+    background-color: #2A4E8C !Important;
+    color: #FFF;
+    padding: 5px 0;
+    text-transform: uppercase;
+}
 
+#TB_title .tb-close-icon {
+    color: #FFF;
+    border-radius: 75px;
+    background-color: #000;
+    right: -35px;
+    top: -25px;
+}
+
+#TB_ajaxContent .booking-details {
+    width: 350px;
+    margin: 0 auto;
+    margin-top: -50px;
+    background-color: #FFF;
+    padding: 10px 20px;
+    border-radius: 5px 5px 0 0;
+}
+
+#TB_ajaxContent p {
+    padding: 5px 0px 5px 0px;
+    border-bottom: dashed 1px rgba(0, 0, 0, 0.17);
+}
+
+.booking-details .form-label {
+    font-size:14px;
+}
