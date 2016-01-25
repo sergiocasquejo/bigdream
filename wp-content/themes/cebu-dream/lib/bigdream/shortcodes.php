@@ -47,25 +47,25 @@ function online_reservation_form_shortcode_handler($atts, $content = null, $tag)
 				$output .= '<h4>'. $title .'</h4>';
 				$output .= '<p>'. $intro .'</p>';
 			$output .= '</div>';
-			$output .= '<div class="reservation col-md-9">';
+			$output .= '<div class="reservation_form col-md-9">';
 			$output .= '<form method="post">';
 					$output .= '<ul>';
 						$output .= '<li class="col-md-4">';
-							$output .= '<h5>check-in-date:</h5>';
-							$output .= '<div class="book_date">';
-									$output .= '<input class="date" name="date_in" id="datepicker" type="text" value="DD/MM/YY" onfocus="this.value = \'\';" onblur="if (this.value == \'\') {this.value = \'DD/MM/YY\';}">';
+							$output .= '<div class="form-group">';
+								$output .= '<h5>check-in-date:</h5>';
+								$output .= '<input class="date form-control" name="date_in" id="date_in" type="text" value="DD/MM/YY" onfocus="this.value = \'\';" onblur="if (this.value == \'\') {this.value = \'DD/MM/YY\';}">';
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<li  class="col-md-4">';
-							$output .= '<h5>check-out-date:</h5>';
-							$output .= '<div class="book_date">';
-									$output .= '<input class="date" name="date_out" id="datepicker1" type="text" value="DD/MM/YY" onfocus="this.value = \'\';" onblur="if (this.value == \'\') {this.value = \'DD/MM/YY\';}">';
+							$output .= '<div class="form-group">';
+								$output .= '<h5>check-out-date:</h5>';
+								$output .= '<input class="date form-control" name="date_out" id="date_out" type="text" value="DD/MM/YY" onfocus="this.value = \'\';" onblur="if (this.value == \'\') {this.value = \'DD/MM/YY\';}">';
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<li class="col-md-2">';
-							$output .= '<h5>Adults:</h5>';
-							$output .= '<div class="section_room">';
-								$output .= '<select id="country" onchange="change_country(this.value)" class="frm-field required">';
+							$output .= '<div class="form-group">';
+								$output .= '<h5>Adults:</h5>';
+								$output .= '<select name="no_of_adults" id="no_of_adults" onchange="change_country(this.value)" class="frm-field required  form-control">';
 									for($i = 1; $i <= 10; $i++) {
 									$output .= '<option value="'. $i .'">'. $i .'</option>';
 									}
@@ -75,7 +75,7 @@ function online_reservation_form_shortcode_handler($atts, $content = null, $tag)
 						$output .= '<li class="col-md-2">';
 							$output .= '<div class="date_btn">';
 									$output .= '<input type="hidden" name="action" value="check_availability" />';
-									$output .= '<input type="submit" value="book now" />';
+									$output .= '<input type="submit" value="book now" class="bdr-btn bdr-btn-fill-red" />';
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<div class="clear"></div>';
@@ -97,30 +97,83 @@ function featured_room_shortcode_handler($atts, $content = null) {
 
 	$q = get_posts(array(
 		'post_type' => 'room',
-		'showposts' => 3
+		'showposts' => 4
 		));
 
+	$output .= '<div class="section-featured-room">';
+		$output .= '<h2 class="room-featured_title">Featured Rooms</h2>';
+		$output .= '<div class="room-content">';
+			$output .= '<div class="row">';
 
-	$output .= '<div class="grids_of_3">';
+				foreach($q as $i => $p) {
+					$image = wp_get_attachment_image_src(get_post_thumbnail_id($p->ID), 'post-thumbnail')[0];
 
-		foreach($q as $i => $p) {
-			$image = wp_get_attachment_image_src(get_post_thumbnail_id($p->ID), 'post-thumbnail')[0];
-
-			$output .= '<div class="grid1_of_3">';
-				$output .= '<div class="grid1_of_3_img">';
-					$output .= '<a href="'. get_permalink($p->ID) .'">';
-						$output .= '<img src="'. $image .'" alt="" />';
-						$output .= '<span class="next"> </span>';
-					$output .= '</a>';
-				$output .= '</div>';
-				$output .= '<h4><a href="'. get_permalink($p->ID) .'">'. $p->post_title .'</a></h4>';
-				$output .= '<p>'. wp_trim_words($p->post_content, 20) .'</p>';
+					$output .= '<div class="col-sm-6 col-md-4 col-lg-3">';
+						$output .= '<div class="room-item">';
+							$output .= '<div class="img">';
+								$output .= '<a href="'. get_permalink($p->ID) .'">';
+									$output .= '<img src="'. $image .'" alt="" />';
+								$output .= '</a>';
+							$output .= '</div>';
+							$output .= '<div class="text">';
+							$output .= '<h2><a href="'. get_permalink($p->ID) .'">'. $p->post_title .'</a></h2>';
+							$output .= '<ul>';
+							$output .= '<li><i class="fa fa-male"></i>Max: 2 Person(s)</li>';
+							$output .= '<li><i class="fa fa-bed"></i>Bed: King-size or twin beds</li>';
+							$output .= '<li><i class="fa fa-eye"></i>View: Ocen</li>';
+							$output .= '</ul>';
+							$output .= '<a href="'. get_permalink($p->ID) .'" class="bdr-btn bdr-btn-default">View Details</a>';;
+							$output .= '</div>';
+						$output .= '</div>';
+					$output .= '</div>';
+				}
+				$output .= '<div class="clear"></div>';
 			$output .= '</div>';
-		}
-		$output .= '<div class="clear"></div>';
+		$output .= '</div>';
 	$output .= '</div>';
-
 	return $output;
 }
 
 add_shortcode('featured-room', 'featured_room_shortcode_handler');
+
+function room_listings_shortcode_handler($atts, $content = null) {
+	$output = '';
+
+	$q = get_posts(array(
+		'post_type' => 'room',
+		'showposts' => -1
+		));
+
+	$output .= '<div class="room-wrap-1">';
+        $output .= '<div class="row">';
+        	foreach($q as $i => $t){
+            $output .= '<div class="col-md-6">';
+               	$output .= '<div class="room_item-1">';
+               		$output .= '<h2><a href="'.get_permalink($t->ID).'">'. $t->post_title .'</a></h2>';
+               		$output .= '<div class="img">';
+               			$output .= '<a href="'.get_permalink($t->ID).'"><img src="'. wp_get_attachment_image_src(get_post_thumbnail_id($t->ID), 'gallery-post-thumbnails')[0] .'" alt=""></a>';
+               		$output .= '</div>';
+               		$output .= '<div class="desc">';
+               			$output .= '<p>'. wp_trim_words($t->post_content, 20) .'</p>';
+               			$output .= '<ul>';
+               			$output .= '<li>Max: 4 Person(s)</li>';
+               			$output .= '<li>Size: 35 m2 / 376 ft2</li>';
+               			$output .= '<li>View: Ocen</li>';
+               			$output .= '<li>Bed: King-size or twin beds</li>';
+               			$output .= '</ul>';
+               		$output .= '</div>';
+               		$output .= '<div class="bot">';
+               			$output .= '<span class="price">Starting <span class="amout">$260</span> /days</span>';
+               			$output .= '<a href="'.get_permalink($t->ID).'" class="bdr-btn bdr-btn-fill-red">VIEW DETAILS</a>';
+               		$output .= '</div>';
+                $output .= '</div>';
+            $output .= '</div>';
+        	}
+        $output .= '</div>';
+    $output .= '</div>';
+
+
+	return $output;
+}
+
+add_shortcode('room-listings', 'room_listings_shortcode_handler');

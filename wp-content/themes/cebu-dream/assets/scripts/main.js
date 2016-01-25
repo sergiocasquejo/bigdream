@@ -24,10 +24,8 @@
       }
     });
 
-    $( "#datepicker,#datepicker1" ).datepicker();
-    
-
-      $("#google_language_translator select").selectOrDie();
+    $( "#date_in,#date_out" ).datepicker();
+  
 
   });
 

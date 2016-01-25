@@ -48,3 +48,25 @@ add_filter('set-screen-option', 'bigdream_booking_list_set_option', 10, 3);
 function bigdream_booking_list_set_option($status, $option, $value) {
   return $value;
 }
+
+add_action('init', 'bdr_init_action_handler');
+
+function bdr_init_action_handler() {
+
+	if (isset($_REQUEST['action'])) {
+		$action = $_REQUEST['action'];
+		switch($action) {
+			case 'check_availability':
+				$data = $_REQUEST;
+
+				$_SESSION['_bdr_booking'] = array_merge($_SESSION['_bdr_booking'], array(
+						'date_in' => $data['date_in'],
+						'date_out' => $data['date_out'],
+						'no_of_adults' => $data['no_of_adults'],
+						'no_of_child' => isset($data['no_of_child']) ? $data['no_of_child'] : 0,
+					));
+				exit(wp_redirect(get_permalink(get_page_by_path('rooms-suits'))));
+				break;
+		}
+	}
+}

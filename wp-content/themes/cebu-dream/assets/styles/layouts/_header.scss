@@ -1,7 +1,8 @@
 .navbar-top {
-	background-color:#191919;
-	min-height: 100px;
+	background-color:rgba(165, 5, 33, 0.83);
+	min-height: 80px;
 	margin-bottom:0;
+	border:none;
 	.navbar-toggle {
 		border: solid 1px #C71838;
 		.icon-bar {
@@ -11,44 +12,39 @@
 
 
 	.brand {
-	    width: 200px;
+	    width: 260px;
 	    height: 80px;
 	    background: url(../images/logo.png) center no-repeat;
 	    background-size: contain;
-	    margin-top: 10px;
 	}
 
 	.navbar-right {
-		margin-top: 25px;
 		.navbar-nav {
 			li {
 				a {
 					color:#FFF;
-
+					min-height: 80px;
+    				line-height: 80px;
+    				padding: 0 30px;
+    				text-transform:uppercase;
 					&:hover {
-						color:#C71838;
-						background-color:rgba(0, 0, 0, 0);
+						color:#FFF;
+						background-color:$button-red;
 					}
-				}
-
-				&:after {
-				    content: '/';
-				    position: absolute;
-				    right: 0;
-				    top:17px;
-				    color:#FFF;
-				    
 				}
 			}
 		}
 	}
 
 	.goog-te-combo {
-	 	border: solid 1px #000 !important;
+	 	border: solid 2px #FFF!important;
 	    border-radius: 0 !important;
 	    padding: 8px 7px !important;
+	    margin-top: 19px !important;
+	    background:transparent !important;
+	    font-family: $font-family !important;
+	    color: #FFF;
 	}
-
 	
 }
 

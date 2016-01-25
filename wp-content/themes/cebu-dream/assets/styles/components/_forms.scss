@@ -13,3 +13,13 @@
   @extend .btn;
   @extend .btn-default;
 }
+
+input[type="text"], select,
+textarea,
+button,
+.form-control{
+	font-size: .8725em;
+    height: 40px;
+    border: 2px solid #000;
+    border-radius:0;
+}

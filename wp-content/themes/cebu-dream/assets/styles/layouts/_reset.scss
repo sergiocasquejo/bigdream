@@ -23,7 +23,7 @@ nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
 img{max-width:100%;}
 /*end reset*/
 body {
-	font-family: 'Open Sans', sans-serif;
+	font-family: $font-family;
 	background:#ffffff;
 	font-size: 100%;
 }
@@ -186,29 +186,29 @@ body {
 	color: #6b6b6b;
 	line-height: 1.8em;
 }
-.reservation{
+.reservation_form{
 	font-family: 'Open Sans', sans-serif;
 	padding: 3% 2%;
 	float: left;
 	background: #FFFFFF;
 }
-.reservation ul li{
+.reservation_form ul li{
 	float: left;
 }
-.reservation ul li.left{
+.reservation_form ul li.left{
 	margin-left: 15px;
 }
-.reservation ul li.span1_of_1{
+.reservation_form ul li.span1_of_1{
 	width: 21.33333%;
 }
-.reservation ul li.span1_of_2{
+.reservation_form ul li.span1_of_2{
 	width: 9.33333%;
 }
-.reservation ul li.span1_of_3{
+.reservation_form ul li.span1_of_3{
 	width: 18.33333%;
 	margin-left: 20px;
 }
-.reservation h5{
+.reservation_form h5{
 	font-size: 1em;
 	color: #5F5F5F;
 	text-transform: capitalize;
@@ -218,11 +218,11 @@ select {
 	width: 100%;
 	color: #858585;
 	font-size: 0.8725em;
-	padding: 7px;
 	outline: none;
 	margin: 5px 0;
 	font-family: 'Open Sans', sans-serif;
 	background: #ffffff;
+	padding: 7px;
 	border: 1px solid #DFDFDF;
 	box-shadow: inset 0 0 2px rgb(236, 236, 236);
 	-webkit-box-shadow: inset 0 0 2px rgb(236, 236, 236);
@@ -237,42 +237,16 @@ select option{
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 }
-.book_date input[type="text"]{
-	width: 88%;
-	color: #858585;
-	font-size: 0.8725em;
-	padding: 8px;
-	outline: none;
-	margin: 5px 0;
-	font-family: 'Open Sans', sans-serif;
-	border: 1px solid #DFDFDF;
-	box-shadow: inset 0 0 2px rgb(236, 236, 236);
-	-webkit-box-shadow: inset 0 0 2px rgb(236, 236, 236);
-	-moz-box-shadow: inset 0 0 2px rgb(236, 236, 236);
-	-o-box-shadow: inset 0 0 2px rgb(236, 236, 236);
-	-webkit-appearance: none;
-}
+
 .date{
 	background:url(../images/cal-icon.png) no-repeat 100% 50% #FFF;
 }
-.date_btn{
-	margin-top: 33px;
+.date_btn {
+    margin-top: 29px;
 }
 .date_btn input[type="submit"] {
 	text-transform:capitalize;
-	width: 100% !important;
-	background: #C71838;
-	font-family: 'Open Sans', sans-serif;
-	color: #FFF;
-	padding: 8px;
-	border: none;
-	font-size: 1em;
-	transition: 0.5s all;
-	-webkit-transition: 0.5s all;
-	-moz-transition: 0.5s all;
-	-o-transition: 0.5s all;
-	outline: none;
-	cursor: pointer;
+	padding: 12px 0;
 }
 .date_btn form input[type="submit"]:hover{
 	background: #228AC6;
@@ -682,7 +656,6 @@ span.next:hover {
 	display: inline-block;
 	text-transform: uppercase;
 	background: #C71838;
-	font-family: 'Open Sans', sans-serif;
 	color: #FFF;
 	padding: 15px;
 	border: none;
@@ -717,7 +690,6 @@ span.next:hover {
 	display:inline-block;
 	text-transform: capitalize;
 	background: #C71838;
-	font-family: 'Open Sans', sans-serif;
 	color: #FFF;
 	padding: 12px 36px;
 	border: none;

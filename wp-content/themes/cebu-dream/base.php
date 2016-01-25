@@ -25,14 +25,7 @@ use Roots\Sage\Wrapper;
       } ?>
 
     <div class="main_bg">
-      <div class="container">
         <?php include Wrapper\template_path(); ?>
-        <?php if (Setup\display_sidebar()) : ?>
-          <aside class="sidebar">
-            <?php include Wrapper\sidebar_path(); ?>
-          </aside><!-- /.sidebar -->
-        <?php endif; ?>
-      </div>
     </div>
 
     <?php
