@@ -25,9 +25,12 @@ use Roots\Sage\Wrapper;
       } ?>
 
     <div class="main_bg">
-        <?php include Wrapper\template_path(); ?>
-    </div>
+      <?php 
+        //Banner
+        get_template_part('templates/mini-banner');
 
+        include Wrapper\template_path(); ?>
+    </div>
     <?php
       do_action('get_footer');
       get_template_part('templates/footer');

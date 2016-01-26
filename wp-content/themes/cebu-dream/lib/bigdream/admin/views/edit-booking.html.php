@@ -1,7 +1,7 @@
 <div class="wrap">
 	<h1>New Booking <a href="<?php echo admin_url('/admin.php?page=big-dream-bookings'); ?>" class="page-title-action">Back to Listing</a></h1>
 	<div class="gap-30"></div>
-	<?php bigdream_admin_notices(); ?>
+	<?php bigdream_notices(); ?>
 	<form method="post">
 		<div class="form-group">
 			<label class="form-label" for="first_name">Room Type</label>
@@ -18,9 +18,9 @@
 		<div class="gap-30"></div>
 		<div class="form-group">
 			<label class="form-label" for="first_name">Title</label>
-			<select name="title" class="form-control" required>
+			<select name="salutation" class="form-control" required>
 				<?php foreach ($guest_title as $t): ?>
-				<option value="<?php echo $t; ?>" <?php selected($t, $post['title']); ?>><?php echo $t; ?></option>
+				<option value="<?php echo $t; ?>" <?php selected($t, $post['salutation']); ?>><?php echo $t; ?></option>
 				<?php endforeach; ?>
 			</select>
 		</div>
@@ -47,10 +47,6 @@
 		<div class="form-group">
 			<label class="form-label" for="primary_phone">Primary Phone</label>
 			<input type="text" name="primary_phone" class="form-control" value="<?php echo $post['primary_phone']; ?>" required/>
-		</div>
-		<div class="form-group">
-			<label class="form-label" for="secondary_phone">Secondary Phone</label>
-			<input type="text" name="secondary_phone" class="form-control" value="<?php echo $post['secondary_phone']; ?>" />
 		</div>
 		<div class="form-group">
 			<label class="form-label" for="address_1">Address 1</label>

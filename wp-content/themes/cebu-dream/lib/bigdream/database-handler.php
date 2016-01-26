@@ -4,31 +4,35 @@ if (!function_exists('bigdream_save_booking')) {
 	function bigdream_save_booking($args) {
 		global $wpdb;
 		$data = array(
-				'room_ID' => $args['room_ID'],
-				'amount' => $args['amount'],
-				'amount_paid' => $args['amount_paid'],
-				'title' => $args['title'],
-				'first_name' => $args['first_name'],
-				'last_name' => $args['last_name'],
-				'middle_name' => $args['middle_name'],
-				'birth_date' => $args['birth_date'],
-				'email_address' => $args['email_address'],
-				'primary_phone' => $args['primary_phone'],
-				'secondary_phone' => $args['secondary_phone'],
-				'address_1' => $args['address_1'],
-				'address_2' => $args['address_2'],
-				'address_3' => $args['address_3'],
-				'nationality' => $args['nationality'],
-				'date_in' => $args['date_in'],
-				'date_out' => $args['date_out'],
-				'booking_status' => $args['booking_status'],
-				'date_booked' => $args['date_booked'],
-			);
+			'booking_ID' => $args['booking_ID'],
+			'room_ID' => $args['room_ID'],
+			'amount' => $args['amount'],
+			'amount_paid' => $args['amount_paid'],
+			'salutation' => $args['salutation'],
+			'country' => $args['country'],
+			'first_name' => $args['first_name'],
+			'last_name' => $args['last_name'],
+			'middle_name' => $args['middle_name'],
+			'birth_date' => $args['birth_date'],
+			'email_address' => $args['email_address'],
+			'primary_phone' => $args['primary_phone'],
+			'address_1' => $args['address_1'],
+			'address_2' => $args['address_2'],
+			'city' => $args['city'],
+			'province' => $args['province'],
+			'zipcode' => $args['zipcode'],
+			'nationality' => $args['nationality'],
+			'date_in' => $args['date_in'],
+			'date_out' => $args['date_out'],
+			'booking_status' => $args['booking_status'],
+			'notes' => $args['notes'],
+			'date_booked' => $args['date_booked'],
+		);
 
 		if (isset($args['booking_ID']) && $args['booking_ID'] != 0) {
-			$result = $wpdb->update( $wpdb->prefix . 'bookings', $data, array('booking_ID' => $args['booking_ID']), array('%d', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'), array('%d'));
+			$result = $wpdb->update( $wpdb->prefix . 'bookings', $data, array('booking_ID' => $args['booking_ID']), array('%d','%d','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'), array('%d'));
 		} else {
-			$result = $wpdb->insert( $wpdb->prefix . 'bookings', $data, array('%d', '%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'));
+			$result = $wpdb->insert( $wpdb->prefix . 'bookings', $data, array('%d','%d','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'));
 		}
 
 		return $result;
@@ -132,3 +136,4 @@ function get_inserted_ID() {
 	global $wpdb;
 	return $wpdb->insert_id;
 }
+

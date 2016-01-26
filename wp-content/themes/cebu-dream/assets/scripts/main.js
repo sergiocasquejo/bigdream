@@ -24,9 +24,33 @@
       }
     });
 
-    $( "#date_in,#date_out" ).datepicker();
-  
+    $( "#date_in" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: false,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#date_out" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    $( "#date_out" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: false,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#date_in" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
 
+    $(".bdr-calendar").datepicker();
+  
+    $('.create-accnt-radio').on('change', function() {
+      if ($(this).is(':checked')) {
+        $('.create-account-box').removeClass('hidden');
+      } else {
+        $('.create-account-box').addClass('hidden');
+      }
+    });
+    
   });
 
 })(window, document, jQuery); // Fully reference jQuery after this point.

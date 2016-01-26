@@ -101,6 +101,14 @@ function assets() {
     wp_enqueue_script('comment-reply');
   }
 
+  wp_enqueue_style('fullcalendar.min-style', CDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.min.css');
+  wp_enqueue_style('fullcalendar.print.min-style', CDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.print.css', array(), null, 'print');
+
+  wp_enqueue_script('moment.min-script', CDR_SYSTEM_DIR_URI .'/assets/vendor/moment.min.js');
+  wp_enqueue_script('fullcalendar.min-script', CDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.min.js', array('moment.min-script', 'jquery'), false, false);
+
+
+
   wp_enqueue_script('sage/js', Assets\asset_path('scripts/main.js'), ['jquery'], null, true);
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);

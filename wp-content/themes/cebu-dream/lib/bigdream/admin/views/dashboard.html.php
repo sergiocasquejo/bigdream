@@ -1,6 +1,6 @@
 <div class="wrap">
 	<h1>Dashboard</h1>
-    <?php bigdream_admin_notices(); ?>
+    <?php bigdream_notices(); ?>
 	<div class="row">
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-primary">

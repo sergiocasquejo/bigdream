@@ -187,7 +187,7 @@ class Booking_List_TBL extends WP_List_Table {
 			b.room_ID,
 			b.amount, 
 			b.amount_paid, 
-			b.title, 
+			b.salutation, 
 			b.birth_date, 
 			b.email_address, 
 			b.date_in, 

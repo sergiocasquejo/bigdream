@@ -16,11 +16,8 @@
 		.text {
 		    margin-top: 15px;
 		    h2 {
-			    font-size: 18px;
-			    font-weight: 700;
-			    margin: 0;
-			    text-transform: uppercase;
-			}
+		    	font-size:18px;
+		    }
 
 			ul {
 			    margin-top: 10px;
@@ -94,14 +91,11 @@
 }
 
 .room_detail_gallery {
-    margin-top: 45px;
     max-height:450px;
 }
 
 .room-detail_book {
     background-color: #f1f1f1;
-    margin-top: 45px;
-
     .room-detail_total {
 	    padding: 20px 30px;
 	    text-align: center;
@@ -188,8 +182,9 @@
 
 			&.active a, 
 			&:hover a {
-			    color: #e7c130;
+			    color: $bg-red;
 			    border:none;
+			    background-color:transparent;
 			}
 		}
 	}
@@ -212,14 +207,13 @@
     padding-bottom: 100px;
 
     .room-wrap-1 {
-	    margin-top: -45px;
 
 	    .room_item-1 {
-		    margin-top: 45px;
 		    h2 {
 			    text-transform: uppercase;
 			    font-size: 26px;
 			    font-weight: 700;
+			    margin-top:20px;
 			}
 
 			.img {
@@ -285,7 +279,7 @@
 				    font-size: 14px;
 				    line-height: 1;
 
-				    .amout {
+				    .amount {
 					    color: #333;
 					    font-weight: 700;
 					    font-size: 26px;
@@ -298,5 +292,136 @@
 				}
 			}
 		}
+	}
+}
+
+
+.reservation_step {
+	ul {
+	    list-style: none;
+	    padding-left: 0;
+	    margin-bottom: 0;
+	    font-size: 0;
+	    text-align: center;
+	    border-bottom: 1px solid #e4e4e4;
+
+	    li {
+		    display: inline-block;
+		    font-size: 15px;
+		    position: relative;
+		    margin: 0 20px;
+
+		    &:before {
+			    content: '';
+			    left: 0;
+			    right: 0;
+			    bottom: -1px;
+			    height: 2px;
+			    position: absolute;
+			    background-color: transparent;
+			}
+
+			&.active:before, 
+			&:hover:before {
+			    background-color: $bg-red;
+			}
+
+			a {
+			    color: #333;
+			    display: block;
+			    padding: 15px 0;
+
+			    span {
+				    font-weight: 700;
+				    font-size: 18px;
+				    margin-right: 5px;
+				}
+
+				&:hover {
+					text-decoration:none;
+				}
+			}
+		}
+	}
+}
+
+
+.reservation_content {
+    padding-bottom: 20px;
+    margin-top: 40px;
+}
+
+.reservation-billing-detail {
+    margin-left: 80px;
+    max-width: 570px;
+
+    h4 {
+	    color: #000;
+	    margin-bottom: 0;
+	    padding-bottom: 10px;
+	    font-weight: 700;
+	    font-size: 30px;
+	}
+    .reservation-login {
+	    margin-bottom: 0;
+	    color: #898989;
+	    font-size: 14px;
+	}
+
+	label {
+	    color: #232323;
+	    font-size: 12px;
+	    display: block;
+	    margin-bottom: 10px;
+	    font-family: Montserrat;
+	    margin-top: 20px;
+	    text-transform: uppercase;
+	    sup {
+		    color: red;
+		    font-size: 12px;
+		    top: -2px;
+		}
+	}
+
+	.bootstrap-select.awe-select.btn-group {
+	    width: 100%;
+	}
+
+	.bdr-btn-fill-red {
+		margin-top: 20px;
+	}
+
+	.reservation-room-seleted_name {
+		h2 {
+			font-size:15px;
+		}
+	}
+}
+
+.reservation-success-message {
+	background-color: #f1f1f1;
+    text-align: center;
+    padding: 30px;
+
+    h4 {
+	    font-weight: 700;
+	    text-transform: uppercase;
+	    margin: 0;
+	    font-size: 20px;
+	    color: #232323;
+	}
+
+	p {
+	    color: #898989;
+	    font-size: 15px;
+	    margin-top: 20px;
+	    margin-bottom: 0;
+	}
+
+	.bdr-btn{
+    width: 150px;
+	    color: #fff;
+	    padding: 10px;
+	    margin-top: 30px;
 	}
 }

@@ -96,23 +96,27 @@ class BigDream_Booking {
 				'room_ID' => $post['room_ID'],
 				'amount' => $post['amount'],
 				'amount_paid' => $post['amount_paid'],
-				'title' => $post['title'],
+				'salutation' => $post['salutation'],
+				'country' => $post['country'],
 				'first_name' => $post['first_name'],
 				'last_name' => $post['last_name'],
 				'middle_name' => $post['middle_name'],
 				'birth_date' => $post['birth_date'],
 				'email_address' => $post['email_address'],
 				'primary_phone' => $post['primary_phone'],
-				'secondary_phone' => $post['secondary_phone'],
 				'address_1' => $post['address_1'],
 				'address_2' => $post['address_2'],
-				'address_3' => $post['address_3'],
+				'city' => $post['city'],
+				'province' => $post['province'],
+				'zipcode' => $post['zipcode'],
 				'nationality' => $post['nationality'],
 				'date_in' => $post['date_in'],
 				'date_out' => $post['date_out'],
 				'booking_status' => $post['booking_status'],
+				'notes' => $post['notes'],
 				'date_booked' => date('Y-m-d H:i:s'),
 			);
+
 			if (bigdream_save_booking($args)) {
 				bigdream_add_notices('updated', 'Successully Saved.');
 				bigdream_redirect_script('admin.php?page=big-dream-bookings&view=list');
@@ -127,24 +131,28 @@ class BigDream_Booking {
 		} else {
 			$post = array(
 				'booking_ID' => 0,
-				'room_ID' => '',
+				'room_ID' => 0,
 				'amount' => 0,
 				'amount_paid' => 0,
-				'title' => 'Mr',
+				'salutation' => 'Mr',
+				'country' => 'Philippines',
 				'first_name' => '',
 				'last_name' => '',
 				'middle_name' => '',
 				'birth_date' => '',
 				'email_address' => '',
 				'primary_phone' => '',
-				'secondary_phone' => '',
 				'address_1' => '',
 				'address_2' => '',
-				'address_3' => '',
+				'city' => '',
+				'province' => '',
+				'zipcode' => '',
 				'nationality' => 'Filipino',
 				'date_in' => date('Y-m-d'),
 				'date_out' => date('Y-m-d'),
 				'booking_status' => '',
+				'notes' => '',
+				'date_booked' => date('Y-m-d H:i:s'),
 			);
 		}
 

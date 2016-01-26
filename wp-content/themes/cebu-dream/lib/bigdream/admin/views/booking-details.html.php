@@ -10,8 +10,8 @@
 		<strong><?php echo $details['amount']; ?></strong>
 	</p>
 	<p class="form-group">
-		<label class="form-label" for="first_name">Title</label>
-		<strong><?php echo $details['title']; ?></strong>
+		<label class="form-label" for="first_name">Salutation</label>
+		<strong><?php echo $details['salutation']; ?></strong>
 	</p>
 	<p class="form-group">
 		<label class="form-label" for="first_name">Full Name</label>

@@ -1,0 +1,109 @@
+.reservation-heading {
+    font-size: 16px;
+    color: #333;
+    font-family: Montserrat;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 1px solid #e4e4e4;
+}
+.reservation-sidebar {
+    padding-top: 10px;
+
+    .reservation-date {
+	    margin-top: 30px;
+
+	    
+
+		ul {
+		    list-style: none;
+		    margin-bottom: 0;
+		    padding: 20px;
+
+		    li {
+			    color: #333;
+			    font-size: 12px;
+			    overflow: hidden;
+			    font-weight: 500;
+			    padding: 5px 0;
+
+			    span:last-child {
+				    float: right;
+				    font-weight: 700;
+				    text-transform: uppercase;
+				}
+			}
+		}
+	}
+}
+
+.reservation-room-selected {
+    background-color: #f1f1f1;
+    margin-top: 30px;
+
+    .reservation-room-seleted_item {
+	    padding: 20px;
+	    border-bottom: 1px solid #e4e4e4;
+
+	    h6 {
+		    display: inline-block;
+		    vertical-align: middle;
+		    color: #232323;
+		    font-size: 14px;
+		    text-transform: uppercase;
+		    margin: 0 10px 0 0;
+		    line-height: 1.428em;
+		    font-family: Montserrat;
+		    font-weight: 700;
+		}
+		.reservation-option {
+		    display: inline-block;
+		    font-size: 12px;
+		    font-weight: 500;
+		    font-family: Hind;
+		}
+
+		.reservation-room-seleted_name {
+		    overflow: hidden;
+		    margin-top: 10px;
+
+		    h2 {
+				font-size:15px;
+			}
+		}
+
+		.reservation-room-seleted_total-room {
+		    color: #333;
+		    font-size: 14px;
+		    font-weight: 700;
+		    text-transform: uppercase;
+		    border-top: 1px solid #e4e4e4;
+		    padding-top: 15px;
+		    padding-bottom: 10px;
+		    font-family: Montserrat;
+		}
+	}
+
+	.reservation-room-seleted_total {
+	    padding: 20px;
+	    overflow: hidden;
+	    font-size: 16px;
+	    font-weight: 700;
+	    font-family: Montserrat;
+	    color:#FFF;
+	    label {
+		    font-weight: 700;
+		    text-transform: uppercase;
+		    margin: 0;
+		}
+
+		.reservation-total {
+		    float: right;
+		    color: #344a71;
+		    font-size: 18px;
+		    color:#FFF;
+		}
+	}
+
+}
