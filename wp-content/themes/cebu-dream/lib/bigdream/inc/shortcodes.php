@@ -336,7 +336,7 @@ function success_message_shortcode_handler($atts, $content = '') {
                                 
 	                <div class="reservation-success-message bg-gray text-center">
 	                    <h4>Thank you.</h4>
-	                    <p>You have successfully booked, <br />we will contact you shortly for confirmation.</p>
+	                    <p>You have successfully booked, <br />we will review your booking information and contact you shortly for confirmation.</p>
 	                    <a href="'. get_permalink(get_page_by_path('rooms-suits')) .'" class="bdr-btn bdr-btn-fill-red">Find Rooms</a>
 	                </div>
 
