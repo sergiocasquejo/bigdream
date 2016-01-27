@@ -413,8 +413,13 @@ function send_success_booking_notification() {
   include "email/success_booking_notification.php";
   $message = ob_get_clean();
   
+  //Send to admin
   $to = get_bloginfo('admin_email');
   $subject = 'New Reservation';
-  //Send to admin
+  wp_mail($to, $subject, $message);
+  
+  // Send to guest
+  $to = $data['email_address'];
+  $subject = 'Your Booking Details';
   wp_mail($to, $subject, $message);
 }
