@@ -1,39 +1,99 @@
 <?php
 
+/**
+ * nf()
+ * 
+ * Format number
+ * 
+ * @param Float $number
+ * @param Int $decimals
+ * @param String $decimal_point
+ * @param String $thousands_sep
+ * @return none
+ */
 add_filter('show_admin_bar', '__return_false');
-
 if(!function_exists('nf')) {
 	function nf($number , $decimals = 0 , $dec_point = "." , $thousands_sep = ",") {
 		return number_format($number, $decimals, $dec_point, $thousands_sep);
 	}
 }
-
-
+/**
+ * bigdream_admin_scripts()
+ * 
+ * Enqueue admin scripts
+ * 
+ * @param none
+ * @return none
+ */
+ 
 add_action('admin_enqueue_scripts', 'bigdream_admin_scripts');
 function bigdream_admin_scripts() {
 	wp_enqueue_style('admin-style', CDR_SYSTEM_DIR_URI . '/assets/style/admin.css');	
 }
 
-
-
-function bigdream_add_notices($type, $message) {
-	$_SESSION['bigdream_notices'][] = array('type' => $type, 'message' => $message);
-}
+/**
+ * bigdream_redirect_script()
+ * 
+ * Print redirect javascript
+ * 
+ * @param String $url
+ * @return Boolean
+ */
 
 function bigdream_redirect_script($url) {
 	echo '<script>';
 	echo 'window.location.replace("'. $url .'")';
 	echo '</script>';
 }
+/**
+ * bigdream_add_notices()
+ * 
+ * Add notice message
+ * 
+ * @param String $type
+ * @param String $message
+ * @return none
+ */
+function bigdream_add_notices($type, $message) {
+	$_SESSION['bigdream_notices'][] = array('type' => $type, 'message' => $message);
+}
 
+/**
+ * has_notices()
+ * 
+ * Check if there is notices
+ * 
+ * @param none
+ * @return Boolean
+ */
+ 
 function has_notices() {
   return count(get_notices()) != 0;
 }
 
+/**
+ * get_notices()
+ * 
+ * Return notices
+ * 
+ * @param none
+ * @return Array $notices
+ */
+ 
 function get_notices() {
   return isset($_SESSION['bigdream_notices']) ? $_SESSION['bigdream_notices'] : array();
 }
 
+/**
+ * bigdream_notices()
+ * 
+ * Print|Return notices when exists
+ * 
+ * @param Boolean $echo
+ * @return String $notices
+ */
+ 
+ 
 if (!function_exists('bigdream_notices')) {
 	function bigdream_notices($echo = true) {
 
@@ -55,6 +115,15 @@ if (!function_exists('bigdream_notices')) {
 }
 
 
+/**
+ * modal_notices()
+ * 
+ * Print modal notices when exists
+ * 
+ * @param none
+ * @return none
+ */
+ 
 function modal_notices() {
   $output = '';
   $output .= '<div id="bigdreamNoticesModal" class="modal fade bs-notice-modal-sm" tabindex="-1" role="dialog" aria-labelledby="bigdreamNoticeModal">';
@@ -71,20 +140,45 @@ add_filter('set-screen-option', 'bigdream_booking_list_set_option', 10, 3);
 function bigdream_booking_list_set_option($status, $option, $value) {
   return $value;
 }
-
+/**
+ * push_to_booking_session()
+ * 
+ * Push data to session variable
+ * 
+ * @param none
+ * @return Array $booking_data
+ */
+ 
 function push_to_booking_session($args) {
   $_SESSION['_bdr_booking'] = array_merge((array)$_SESSION['_bdr_booking'], $args);
   
   return get_booking_session();
 }
 
+/**
+ * get_booking_session()
+ * 
+ * Get booking data from session
+ * 
+ * @param none
+ * @return Array $booking_data
+ */
+ 
 function get_booking_session() {
   return isset($_SESSION['_bdr_booking']) ? $_SESSION['_bdr_booking'] : array();
 }
 
-add_action('init', 'bdr_init_action_handler');
-
-function bdr_init_action_handler() {
+/**
+ * booking_init_action_handler()
+ * 
+ * Process booking post data
+ * 
+ * @param none
+ * @return none
+ */
+ 
+add_action('init', 'booking_init_action_handler');
+function booking_init_action_handler() {
 
 	if (isset($_REQUEST['action'])) {
 		$action = $_REQUEST['action'];
@@ -163,14 +257,29 @@ function bdr_init_action_handler() {
 	}
 }
 
-
+/**
+ * booking_data()
+ * 
+ * Get booking data by key
+ * 
+ * @param String $key
+ * @param String $default
+ * @return String $array_value
+ */
 function booking_data($key, $default = '') {
 	$booking = isset($_SESSION['_bdr_booking']) ? $_SESSION['_bdr_booking'] : array();
 
 	return isset($booking[$key]) ? $booking[$key] : $default;
 }
 
-
+/**
+ * get_room_price()
+ * 
+ * Get unformatted room price
+ * 
+ * @param int $id - Room/Post ID
+ * @return Decimal $price
+ */
 function get_room_price($id = false) {
 	if (!$id) {
 		global $post;
@@ -220,6 +329,18 @@ function the_room_price_html($id = false) {
  */
 function get_room_price_html($id = false) {
 	return sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf(get_room_price($id)));
+}
+
+/**
+ * format_price()
+ * 
+ * Print formatted price
+ * 
+ * @param Decimal $price
+ * @return none
+ */
+function format_price($price) {
+  echo sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf(get_room_price($id)));
 }
 
 /**
