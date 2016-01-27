@@ -14,7 +14,9 @@
   'use strict';
   var W = $(window),
       D = $(document);
-  
+  W.load(function(){
+    $('#bigdreamNoticesModal').modal('show');
+  });
   D.ready(function() {
     
     $('.flexslider').flexslider({
