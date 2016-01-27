@@ -21,6 +21,7 @@ require_once "bigdream/functions.php";
 require_once "bigdream/inc/shortcodes.php";
 require_once "bigdream/inc/database-handler.php";
 require_once "bigdream/inc/validation.php";
+require_once "bigdream/inc/hooks.php";
 require_once "bigdream/admin/admin.php";
 
 
