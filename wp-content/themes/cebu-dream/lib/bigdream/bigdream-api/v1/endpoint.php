@@ -1,5 +1,6 @@
 class BigDreams_API {
-
+  private $_token = '<IK7gJ;6e9*G(qJB+X3I]O9';
+  
   $version = 1.0;
   $controller = '';
   $action = '';
@@ -44,7 +45,11 @@ class BigDreams_API {
 
 
   private function process_endpoint_data() {
-    wp_send_json(['api' => $_REQUEST] );
+    if (isset($_REQUEST['token']) && $_REQUEST['token'] === $this->_token) {
+      wp_send_json(['api' => $_REQUEST] );
+    } else {
+      wp_send_json_error(['message' => 'Invalid Token']);
+    }
   }
 }
 
