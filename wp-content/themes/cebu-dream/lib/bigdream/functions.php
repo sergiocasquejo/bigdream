@@ -26,13 +26,20 @@ function bigdream_redirect_script($url) {
 	echo '</script>';
 }
 
+function has_notices() {
+  return count(get_notices()) != 0;
+}
+
+function get_notices() {
+  return isset($_SESSION['bigdream_notices']) ? $_SESSION['bigdream_notices'] : array();
+}
 
 if (!function_exists('bigdream_notices')) {
-	function bigdream_notices() {
+	function bigdream_notices($echo = true) {
 
 		$output = '';
-		if (isset($_SESSION['bigdream_notices'])) {
-			$notices = $_SESSION['bigdream_notices'];
+		if (has_notices()) {
+			$notices = get_notices();
 			
 			foreach ($notices as $i => $n) {
 				$output .= '<div class="'. (!isset($n['type']) ? 'updated' : $n['type']) .'">';
@@ -41,13 +48,38 @@ if (!function_exists('bigdream_notices')) {
 			}
 			unset($_SESSION['bigdream_notices']);
 		}
+		if (!$echo) return $output;
+		
 	    echo $output;
 	}
+}
+
+
+function modal_notices() {
+  $output = '';
+  $output .= '<div class="modal fade bs-notice-modal-sm" tabindex="-1" role="dialog" aria-labelledby="bigdreamNoticeModal">';
+    $output .= '<div class="modal-dialog modal-sm">';
+      $output .= '<div class="modal-content">';
+      $output .= bigdream_notices(false);
+      $output .= '</div>';
+    $output .= '</div>';
+  $output .= '</div>';
+  echo $output;
 }
 
 add_filter('set-screen-option', 'bigdream_booking_list_set_option', 10, 3);
 function bigdream_booking_list_set_option($status, $option, $value) {
   return $value;
+}
+
+function push_to_booking_session($args) {
+  $_SESSION['_bdr_booking'] = array_merge((array)$_SESSION['_bdr_booking'], $args);
+  
+  return get_booking_session();
+}
+
+function get_booking_session() {
+  return isset($_SESSION['_bdr_booking']) ? $_SESSION['_bdr_booking'] : array();
 }
 
 add_action('init', 'bdr_init_action_handler');
@@ -60,7 +92,7 @@ function bdr_init_action_handler() {
 			case 'check_availability':
 				$data = $_POST;
 
-				$_SESSION['_bdr_booking'] = array_merge((array)$_SESSION['_bdr_booking'], array(
+				push_to_booking_session(array(
 						'date_in' => $data['date_in'],
 						'date_out' => $data['date_out'],
 						'no_of_adult' => $data['no_of_adult'],
@@ -70,7 +102,7 @@ function bdr_init_action_handler() {
 				break;
 			case 'book_room':
 				$data = $_POST;
-				$_SESSION['_bdr_booking'] = array_merge((array)$_SESSION['_bdr_booking'], array(
+				push_to_booking_session(array(
 						'date_in' => $data['date_in'],
 						'date_out' => $data['date_out'],
 						'no_of_adult' => $data['no_of_adult'],
@@ -82,42 +114,38 @@ function bdr_init_action_handler() {
 
 			case 'make_reservation':
 
-				$post = $_POST;
-				$_s = $_SESSION['_bdr_booking'];
-				$_d = $_SESSION['_bdr_booking'] = array_merge(
-						(array)$_s, 
-						$post, 
+				$booking = push_to_booking_session(array_merge(get_booking_session(), $_POST, 
 						array(
 							'booking_ID' => 0,
-							'amount' => get_room_price($_s['room_ID']), 
+							'amount' => get_room_price($booking['room_ID']), 
 							'amount_paid' => 0,
 							'booking_status' => BOOKING_DEFAULT_STATUS
 						)
-					);
+					));
 
 				$args = array(
-					'booking_ID' => $_d['booking_ID'],
-					'room_ID' => $_d['room_ID'],
-					'amount' => $_d['amount'],
-					'amount_paid' => $_d['amount_paid'],
-					'salutation' => $_d['salutation'],
-					'country' => $_d['country'],
-					'first_name' => $_d['first_name'],
-					'last_name' => $_d['last_name'],
-					'middle_name' => $_d['middle_name'],
-					'birth_date' => format_db_date($_d['birth_date']),
-					'email_address' => $_d['email_address'],
-					'primary_phone' => $_d['primary_phone'],
-					'address_1' => $_d['address_1'],
-					'address_2' => $_d['address_2'],
-					'city' => $_d['city'],
-					'province' => $_d['province'],
-					'zipcode' => $_d['zipcode'],
-					'nationality' => $_d['nationality'],
-					'date_in' => format_db_date($_d['date_in']),
-					'date_out' => format_db_date($_d['date_out']),
-					'booking_status' => $_d['booking_status'],
-					'notes' => $_d['notes'],
+					'booking_ID' => $booking['booking_ID'],
+					'room_ID' => $booking['room_ID'],
+					'amount' => $booking['amount'],
+					'amount_paid' => $booking['amount_paid'],
+					'salutation' => $booking['salutation'],
+					'country' => $booking['country'],
+					'first_name' => $booking['first_name'],
+					'last_name' => $booking['last_name'],
+					'middle_name' => $booking['middle_name'],
+					'birth_date' => format_db_date($booking['birth_date']),
+					'email_address' => $booking['email_address'],
+					'primary_phone' => $booking['primary_phone'],
+					'address_1' => $booking['address_1'],
+					'address_2' => $booking['address_2'],
+					'city' => $booking['city'],
+					'province' => $booking['province'],
+					'zipcode' => $booking['zipcode'],
+					'nationality' => $booking['nationality'],
+					'date_in' => format_db_date($booking['date_in']),
+					'date_out' => format_db_date($booking['date_out']),
+					'booking_status' => $booking['booking_status'],
+					'notes' => $booking['notes'],
 					'date_booked' => date('Y-m-d H:i:s'),
 				);
 
