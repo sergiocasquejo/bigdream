@@ -57,7 +57,7 @@ if (!function_exists('bigdream_notices')) {
 
 function modal_notices() {
   $output = '';
-  $output .= '<div class="modal fade bs-notice-modal-sm" tabindex="-1" role="dialog" aria-labelledby="bigdreamNoticeModal">';
+  $output .= '<div id="bigdreamNoticesModal" class="modal fade bs-notice-modal-sm" tabindex="-1" role="dialog" aria-labelledby="bigdreamNoticeModal">';
     $output .= '<div class="modal-dialog modal-sm">';
       $output .= '<div class="modal-content">';
       $output .= bigdream_notices(false);
