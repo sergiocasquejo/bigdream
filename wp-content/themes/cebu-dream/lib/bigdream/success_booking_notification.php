@@ -42,7 +42,7 @@
       }
 </style>
 <body style="padding: 50px 0;margin: 0;background-color: #C71838;">
-	<div style="width:250px;height:100px;margin:0 auto;"><img src="http://envato.megadrupal.com/html/hillter/images/logo-header.png"></div>
+	<div style="width:250px;height:100px;margin:0 auto;"><img src="<?php echo get_template_directory_uri() . '/images/logo.png'; ?>"></div>
 	<div class="content" style="max-width: 800px;margin: 0 auto;background-color: #FFF;padding: 30px;min-height:600px;">
 		<table width="30%" align="left" class="content-left" style="border-collapse: collapse;">
 			<tr>
@@ -51,13 +51,13 @@
 						<h2 style="font-size: 16px;color: #333;font-family: Montserrat;text-transform: uppercase;padding: 12px 20px;font-weight: 700;text-align: center;border-bottom: 1px solid #e4e4e4;">Dates</h2>
 						<ul style="list-style:none;padding: 0;margin: 0;">
 							<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Check-In</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;">Thu 06/12/2015</span></li>
+								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Check-In</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;"><?php echo format_date($d['date_in']); ?></span></li>
 							<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Check-Out</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-weight:bold;font-family: 'Hind', sans-serif;">Thu 06/12/2015</span></li>
+								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Check-Out</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-weight:bold;font-family: 'Hind', sans-serif;"><?php echo format_date($d['date_out']); ?></span></li>
 							<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Total Nights</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;">2</span></li>
+								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Total Nights</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;"><?php echo $d['no_of_nights']; ?></span></li>
 							<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Total Guests</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;text-transform:uppercase;">4 Adults and 1 Children</span></li>
+								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Total Guests</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;text-transform:uppercase;"><?php echo $d['no_of_adult']; ?> Adults and <?php echo $d['no_of_child']; ?> Children</span></li>
 						</ul>
 					</div>
 					<div style="background-color: #f1f1f1;padding: 10px 25px; 25px; 25px;min-height: 220px;margin-top:20px;">
@@ -73,7 +73,7 @@
 								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Total Guests</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;text-transform:uppercase;">4 Adults and 1 Children</span></li>
 						</ul>
 					</div>
-					<div style="padding:25px;background-color: #C71838;"><span style="text-transform:uppercase;color:#FFF;font-weight:bold;">Total</span><span style="float:right;color:#FFF;font-weight:bold;">PHP 1,000</span></div>
+					<div style="padding:25px;background-color: #C71838;"><span style="text-transform:uppercase;color:#FFF;font-weight:bold;">Total</span><span style="float:right;color:#FFF;font-weight:bold;"><?php echo format_price($d['amount']); ?></span></div>
 				</td>
 			</tr>
 		</table>
@@ -84,54 +84,49 @@
 						<h2 style="text-transform:uppercase;">Billing Details</h2>
 						<p style="padding:0;margin:0;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Full Name:</span>
-							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;">Mr. John Smith Doe</span>
+							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo $d['salutation'] .' '. $d['first_name'] .' ' . $d['middle_name'] .' '. $d['last_name']; ?></span>
 						</p>
 						<p style="padding:0;margin:0;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Email Address:</span>
-							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><a href="mailto:johndoe@gmail.com">johndoe@gmail.com</a></span>
+							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><a href="mailto:johndoe@gmail.com"><?php echo $d['email_address']; ?></a></span>
 						</p>
 						<p style="padding:0;margin:0;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Date of Birth:</span>
-							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;">Jan 12, 1998</span>
+							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo format_date($d['birth_date']); ?></span>
 						</p>
 						<p style="padding:0;margin:0;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Phone:</span>
-							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;">236-433-343</span>
+							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo $d['primary_phone']; ?></span>
 						</p>
 
 						<p style="padding:0;margin:0;margin-top:20px;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Country:</span>
-							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;">Philippines</span>
+							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo $d['country']; ?></span>
 						</p>
 						<p style="padding:0;margin:0;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Address:</span>
-							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;">A.C Cortes Mandaue City</span>
+							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo $d['address_1']; ?></span>
 						</p>
 						<p style="padding:0;margin:0;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Address 2:</span>
-							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;">Copenhagen Residences</span>
+							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo $d['address_2']; ?></span>
 						</p>
 						<p style="padding:0;margin:0;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Province:</span>
-							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;">Cebu</span>
+							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo $d['province']; ?></span>
 						</p>
 						<p style="padding:0;margin:0;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">City:</span>
-							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;">Cebu</span>
+							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo $d['city']; ?></span>
 						</p>
 						<p style="padding:0;margin:0;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Zip Code:</span>
-							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;">6014</span>
+							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo $d['zipcode']; ?></span>
 						</p>
 						<p style="padding:0;margin:0;margin-top:20px;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: block;text-transform: uppercase;">Notes:</span>
 							<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:100;">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-								cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-								proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+							<?php echo $d['notes']; ?>
 							</span>
 						</p>
 					</div>
