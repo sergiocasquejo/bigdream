@@ -213,7 +213,10 @@ function get_inserted_ID() {
 function is_selected_date_and_room_available($roomID, $from, $to) {
   global $wpdb;
   
-  $sql = $wpdb->prepare("SELECT count(*) FROM ".$wpdb->prefix."bookings WHERE roomID = %d AND date_in >= '%s' AND date_out <= '%s'", $roomID, $from, $to);
+  $sql = $wpdb->prepare("SELECT count(*) FROM ".$wpdb->prefix."bookings WHERE room_ID = %d AND date_in >= '%s' AND date_out <= '%s'", $roomID, $from, $to);
   
   result $wpdb->get_var($sql)
 }
+
+
+
