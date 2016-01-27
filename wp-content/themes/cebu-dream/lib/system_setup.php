@@ -24,7 +24,7 @@ require_once "bigdream/inc/database-handler.php";
 require_once "bigdream/inc/validation.php";
 require_once "bigdream/inc/hooks.php";
 require_once "bigdream/admin/admin.php";
-
+require_once "bigdream/bigdreams-api/v1/endpoint.php";
 
 
 //http://blackrockdigital.github.io/startbootstrap-sb-admin-2/pages/index.html
