@@ -1,15 +1,16 @@
 class BigDreams_API {
-  private $_token = '<IK7gJ;6e9*G(qJB+X3I]O9';
-  
-  $version = 1.0;
-  $controller = '';
-  $action = '';
 
+  private $_token = '12ad34032ccc34122';
+  private $version = 1.0;
+  private $controller = '';
+  private $action = '';
+  private $class = '';
 
-  public static function register() {
-    add_action('admin_init', array($this, 'add_rewrite_rule'));
-    add_action('query_vars', array($this, 'register_query_vars'));
-    add_action('template_include', array($this, 'include_template'), 99 );
+  public function register() {
+
+    add_action('admin_init', array(&$this, 'add_rewrite_rule'));
+    add_action('query_vars', array(&$this, 'register_query_vars'));
+    add_action('template_include', array(&$this, 'include_template'), 99 );
   }
 
   public function add_rewrite_rule() {
@@ -35,7 +36,8 @@ class BigDreams_API {
     return false;
   }
 
-  public function include_template($template) {
+  public function include_template($template){
+
     if($this->use_this()) {
       $this->process_endpoint_data();
     }
@@ -46,7 +48,7 @@ class BigDreams_API {
 
   private function process_endpoint_data() {
     if (isset($_REQUEST['token']) && $_REQUEST['token'] === $this->_token) {
-      wp_send_json(['api' => $_REQUEST] );
+      wp_send_json(['api' => $_REQUEST, 'controller' => $this->controller, 'action' => $this->action] );
     } else {
       wp_send_json_error(['message' => 'Invalid Token']);
     }
@@ -55,4 +57,5 @@ class BigDreams_API {
 
 
 
-BigDreams_API::register();
+$api = new BigDreams_API();
+$api->register();
