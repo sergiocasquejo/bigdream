@@ -184,6 +184,10 @@ function booking_init_action_handler() {
 				break;
 			case 'book_room':
 				$data = $_POST;
+				if (!selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
+				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
+				  return;
+				}
 				push_to_booking_session(array(
 						'date_in' => $data['date_in'],
 						'date_out' => $data['date_out'],
@@ -195,7 +199,10 @@ function booking_init_action_handler() {
 				break;
 
 			case 'make_reservation':
-
+        if (!selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
+				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
+				  return;
+				}
 				$booking = push_to_booking_session(array_merge(get_booking_session(), $_POST, 
 						array(
 							'booking_ID' => 0,
@@ -244,6 +251,15 @@ function booking_init_action_handler() {
 		}
 
 	}
+}
+
+
+function selected_date_and_room_available($roomID, $from, $to) {
+  global $wpdb;
+  
+  $sql = $wpdb->prepare("SELECT count(*) FROM ".$wpdb->prefix."bookings WHERE roomID = %d AND date_in >= '%s' AND date_out <= '%s'", $roomID, $from, $to);
+  
+  result $wpdb->get_var($sql)
 }
 
 /**
