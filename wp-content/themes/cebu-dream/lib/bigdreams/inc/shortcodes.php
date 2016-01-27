@@ -182,6 +182,8 @@ add_shortcode('room-listings', 'room_listings_shortcode_handler');
 function booking_review_shortcode_handler($atts, $content = null) {
 	$output = '';
 
+
+
 	$countries = json_decode(COUNTRY);
 
 	$output .= '<div class="reservation-page">';
@@ -250,7 +252,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 									$output .= '<label>Country <sup>*</sup></label>';
 									$output .= '<select name="country" class="form-control">';
 									foreach ($countries as $i => $c) {
-			                            $output .= '<option value="'. $c .'">'. $c .'</option>';
+			                            $output .= '<option value="'. $c .'" '. selected(booking_data('country'), $c, false) .'>'. $c .'</option>';
 									}
 			                       	$output .= '</select>';
 		                       	$output .= '</div>';
@@ -258,7 +260,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 		                       		$output .= '<label>Salutation <sup>*</sup></label>';
 			                       	$output .= '<select name="salutation" class="form-control">';
 										foreach (array('Mr', 'Ms', 'Mrs') as $i => $c) {
-				                            $output .= '<option value="'. $c .'">'. $c .'</option>';
+				                            $output .= '<option value="'. $c .'" '. selected(booking_data('salutation'), $c, false) .'>'. $c .'</option>';
 										}
 									$output .= '</select>';
 		                    	$output .= '</div>';   	
@@ -266,52 +268,52 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	                       	$output .= '<div class="row">';
 	                       		$output .= '<div class="col-sm-4">';
 	                       			$output .= '<label for="first_name">First Name<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="first_name" class="form-control" required>';
+	                       			$output .= '<input type="text" name="first_name" class="form-control" value="'. booking_data('first_name') .'" required>';
 	                       		$output .= '</div>';
 	                       		$output .= '<div class="col-sm-4">';
 	                       			$output .= '<label for="middle_name">Middle Name<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="middle_name" class="form-control" required>';
+	                       			$output .= '<input type="text" name="middle_name" class="form-control" value="'. booking_data('middle_name') .'" required>';
 	                       		$output .= '</div>';
 	                       		$output .= '<div class="col-sm-4">';
 	                       			$output .= '<label for="last_name">Last Name<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="last_name" class="form-control" required>';
+	                       			$output .= '<input type="text" name="last_name" class="form-control" value="'. booking_data('last_name') .'" required>';
 	                       		$output .= '</div>';
 	                       	$output .= '</div>';
 	                       	$output .= '<label>Date of Birth<sup>*</sup></label>';
-	                       	$output .= '<input type="text" name="birth_date" class="form-control bdr-calendar" required>';
+	                       	$output .= '<input type="text" name="birth_date" class="form-control bdr-calendar" value="'. booking_data('birth_date') .'" required>';
 	                       	$output .= '<label>Nationality<sup>*</sup></label>';
-	                       	$output .= '<input type="text" name="nationality" class="form-control" required>';
+	                       	$output .= '<input type="text" name="nationality" class="form-control" value="'. booking_data('nationality') .'" required>';
 	                       	$output .= '<div class="row">';
 	                       		$output .= '<div class="col-sm-6">';
 	                       			$output .= '<label>Email Address<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="email_address" class="form-control">';
+	                       			$output .= '<input type="email" name="email_address" class="form-control" value="'. booking_data('email_address') .'">';
 	                       		$output .= '</div>';
 	                       		$output .= '<div class="col-sm-6">';
 	                       			$output .= '<label>Phone<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="primary_phone" class="form-control">';
+	                       			$output .= '<input type="text" name="primary_phone" class="form-control" value="'. booking_data('primary_phone') .'">';
 	                       		$output .= '</div>';
 	                       	$output .= '</div>';
 	                       	$output .= '<label>Address<sup>*</sup></label>';
-	                       	$output .= '<input type="text" name="address_1" class="form-control" placeholder="Street Address">';
+	                       	$output .= '<input type="text" name="address_1" class="form-control" placeholder="Street Address" value="'. booking_data('address_1') .'">';
 	                       	$output .= '<br><br>';
-	                       	$output .= '<input type="text" name="address_2" class="form-control" placeholder="Apartment, suite, unit etc. (Optional)">';
+	                       	$output .= '<input type="text" name="address_2" class="form-control" placeholder="Apartment, suite, unit etc. (Optional)" value="'. booking_data('address_2') .'">';
 	                       	$output .= '<div class="row">';
 	                       		$output .= '<div class="col-sm-4">';
 	                       			$output .= '<label>Town / City<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="city" class="form-control">';
+	                       			$output .= '<input type="text" name="city" class="form-control" value="'. booking_data('city') .'">';
 	                       		$output .= '</div>';
 	                       		$output .= '<div class="col-sm-4">';
 	                       			$output .= '<label>Province<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="province" class="form-control">';
+	                       			$output .= '<input type="text" name="province" class="form-control" value="'. booking_data('province') .'">';
 	                       		$output .= '</div>';
 	                       		$output .= '<div class="col-sm-4">';
 	                       		$output .= '<label>Zip Code<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="zipcode" class="form-control">';
+	                       			$output .= '<input type="text" name="zipcode" class="form-control" value="'. booking_data('zipcode') .'">';
 	                       		$output .= '</div>';
 	                       	$output .= '</div>';
 	                       
 	                       	$output .= '<label>Notes</label>';
-	                       	$output .= '<textarea type="text" name="notes" class="form-controlarea form-control" placeholder="Notes about your book, eg. special notes for room"></textarea>';
+	                       	$output .= '<textarea type="text" name="notes" class="form-controlarea form-control" placeholder="Notes about your book, eg. special notes for room">'. booking_data('notes') .'</textarea>';
 	                       	/*$output .= '<label class="label-radio">';
 	                       		$output .= '<input type="checkbox" class="input-radio create-accnt-radio"> ';
 	                       		$output .= 'Create an account?';
@@ -330,7 +332,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	                       	$output .= '</div>';*/
 
 	                       	$output .= '<input type="hidden" name="action" value="make_reservation" >';
-	                       	$output .= '<button type="submit" class="bdr-btn bdr-btn-fill-red">PLACE ORDER</button>';
+	                       	$output .= '<button type="submit" class="bdr-btn bdr-btn-fill-red">BOOK NOW</button>';
 	                  	$output .= '</div>';
 	                $output .= '</div>';
 				$output .= '</div>';

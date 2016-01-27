@@ -87,6 +87,8 @@ if (!function_exists('bigdream_notices')) {
 
 		$output = '';
 		if (has_notices()) {
+			$output .= '<div class="notices-box">';
+			$output .= '<div class="container">';
 			$notices = get_notices();
 			
 			foreach ($notices as $i => $n) {
@@ -95,6 +97,8 @@ if (!function_exists('bigdream_notices')) {
 			    $output .= '</div>';
 			}
 			unset($_SESSION['bigdream_notices']);
+			$output .= '</div>';
+			$output .= '</div>';
 		}
 		if (!$echo) return $output;
 		
@@ -146,6 +150,14 @@ function push_to_booking_session($args) {
   return get_booking_session();
 }
 
+function empty_booking() {
+	unset($_SESSION['_bdr_booking']);
+}
+
+
+function is_empty_booking() {
+	return !isset($_SESSION['_bdr_booking']) && count($_SESSION['_bdr_booking']) == 0;
+}
 /**
  * get_booking_session()
  * 
@@ -202,6 +214,11 @@ function booking_init_action_handler() {
 				break;
 
 			case 'make_reservation':
+				if (is_empty_booking()) {
+					bigdream_add_notices('error', 'Please select date.');
+					exit(wp_redirect(get_bloginfo('url')));
+					break;
+				}
 			  	$data = get_booking_session();
 			  
         		/*if (!is_selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
@@ -243,20 +260,62 @@ function booking_init_action_handler() {
 					'notes' => $booking['notes'],
 					'date_booked' => date('Y-m-d H:i:s'),
 				);
+				$val = validate_booking_data($args);
 
 
-				if (bigdream_save_booking($args)) {
-					bigdream_add_notices('updated', 'Booking Successully Saved.');
-					send_success_booking_notification();
-					exit(wp_redirect(get_permalink(get_page_by_path('success'))));
-				} else {
-					bigdream_add_notices('error', 'Error while Saving.');
+				/*** if there are errors show them ***/
+			    if(sizeof($val->errors) > 0)
+			    {
+			        //print_r($val->errors);
+			        bigdream_add_notices('error', 'Error: Please review the form fields.');
+			    } else {
+
+					if (bigdream_save_booking($args)) {
+						//bigdream_add_notices('updated', 'Booking Successully Saved.');
+						send_success_booking_notification();
+						empty_booking();
+						exit(wp_redirect(get_permalink(get_page_by_path('success'))));
+					} else {
+						bigdream_add_notices('error', 'Error while Saving.');
+					}
 				}
-
 				break;
 		}
 
 	}
+}
+
+function validate_booking_data($data) {
+
+    /*** an array of rules ***/
+    $rules_array = array(
+    	'first_name' => array('type'=>'string',  'required'=>true, 'trim'=>true),
+    	'last_name' => array('type'=>'string',  'required'=>true, 'trim'=>true),
+    	'middle_name' => array('type'=>'string',  'required'=>true, 'trim'=>true),
+    	'birth_date' => array('type'=>'date',  'required'=>true),
+		'room_ID' => array('type'=>'numeric',  'required'=>true),
+		'amount' => array('type'=>'numeric',  'required'=>true),
+		'email_address' => array('type'=>'email',  'required'=>true),
+		'primary_phone' => array('type'=>'string',  'required'=>true),
+		'address_1' => array('type'=>'string',  'required'=>true),
+		'city' => array('type'=>'string',  'required'=>true),
+		'province' => array('type'=>'string',  'required'=>true),
+		'zipcode' => array('type'=>'string',  'required'=>true),
+		'nationality' => array('type'=>'string',  'required'=>true),
+		'date_in' => array('type'=>'string',  'required'=>true),
+		'date_out' => array('type'=>'string',  'required'=>true)
+    );
+
+    $val = new Validation;
+
+    $val->addSource($data);
+
+    $val->addRules($rules_array);
+
+    $val->run();
+
+    return $val;
+
 }
 
 
@@ -345,7 +404,7 @@ function get_room_price_html($id = false) {
  * @return none
  */
 function format_price($price) {
-  echo sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf(get_room_price($id)));
+  echo sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf($price));
 }
 
 /**
@@ -446,6 +505,7 @@ function send_success_booking_notification() {
   ob_start();
   
   $d = get_booking_session();
+  $logo = get_template_directory_uri() . '/dist/images/logo.png';
   $d['no_of_nights'] = count_nights($d['date_in'], $d['date_out']);
   
   include "emails/success_booking_notification.php";

@@ -1,6 +1,6 @@
 <?php
 
-class validation{
+class Validation{
 
     /*
     * @errors array
@@ -70,6 +70,9 @@ class validation{
                 $this->source[$var] = trim( $this->source[$var] );
             }
 
+            $opt['min'] = !isset($opt['min']) ? -1 : $opt['min'];
+            $opt['max'] = !isset($opt['max']) ? -1 : $opt['max'];
+            $opt['required'] = !isset($opt['required']) ? false : $opt['required'];
             switch($opt['type'])
             {
                 case 'email':
@@ -291,11 +294,11 @@ class validation{
 
         if(isset($this->source[$var]))
         {
-            if(strlen($this->source[$var]) < $min)
+            if(strlen($this->source[$var]) < $min && $min > 0)
             {
                 $this->errors[$var] = $var . ' is too short';
             }
-            elseif(strlen($this->source[$var]) > $max)
+            elseif(strlen($this->source[$var]) > $max && $min > 0)
             {
                 $this->errors[$var] = $var . ' is too long';
             }

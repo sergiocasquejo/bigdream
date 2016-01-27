@@ -28,6 +28,9 @@
 	 	clear:both;
 	 	display:block;
 	 }
+	 .amount {
+	 	color:#FFF !important;
+	 }
      .content-left {width: 30%; max-width: 300px;}  
      .content-right {width: 50%; max-width: 500px;}  
      @media only screen and (max-width: 500px) {
@@ -42,7 +45,7 @@
       }
 </style>
 <body style="padding: 50px 0;margin: 0;background-color: #C71838;">
-	<div style="width:250px;height:100px;margin:0 auto;"><img src="<?php echo get_template_directory_uri() . '/images/logo.png'; ?>"></div>
+	<div style="width:250px;height:100px;margin:0 auto;"><img src="<?php echo $logo; ?>"></div>
 	<div class="content" style="max-width: 800px;margin: 0 auto;background-color: #FFF;padding: 30px;min-height:600px;">
 		<table width="30%" align="left" class="content-left" style="border-collapse: collapse;">
 			<tr>

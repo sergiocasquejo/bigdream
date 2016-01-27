@@ -10,4 +10,7 @@
 		</div>
 	</div>
 </section>
-<?php endif; ?>
+<?php 
+
+bigdream_notices(); 
+endif; ?>

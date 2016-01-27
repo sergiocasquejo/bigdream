@@ -1,21 +1,20 @@
-
-  <div class="header_top">
-    <div class="container">
-        <div class="header_left navbar-left">
-            <span><i class="hillter-icon-location"></i> Mandaue City 6015, Cebu Phils.</span>
-            <span><i class="hillter-icon-phone"></i> (032) 222-222-22</span>
-            <span><i class="hillter-icon-phone"></i> 236-434-3434</span>
-        </div>
-        <div class="header_right navbar-right">
-    
-            <ul class="social-media-icon navbar-right">
-              <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-              <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-            </ul> 
-    
-        </div>
-    </div>
+<div class="header_top">
+  <div class="container">
+      <div class="header_left navbar-left">
+          <span><i class="hillter-icon-location"></i> Mandaue City 6015, Cebu Phils.</span>
+          <span><i class="hillter-icon-phone"></i> (032) 222-222-22</span>
+          <span><i class="hillter-icon-phone"></i> 236-434-3434</span>
+      </div>
+      <div class="header_right navbar-right">
+  
+          <ul class="social-media-icon navbar-right">
+            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+          </ul> 
+  
+      </div>
   </div>
+</div>
 
 
 <div class="header-sticky header_content" id="header_content">

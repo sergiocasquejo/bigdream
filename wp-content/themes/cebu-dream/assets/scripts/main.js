@@ -70,6 +70,8 @@
       return false;
     });
 
+    $('.notices-box').addClass('active');
+
 
   });
 

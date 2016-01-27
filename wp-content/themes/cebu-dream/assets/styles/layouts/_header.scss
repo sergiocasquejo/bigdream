@@ -1,3 +1,12 @@
+.notices-box {
+    text-align:center;
+    background-color: #B50324;
+    color: #FFF;
+    padding: 5px 0;
+
+}
+
+
 .header_top {
     background-color: #1f232b;
     position: fixed;
@@ -6,7 +15,16 @@
     right:0;
     z-index: 999;
     .social-media-icon {
-        margin-top: 5px;
+        margin-top: 3px;
+        li {
+          margin-right: 5px;
+          i {
+            width: 20px;
+            height: 20px;
+            padding: 6px 5px;
+            font-size: 10px;
+          }
+        }
     }
   .header_left {
     span {
@@ -21,7 +39,7 @@
 
 .header_mobile, .header_mobile .header_menu {
     z-index: 999;
-    background-color: $bg-red;
+    background-color: $bg-transparent-red;
 }
 
 
@@ -151,7 +169,7 @@
             text-transform: uppercase;
             font-weight: 500;
             line-height: 50px;
-            border-bottom: 1px solid rgba(255,255,255,.1);
+            border-bottom: solid 1px #8A0019;
             position: relative;
             -webkit-transition: all .3s ease;
             -moz-transition: all .3s ease;
@@ -207,7 +225,7 @@
       li {
         float: left;
         position: relative;
-        border-right:solid 1px #B90F2E;
+        border-right:solid 1px #8A0019;
         padding:0;
         a {
           display: block;
@@ -233,8 +251,7 @@
 }
 
 .header_content {
-    background-color: $bg-red;
-    position: absolute;
+    background-color: $bg-transparent-red;
     left: 0;
     right: 0;
     top: 32px;
