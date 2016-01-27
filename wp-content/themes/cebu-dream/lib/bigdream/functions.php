@@ -403,12 +403,32 @@ function format_db_date($date, $format = 'Y-m-d') {
  * @param Date $to
  * @return Int $total_nights
  */
- 
 function count_nights($from, $to) {
    $now = strtotime($to); // or your date as well
    $date = strtotime($from);
    $datediff = $now - $date;
    return floor($datediff/(60*60*24));
+}
+/**
+ * get_dates_from_date_range()
+ * 
+ * Get dates between two dates
+ * 
+ * @param Date $from
+ * @param Date $to
+ * @return Array $dates
+ */
+function get_dates_from_date_range($from, $to) {
+  $dates = array();
+  $start = $current = strtotime($start);
+  $end = strtotime($end);
+  
+  while ($current <= $end) {
+      $dates[] = date('Y/m/d', $current);
+      $current = strtotime('+1 days', $current);
+  }
+  
+  return $dates;
 }
 
 /**
