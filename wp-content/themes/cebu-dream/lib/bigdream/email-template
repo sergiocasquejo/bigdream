@@ -1,9 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <style type="text/css">
 	@import url(https://fonts.googleapis.com/css?family=Hind:400,300,500,600,700|Montserrat:400,700);
+	html,body {
+		min-height: 100%;
+    	height: 100%;
+	}
 	body,span, a, p, strong, li, ul {
 		font-family: 'Hind', sans-serif;
 		color:#333;
@@ -18,12 +23,28 @@
 		display:block;
 	}
 	 body {margin: 0; padding: 0; min-width: 100%!important;}
-        .content {width: 100%; max-width: 600px;}  
+	 .content:after {
+	 	content:'';
+	 	clear:both;
+	 	display:block;
+	 }
+     .content-left {width: 30%; max-width: 300px;}  
+     .content-right {width: 50%; max-width: 500px;}  
+     @media only screen and (max-width: 500px) {
+      	.content-left,
+      	.content-right {
+      		width:100% !important;
+      	}
+
+      	.content-right {
+      		margin-left:0 !important;
+      	}
+      }
 </style>
 <body style="padding: 50px 0;margin: 0;background-color: #C71838;">
 	<div style="width:250px;height:100px;margin:0 auto;"><img src="http://envato.megadrupal.com/html/hillter/images/logo-header.png"></div>
-	<div style="max-width: 800px;margin: 0 auto;background-color: #FFF;padding: 30px;">
-		<table style="content" style="border-collapse: collapse;">
+	<div class="content" style="max-width: 800px;margin: 0 auto;background-color: #FFF;padding: 30px;min-height:600px;">
+		<table width="30%" align="left" class="content-left" style="border-collapse: collapse;">
 			<tr>
 				<td style="min-width: 300px;">
 					<div style="background-color: #f1f1f1;padding: 10px 25px; 25px; 25px;min-height: 220px;">
@@ -54,8 +75,12 @@
 					</div>
 					<div style="padding:25px;background-color: #C71838;"><span style="text-transform:uppercase;color:#FFF;font-weight:bold;">Total</span><span style="float:right;color:#FFF;font-weight:bold;">PHP 1,000</span></div>
 				</td>
+			</tr>
+		</table>
+		<table width="50%" align="left" class="content-right" style="margin-left:50px;border-collapse: collapse;">
+			<tr>
 				<td style="vertical-align:top;">
-					<div style="margin-left:100px;">
+					<div>
 						<h2 style="text-transform:uppercase;">Billing Details</h2>
 						<p style="padding:0;margin:0;">
 							<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Full Name:</span>
