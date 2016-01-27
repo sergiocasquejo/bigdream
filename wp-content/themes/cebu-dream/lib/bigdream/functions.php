@@ -151,8 +151,8 @@ function bdr_init_action_handler() {
 
 
 				if (bigdream_save_booking($args)) {
-					bigdream_add_notices('updated', 'Successully Saved.');
-					print_r('success');
+					bigdream_add_notices('updated', 'Booking Successully Saved.');
+					send_success_booking_notification();
 				} else {
 					bigdream_add_notices('error', 'Error while Saving.');
 				}
@@ -180,6 +180,14 @@ function get_room_price($id = false) {
 	return $price;
 }
 
+/**
+ * the_room_price()
+ * 
+ * Print unformatted price
+ * 
+ * @param int $id - Room/Post ID
+ * @return none
+ */
 function the_room_price($id = false) {
 	if (!$id) {
 		global $post;
@@ -190,15 +198,38 @@ function the_room_price($id = false) {
 	echo $price;
 }
 
-
+/**
+ * the_room_price_html()
+ * 
+ * Print HTML formatted price with currency code
+ * 
+ * @param int $id - Room/Post ID
+ * @return String $formatted_price
+ */
 function the_room_price_html($id = false) {
 	echo get_room_price_html($id);
 }
 
-
+/**
+ * get_room_price_html()
+ * 
+ * Return HTML formatted price with currency code
+ * 
+ * @param int $id - Room/Post ID
+ * @return String $formatted_price
+ */
 function get_room_price_html($id = false) {
 	return sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf(get_room_price($id)));
 }
+
+/**
+ * get_booking_steps()
+ * 
+ * Return booking steps/indicator
+ * 
+ * @param none
+ * @return String $indicator
+ */
 
 function get_booking_steps() {
 	$output = '';
@@ -214,10 +245,50 @@ function get_booking_steps() {
     return $output;
 }
 
+/**
+ * format_date()
+ * 
+ * Format date to readable date
+ * 
+ * @param String $date
+ * @param String $format
+ * @return String $formatted_date
+ */
+ 
 function format_date($date,  $format = 'D m/d/Y') {
 	return date($format, strtotime($date));
 }
 
+/**
+ * format_db_date()
+ * 
+ * Format date to mysql/database date
+ * 
+ * @param String $date
+ * @param String $format
+ * @return String $formatted_date
+ */
 function format_db_date($date, $format = 'Y-m-d') {
 	return date($format, strtotime($date));	
+}
+
+
+/**
+ * send_success_booking_notification()
+ * 
+ * Send Email notification when successful booking
+ * @param none
+ * @return none
+ */
+function send_success_booking_notification() {
+  ob_start();
+  
+  $data = get_booking_session();
+  include "email/success_booking_notification.php";
+  $message = ob_get_clean();
+  
+  $to = get_bloginfo('admin_email');
+  $subject = 'New Reservation';
+  //Send to admin
+  wp_mail($to, $subject, $message);
 }
