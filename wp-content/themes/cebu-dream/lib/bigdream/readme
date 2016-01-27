@@ -4,6 +4,7 @@ is_selected_date_and_room_available() - database-handler.php
 count_nights() - functions.php
 modal_notices() - functions.php
 send_success_booking_notification() - functions.php
+get_dates_from_date_range() - functions.php
 emails
 Responsiveness
 api
