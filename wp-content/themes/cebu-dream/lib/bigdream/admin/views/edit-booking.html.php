@@ -17,7 +17,7 @@
 		</div>
 		<div class="gap-30"></div>
 		<div class="form-group">
-			<label class="form-label" for="first_name">Title</label>
+			<label class="form-label" for="first_name">Salutation</label>
 			<select name="salutation" class="form-control" required>
 				<?php foreach ($guest_title as $t): ?>
 				<option value="<?php echo $t; ?>" <?php selected($t, $post['salutation']); ?>><?php echo $t; ?></option>
@@ -49,6 +49,10 @@
 			<input type="text" name="primary_phone" class="form-control" value="<?php echo $post['primary_phone']; ?>" required/>
 		</div>
 		<div class="form-group">
+			<label class="form-label" for="country">Country</label>
+			<input type="text" name="country" class="form-control" value="<?php echo $post['country']; ?>" />
+		</div>
+		<div class="form-group">
 			<label class="form-label" for="address_1">Address 1</label>
 			<input type="text" name="address_1" class="form-control" value="<?php echo $post['address_1']; ?>" required/>
 		</div>
@@ -57,9 +61,14 @@
 			<input type="text" name="address_2" class="form-control" value="<?php echo $post['address_2']; ?>" />
 		</div>
 		<div class="form-group">
-			<label class="form-label" for="address_3">Address 3</label>
-			<input type="text" name="address_3" class="form-control" value="<?php echo $post['address_3']; ?>" />
+			<label class="form-label" for="province">Province</label>
+			<input type="text" name="province" class="form-control" value="<?php echo $post['province']; ?>" />
 		</div>
+		<div class="form-group">
+			<label class="form-label" for="province">City</label>
+			<input type="text" name="city" class="form-control" value="<?php echo $post['city']; ?>" />
+		</div>
+		
 		<div class="form-group">
 			<label class="form-label" for="nationality">Nationality</label>
 			<input type="text" name="nationality" class="form-control" value="<?php echo $post['nationality']; ?>" required/>
@@ -87,6 +96,10 @@
 				<option value="<?php echo $s; ?>" <?php selected($s, $post['booking_status']); ?>><?php echo $s; ?></option>
 				<?php endforeach; ?>
 			</select>
+		</div>
+		<div class="form-group">
+			<label class="form-label" for="amount_paid">Notes</label>
+			<textarea name="notes" class="form-control"><?php echo $post['notes']; ?></textarea>
 		</div>
 		<div class="gap-30"></div>
 		<input type="hidden" name="booking_ID" value="<?php echo $post['booking_ID']; ?>" />
