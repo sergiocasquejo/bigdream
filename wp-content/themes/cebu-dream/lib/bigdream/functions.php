@@ -247,6 +247,7 @@ function booking_init_action_handler() {
 				if (bigdream_save_booking($args)) {
 					bigdream_add_notices('updated', 'Booking Successully Saved.');
 					send_success_booking_notification();
+					exit(wp_redirect(get_permalink(get_page_by_path('success'))));
 				} else {
 					bigdream_add_notices('error', 'Error while Saving.');
 				}
