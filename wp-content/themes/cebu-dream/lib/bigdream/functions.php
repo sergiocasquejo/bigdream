@@ -394,6 +394,22 @@ function format_db_date($date, $format = 'Y-m-d') {
 	return date($format, strtotime($date));	
 }
 
+/**
+ * count_nights()
+ * 
+ * Counts number of nights between two dates
+ * 
+ * @param Date $from
+ * @param Date $to
+ * @return Int $total_nights
+ */
+ 
+function count_nights($from, $to) {
+   $now = strtotime($to); // or your date as well
+   $date = strtotime($from);
+   $datediff = $now - $date;
+   return floor($datediff/(60*60*24));
+}
 
 /**
  * send_success_booking_notification()
