@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * bigdream_save_booking()
+ * 
+ * Save booking information
+ * @param Array $args
+ * @param Int $result - Affected rows
+ */
 if (!function_exists('bigdream_save_booking')) {
 	function bigdream_save_booking($args) {
 		global $wpdb;
@@ -38,6 +44,14 @@ if (!function_exists('bigdream_save_booking')) {
 		return $result;
 	}
 }
+
+/**
+ * get_booking_calendar()
+ * 
+ * Get Booking for calendar
+ * @param none
+ * @param Array $bookings
+ */
 function get_booking_calendar() {
 	global $wpdb;
 	$sql = "
@@ -61,12 +75,31 @@ function get_booking_calendar() {
 	return $wpdb->get_results($sql, ARRAY_A);
 }
 
+
+/**
+ * update_to_checked()
+ * 
+ * Update booking to read when admin view or edit the booking
+ * 
+ * @param Int $id - Booking id
+ * @param none
+ */
+ 
 function update_to_checked($id) {
 	global $wpdb;
 
 	$wpdb->update($wpdb->prefix . 'bookings', array('is_checked' => 1), array('booking_ID' => $id), array('%d'), array('%d'));
 }
 
+/**
+ * get_booking_by_id()
+ * 
+ * Get booking by booking ID
+ * 
+ * @param Int $id - Booking id
+ * @param Array $bookings
+ */
+ 
 function get_booking_by_id($id) {
 	global $wpdb;
 	$sql = "
@@ -106,6 +139,17 @@ function get_booking_by_id($id) {
 	return $wpdb->get_row($sql, ARRAY_A);
 }
 
+
+/**
+ * get_count_newly_booked()
+ * 
+ * Count Unread booked/Newly booked
+ * 
+ * @param none
+ * @param Int $total
+ */
+ 
+ 
 function get_count_newly_booked() {
 	global $wpdb;
 
@@ -113,6 +157,16 @@ function get_count_newly_booked() {
 
 	return $total;
 }
+
+
+/**
+ * get_available_rooms()
+ * 
+ * Get available rooms
+ * 
+ * @param none
+ * @param Array $rooms
+ */
 
 if (!function_exists('get_available_rooms')) {
 	function get_available_rooms() {
@@ -131,6 +185,14 @@ if (!function_exists('get_available_rooms')) {
 	}
 }
 
+/**
+ * get_inserted_ID()
+ * 
+ * Return last inserted ID    
+ * 
+ * @param none
+ * @param Int $id
+ */
 
 function get_inserted_ID() {
 	global $wpdb;
