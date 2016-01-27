@@ -11,7 +11,7 @@
  * @param String $thousands_sep
  * @return none
  */
-add_filter('show_admin_bar', '__return_false');
+
 if(!function_exists('nf')) {
 	function nf($number , $decimals = 0 , $dec_point = "." , $thousands_sep = ",") {
 		return number_format($number, $decimals, $dec_point, $thousands_sep);
