@@ -17,19 +17,7 @@ if(!function_exists('nf')) {
 		return number_format($number, $decimals, $dec_point, $thousands_sep);
 	}
 }
-/**
- * bigdream_admin_scripts()
- * 
- * Enqueue admin scripts
- * 
- * @param none
- * @return none
- */
- 
-add_action('admin_enqueue_scripts', 'bigdream_admin_scripts');
-function bigdream_admin_scripts() {
-	wp_enqueue_style('admin-style', CDR_SYSTEM_DIR_URI . '/assets/style/admin.css');	
-}
+
 
 /**
  * bigdream_redirect_script()
