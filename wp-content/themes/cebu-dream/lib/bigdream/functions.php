@@ -199,11 +199,13 @@ function booking_init_action_handler() {
 				break;
 
 			case 'make_reservation':
+			  $date = get_booking_session();
+			  
         if (!selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
 				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 				  return;
 				}
-				$booking = push_to_booking_session(array_merge(get_booking_session(), $_POST, 
+				$booking = push_to_booking_session(array_merge($data, $_POST, 
 						array(
 							'booking_ID' => 0,
 							'amount' => get_room_price($booking['room_ID']), 
