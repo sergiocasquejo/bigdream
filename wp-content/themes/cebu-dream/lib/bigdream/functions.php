@@ -420,11 +420,11 @@ function count_nights($from, $to) {
  */
 function get_dates_from_date_range($from, $to) {
   $dates = array();
-  $start = $current = strtotime($start);
-  $end = strtotime($end);
+  $current = $start = strtotime($from);
+  $end = strtotime($to);
   
-  while ($current <= $end) {
-      $dates[] = date('Y/m/d', $current);
+  while ($start <= $end) {
+      $dates[] = date('Y-m-d', $current);
       $current = strtotime('+1 days', $current);
   }
   
