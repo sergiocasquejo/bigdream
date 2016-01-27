@@ -18,9 +18,9 @@ define('COUNTRY', json_encode($countries = array("Afghanistan", "Albania", "Alge
 define('CURRENCY_CODE', 'Php');
 
 require_once "bigdream/functions.php";
-require_once "bigdream/shortcodes.php";
-require_once "bigdream/database-handler.php";
-require_once "bigdream/hooks.php";
+require_once "bigdream/inc/shortcodes.php";
+require_once "bigdream/inc/database-handler.php";
+require_once "bigdream/inc/validation.php";
 require_once "bigdream/admin/admin.php";
 
 
