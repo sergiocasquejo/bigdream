@@ -113,14 +113,17 @@ if (!function_exists('bigdream_notices')) {
  */
  
 function modal_notices() {
-  $output = '';
-  $output .= '<div id="bigdreamNoticesModal" class="modal fade bs-notice-modal-sm" tabindex="-1" role="dialog" aria-labelledby="bigdreamNoticeModal">';
-    $output .= '<div class="modal-dialog modal-sm">';
-      $output .= '<div class="modal-content">';
-      $output .= bigdream_notices(false);
-      $output .= '</div>';
-    $output .= '</div>';
-  $output .= '</div>';
+	$output = '';
+	if (has_notices()) {
+		$output .= '<div id="bigdreamNoticesModal" class="modal fade bs-notice-modal-sm" tabindex="-1" role="dialog" aria-labelledby="bigdreamNoticeModal">';
+			$output .= '<div class="modal-dialog modal-sm">';
+				$output .= '<div class="modal-content">';
+					$output .= '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+					$output .= bigdream_notices(false);
+				$output .= '</div>';
+			$output .= '</div>';
+		$output .= '</div>';
+	}
   echo $output;
 }
 
@@ -184,10 +187,10 @@ function booking_init_action_handler() {
 				break;
 			case 'book_room':
 				$data = $_POST;
-				if (!selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
+				/*if (!is_selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
 				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 				  return;
-				}
+				}*/
 				push_to_booking_session(array(
 						'date_in' => $data['date_in'],
 						'date_out' => $data['date_out'],
@@ -199,21 +202,22 @@ function booking_init_action_handler() {
 				break;
 
 			case 'make_reservation':
-			  $date = get_booking_session();
+			  	$data = get_booking_session();
 			  
-        if (!selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
+        		/*if (!is_selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
 				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 				  return;
-				}
+				}*/
 				$booking = push_to_booking_session(array_merge($data, $_POST, 
 						array(
 							'booking_ID' => 0,
-							'amount' => get_room_price($booking['room_ID']), 
+							'amount' => get_room_price($data['room_ID']), 
 							'amount_paid' => 0,
 							'booking_status' => BOOKING_DEFAULT_STATUS
 						)
 					));
 
+			
 				$args = array(
 					'booking_ID' => $booking['booking_ID'],
 					'room_ID' => $booking['room_ID'],
@@ -441,17 +445,21 @@ function get_dates_from_date_range($from, $to) {
 function send_success_booking_notification() {
   ob_start();
   
-  $data = get_booking_session();
-  include "email/success_booking_notification.php";
-  $message = ob_get_clean();
+  $d = get_booking_session();
+  $d['no_of_nights'] = count_nights($d['date_in'], $d['date_out']);
   
+  include "emails/success_booking_notification.php";
+  $message = ob_get_clean();
+
+  add_filter('wp_mail_content_type',create_function('', 'return "text/html"; '));
   //Send to admin
   $to = get_bloginfo('admin_email');
   $subject = 'New Reservation';
   wp_mail($to, $subject, $message);
   
   // Send to guest
-  $to = $data['email_address'];
+  $to = $d['email_address'];
   $subject = 'Your Booking Details';
   wp_mail($to, $subject, $message);
+
 }

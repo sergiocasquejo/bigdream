@@ -52,7 +52,25 @@
         $('.create-account-box').addClass('hidden');
       }
     });
-    
+    var deviceWidth = 0;
+    $(window).bind('resize', function () {
+        if ($(window).width() < 1192) {
+          $('.header-sticky').addClass('header_mobile').removeClass('header_content');
+        } else {
+          $('.header-sticky').addClass('header_content').removeClass('header_mobile');
+        }
+    }).trigger('resize');​​​
+
+    $('.menu-bars').on('click', function(e) {
+      e.preventDefault();
+      var $el = $('.header-sticky');
+      var bottom = $el.offset().top + $el.outerHeight();
+
+      $('.header_menu').css('top', bottom + 'px').toggleClass('active');
+      return false;
+    });
+
+
   });
 
 })(window, document, jQuery); // Fully reference jQuery after this point.

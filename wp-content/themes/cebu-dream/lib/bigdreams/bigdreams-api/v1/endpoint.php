@@ -1,3 +1,4 @@
+<?php
 class BigDreams_API {
 	//cafd7f8472667846e5009935f2825025
 	private $_token = '';
@@ -59,5 +60,5 @@ class BigDreams_API {
 
 
 
-$api = new BigDreams_API();
-$api->register();
+//$api = new BigDreams_API();
+//$api->register();

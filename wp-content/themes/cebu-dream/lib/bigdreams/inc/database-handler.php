@@ -104,29 +104,9 @@ function get_booking_by_id($id) {
 	global $wpdb;
 	$sql = "
 		SELECT 
-			b.booking_ID,
-			b.is_checked,
 			p.post_title as room, 
-			b.first_name,
-			b.middle_name,
-			b.last_name,
-			CONCAT(b.first_name,' ', b.middle_name, ' ', b.last_name) as name, 
-			b.room_ID,
-			b.amount, 
-			b.amount_paid, 
-			b.title, 
-			b.birth_date, 
-			b.email_address, 
-			b.date_in, 
-			b.date_out, 
-			b.booking_status, 
-			b.date_booked,
-			b.primary_phone,
-			b.secondary_phone,
-			b.address_1,
-			b.address_2,
-			b.address_3,
-			b.nationality
+			CONCAT(b.salutation, ' ', b.first_name,' ', b.middle_name, ' ', b.last_name) as name, 
+			b.*
 		FROM 
 			". $wpdb->prefix . "bookings b  
 		JOIN ". $wpdb->prefix ."posts p 
@@ -215,7 +195,7 @@ function is_selected_date_and_room_available($roomID, $from, $to) {
   
   $sql = $wpdb->prepare("SELECT count(*) FROM ".$wpdb->prefix."bookings WHERE room_ID = %d AND date_in >= '%s' AND date_out <= '%s'", $roomID, $from, $to);
   
-  result $wpdb->get_var($sql)
+  return $wpdb->get_var($sql);
 }
 
 

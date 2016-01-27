@@ -185,7 +185,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	$countries = json_decode(COUNTRY);
 
 	$output .= '<div class="reservation-page">';
-		$output .= get_booking_steps();
+		//$output .= get_booking_steps();
 		$output .= '<div class="row">';
 			$output .='<form method="post">';
 				$output .= '<div class="col-md-4 col-lg-3">';
@@ -214,10 +214,23 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	                    $output .= '<div class="reservation-room-selected bg-gray">';
 	                    	$output .= '<h2 class="reservation-heading">Selected Room</h2>';
 	                    	$output .= '<div class="reservation-room-seleted_item">';
-		                    	$output .= '<h6>CODE1</h6> <span class="reservation-option">'. booking_data('no_of_adult') .' Adults '. booking_data('no_of_child') .' Child</span>';
 		                    	$output .= '<div class="reservation-room-seleted_name has-package">';
 		                    		$output .= '<h2><a href="'. get_the_permalink(booking_data('room_ID')) .'">'. get_the_title(booking_data('room_ID')) .'</a></h2>';
 		                    	$output .= '</div>';
+		                    	$output .= '<ul>';
+	                       		$output .= '<li>';
+	                       			$output .= '<span>Max</span>';
+	                       			$output .= '<span>4 Person(s)</span>';
+	                       		$output .= '</li>';
+	                       		$output .= '<li>';
+	                       			$output .= '<span>Size</span>';
+	                       			$output .= '<span>35 m2 / 376 ft2</span>';
+	                       		$output .= '</li>';
+	                       		$output .= '<li>';
+		                       		$output .= '<span>Bed</span>';
+		                       		$output .= '<span>King-size or twin beds</span>';
+	                       		$output .= '</li>';
+	                        $output .= '</ul>';
 		                    $output .= '</div>';
 	                                   
 		                    $output .= '<div class="reservation-room-seleted_total bg-red">';
@@ -230,7 +243,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 				$output .= '<div class="col-md-8 col-lg-9">';
 					$output .= '<div class="reservation_content">';
 						$output .= '<div class="reservation-billing-detail">';
-							$output .= '<p class="reservation-login">Returning customer? <a href="'. wp_login_url( get_permalink(get_page_by_path('review')) )  .'">Click here to login</a></p>';
+							//$output .= '<p class="reservation-login">Returning customer? <a href="'. wp_login_url( get_permalink(get_page_by_path('review')) )  .'">Click here to login</a></p>';
 							$output .= '<h4>BILLING DETAILS</h4>';
 							$output .= '<div class="row">';
 								$output .= '<div class="col-sm-8">';
@@ -299,7 +312,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	                       
 	                       	$output .= '<label>Notes</label>';
 	                       	$output .= '<textarea type="text" name="notes" class="form-controlarea form-control" placeholder="Notes about your book, eg. special notes for room"></textarea>';
-	                       	$output .= '<label class="label-radio">';
+	                       	/*$output .= '<label class="label-radio">';
 	                       		$output .= '<input type="checkbox" class="input-radio create-accnt-radio"> ';
 	                       		$output .= 'Create an account?';
 	                       	$output .= '</label>';
@@ -314,7 +327,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 		                       			$output .= '<input type="password" name="password2" class="form-control">';
 		                       		$output .= '</div>';
 		                       	$output .= '</div>';
-	                       	$output .= '</div>';
+	                       	$output .= '</div>';*/
 
 	                       	$output .= '<input type="hidden" name="action" value="make_reservation" >';
 	                       	$output .= '<button type="submit" class="bdr-btn bdr-btn-fill-red">PLACE ORDER</button>';

@@ -9,29 +9,55 @@
     	}
     }
 
-    .social-media-icon {
+    
+}
+
+
+.social-media-icon {
+	display:inline-block;
+	margin-right:0;
+	li {
 		display:inline-block;
-		margin-right:0;
-		li {
-			display:inline-block;
-			i {
-			    width: 25px;
-			    height: 25px;
-			    padding: 7px 5px;
-			    border-radius: 75px;
-			    background-color: #A89C9C;
-			    color: #FFF;
-			    text-align: center;
-			    text-decoration:none;
-			    font-size: 12px;
-			    &.fa-facebook {
-			    	background-color:#2576BB;
-			    }
-			    &.fa-twitter {
-			    	background-color:#43D4FF;
-			    }
+	    margin-right: 10px;
+		i {
+		    width: 25px;
+		    height: 25px;
+		    padding: 7px 5px;
+		    border-radius: 75px;
+		    background-color: #A89C9C;
+		    color: #FFF;
+		    text-align: center;
+		    text-decoration:none;
+		    font-size: 12px;
+		    &.fa-facebook {
+		    	background-color:#2576BB;
 		    }
-		}
-		
+		    &.fa-twitter {
+		    	background-color:#43D4FF;
+		    }
+	    }
+	}
+	
+}
+
+#bigdreamNoticesModal {
+	.modal-content {
+	    padding: 30px;
+
+    	.error {
+	    	color: $txt-red;
+	    }
+	    .updated {
+	    	color:$txt-green;
+	    }
+	}
+
+	.close {
+	    position: absolute;
+	    right: 5px;
+	    top: -7px;
+	    color: #29292A;
+	    border-radius: 75px;
+	    z-index: 999;
 	}
 }

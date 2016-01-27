@@ -64,13 +64,14 @@
 						<h2 style="font-size: 16px;color: #333;font-family: Montserrat;text-transform: uppercase;padding: 12px 20px;font-weight: 700;text-align: center;border-bottom: 1px solid #e4e4e4;">Selected Room</h2>
 						<ul style="list-style:none;padding: 0;margin: 0;">
 							<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Check-In</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;">Thu 06/12/2015</span></li>
+								<span style="float:left;font-size:14px;font-family: 'Hind', sans-serif;text-transform:uppercase;font-weight:bold;">LUXURY ROOM</span></li>
 							<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Check-Out</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-weight:bold;font-family: 'Hind', sans-serif;">Thu 06/12/2015</span></li>
+								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Max: 4 Person(s)</span></li>
 							<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Total Nights</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;">2</span></li>
+								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Size: 35 m2 / 376 ft2</span></li>
+							
 							<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Total Guests</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;text-transform:uppercase;">4 Adults and 1 Children</span></li>
+								<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">King-size or twin beds</span></li>
 						</ul>
 					</div>
 					<div style="padding:25px;background-color: #C71838;"><span style="text-transform:uppercase;color:#FFF;font-weight:bold;">Total</span><span style="float:right;color:#FFF;font-weight:bold;"><?php echo format_price($d['amount']); ?></span></div>

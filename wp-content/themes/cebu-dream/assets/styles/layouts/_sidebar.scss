@@ -13,26 +13,24 @@
 
     .reservation-date {
 	    margin-top: 30px;
+	}
 
-	    
+	ul {
+	    list-style: none;
+	    margin-bottom: 0;
+	    padding: 20px;
 
-		ul {
-		    list-style: none;
-		    margin-bottom: 0;
-		    padding: 20px;
+	    li {
+		    color: #333;
+		    font-size: 12px;
+		    overflow: hidden;
+		    font-weight: 500;
+		    padding: 5px 0;
 
-		    li {
-			    color: #333;
-			    font-size: 12px;
-			    overflow: hidden;
-			    font-weight: 500;
-			    padding: 5px 0;
-
-			    span:last-child {
-				    float: right;
-				    font-weight: 700;
-				    text-transform: uppercase;
-				}
+		    span:last-child {
+			    float: right;
+			    font-weight: 700;
+			    text-transform: uppercase;
 			}
 		}
 	}
@@ -43,7 +41,6 @@
     margin-top: 30px;
 
     .reservation-room-seleted_item {
-	    padding: 20px;
 	    border-bottom: 1px solid #e4e4e4;
 
 	    h6 {
@@ -69,7 +66,8 @@
 		    margin-top: 10px;
 
 		    h2 {
-				font-size:15px;
+				font-size:12px;
+				padding: 0 20px;
 			}
 		}
 
