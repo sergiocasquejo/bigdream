@@ -1,0 +1,31 @@
+// Search form
+.search-form {
+  @extend .form-inline;
+}
+.search-form label {
+  font-weight: normal;
+  @extend .form-group;
+}
+.search-form .search-field {
+  @extend .form-control;
+}
+.search-form .search-submit {
+  @extend .btn;
+  @extend .btn-default;
+}
+
+input[type="text"], select,
+textarea,
+button,
+.form-control{
+	font-size: .8725em;
+    height: 40px;
+    border: 2px solid #000;
+    border-radius:0;
+}
+
+span.error_field {
+  font-size: 12px;
+  display: block;
+  color: #C71838;
+}

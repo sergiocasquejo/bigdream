@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "main.css": {
+      "files": [
+        "styles/main.scss"
+      ],
+      "main": true
+    },
+    "main.js": {
+      "files": [
+        "scripts/vendor/jquery-ui.min.js",
+        "scripts/vendor/jquery.flexslider.js",
+        "scripts/vendor/isotope.pkgd.min.js",
+        "scripts/main.js"
+      ],
+      "main": true
+    },
+    
+    "customizer.js": {
+      "files": [
+        "scripts/customizer.js"
+      ]
+    },
+    "jquery.js": {
+      "bower": ["jquery"]
+    }
+  },
+  "config": {
+    "devUrl": "http://example.dev"
+  }
+}
