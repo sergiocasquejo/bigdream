@@ -449,7 +449,7 @@ add_shortcode('contact-us', 'contact_us_shortcode_handler');
 function success_booking_details() {
 
 	if (is_empty_booking()) {
-		exit(wp_redirect(get_bloginfo('url')));
+		echo '<script>window.location.href="'. get_bloginfo('url') .'"</script>';
 	}
 
 	$d = get_booking_by_id(get_booking_session('booking_ID'));
@@ -523,7 +523,7 @@ function success_booking_details() {
 								$output .= '<ul>';
 									$output .= '<li>';
 		                       			$output .= '<span>Booking #</span>';
-		                       			$output .= '<span>'. format_date($d['booking_no']) .'</span>';
+		                       			$output .= '<span>'. $d['booking_no'] .'</span>';
 		                       		$output .= '</li>';
 									$output .= '<li>';
 			                       		$output .= '<span>Country</span>';

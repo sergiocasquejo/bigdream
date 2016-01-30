@@ -88,6 +88,10 @@
 						<div>
 							<h2 style="text-transform:uppercase;">Billing Details</h2>
 							<p style="padding:0;margin:0;">
+								<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Booking #:</span>
+								<span style="font-size:16px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo $d['booking_no']; ?></span>
+							</p>
+							<p style="padding:0;margin:0;">
 								<span style="font-size:14px;font-family: 'Hind', sans-serif;width: 150px;display: inline-block;text-transform: uppercase;">Full Name:</span>
 								<span style="font-size:12px;font-family: 'Hind', sans-serif;font-weight:bold;"><?php echo $d['salutation'] .' '. $d['first_name'] .' ' . $d['middle_name'] .' '. $d['last_name']; ?></span>
 							</p>
