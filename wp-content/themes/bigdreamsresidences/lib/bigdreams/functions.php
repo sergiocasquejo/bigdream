@@ -156,7 +156,7 @@ function empty_booking() {
 
 
 function is_empty_booking() {
-	return !isset($_SESSION['_bdr_booking']) && count($_SESSION['_bdr_booking']) == 0;
+	return isset($_SESSION['_bdr_booking']) && count($_SESSION['_bdr_booking']) > 0 ? false : true;
 }
 /**
  * get_booking_session()
@@ -208,7 +208,8 @@ function booking_init_action_handler() {
 						'date_out' => $data['date_out'],
 						'no_of_adult' => $data['no_of_adult'],
 						'no_of_child' => isset($data['no_of_child']) ? $data['no_of_child'] : 0,
-						'room_ID' => $data['room_ID']
+						'room_ID' => $data['room_ID'],
+						'amount' => get_room_price($data['room_ID']), 
 					));
 				exit(wp_redirect(get_permalink(get_page_by_path('review'))));
 				break;
@@ -228,7 +229,6 @@ function booking_init_action_handler() {
 				$booking = push_to_booking_session(array_merge($data, $_POST, 
 						array(
 							'booking_ID' => 0,
-							'amount' => get_room_price($data['room_ID']), 
 							'amount_paid' => 0,
 							'booking_status' => BOOKING_DEFAULT_STATUS
 						)
@@ -261,6 +261,7 @@ function booking_init_action_handler() {
 					'no_of_night' => count_nights($booking['date_in'], $booking['date_out']),
 					'booking_status' => $booking['booking_status'],
 					'notes' => $booking['notes'],
+					'type' => 'BOOKING',
 					'date_booked' => date('Y-m-d H:i:s'),
 				);
 				$val = validate_booking_data($args);
@@ -268,20 +269,22 @@ function booking_init_action_handler() {
 				/*** if there are errors show them ***/
 			    if($val['valid'] === false)
 			    {
-			    	// echo '<pre>';
-			    	// print_r($val['errors']);
-			    	// die;
-
 			    	bigdream_javacript_notices($val['errors']);
-			
 			        bigdream_add_notices('error', 'Please review the fields.');
 		
 			    } else {
 
 					if (bigdream_save_booking($args)) {
-						//bigdream_add_notices('updated', 'Booking Successully Saved.');
-						send_success_booking_notification();
+						$booking_ID = get_inserted_ID();
+						// Update booking no
+						generate_and_update_booking_no($booking_ID);
+						// Empty booking info
 						empty_booking();
+						// replace data in booking session with booking ID
+						push_to_booking_session(array('booking_ID' => $booking_ID));
+						// Send email notification
+						send_success_booking_notification();
+						
 						exit(wp_redirect(get_permalink(get_page_by_path('success'))));
 					} else {
 						bigdream_add_notices('error', 'Error while Saving.');
@@ -429,8 +432,13 @@ function get_room_price_html($id = false) {
  * @param Decimal $price
  * @return none
  */
-function format_price($price) {
-  echo sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf($price));
+function format_price($price, $echo = true) {
+	$price = sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf($price));
+
+	if (!$echo) {
+		return $price;
+	}
+  echo $price;
 }
 
 /**
@@ -530,7 +538,7 @@ function get_dates_from_date_range($from, $to) {
 function send_success_booking_notification() {
   ob_start();
   
-  $d = get_booking_session();
+  $d = get_booking_by_id(get_booking_session('booking_ID'));
   $logo = get_template_directory_uri() . '/dist/images/logo.png';
   $d['no_of_nights'] = count_nights($d['date_in'], $d['date_out']);
   

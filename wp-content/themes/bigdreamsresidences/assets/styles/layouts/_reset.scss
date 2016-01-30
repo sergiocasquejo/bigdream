@@ -131,39 +131,21 @@ body {
 	position: relative;
 	margin-top: -75px;
 	z-index: 888;
+	background-color: rgba(255, 255, 255, 0.82);
 }
 .b_room{
-	background-color:#FFF;
-	margin: 2% 2%;
 	display: inline-flex;
-	box-shadow: 0px 0px 4px rgb(97, 97, 97);
-	-webkit-box-shadow: 0px 0px 4px rgb(97, 97, 97);
-	-moz-box-shadow: 0px 0px 4px rgb(97, 97, 97);
-	-o-box-shadow: 0px 0px 4px rgb(97, 97, 97);
 }
 .booking_room{
 	padding: 3% 2%;
 	float: left;
-	background: #E4E4E4;
 }
-.booking_room h4{
-	font-size: 1.5em;
-	color: #202020;
-	text-transform: capitalize;
-	font-weight: 600;
-	margin-bottom: 10px;
-}
-.booking_room p{
-	font-size: 0.8725em;
-	color: #6b6b6b;
-	line-height: 1.8em;
-}
+
 .reservation_form{
-	font-family: 'Open Sans', sans-serif;
-	padding: 3% 2%;
+	padding: 2% 0;
 	float: left;
-	background: #FFFFFF;
 }
+
 .reservation_form ul li{
 	float: left;
 }
@@ -218,7 +200,7 @@ select option{
 }
 .date_btn input[type="submit"] {
 	text-transform:capitalize;
-	padding: 12px 0;
+	padding: 10px 0;
 }
 .date_btn form input[type="submit"]:hover{
 	background: #228AC6;
@@ -586,7 +568,7 @@ span.next:hover {
  .title {
     text-transform: uppercase;
     color: #fff;
-    font-size: 2em;
+    font-size: 3.0vh;
     padding: 16px 20px 0;
     font-style: normal;
     font-weight: 600;
@@ -599,8 +581,8 @@ span.next:hover {
 }
  .title1 {
     text-transform: capitalize;
-    color: #fff;
-    font-size: 1.5em;
+    color: #000;
+    font-size: 2.5vh;
     padding: 5px 10px;
     font-style: normal;
     font-weight: 600;
@@ -609,7 +591,7 @@ span.next:hover {
     height: 41px;
     position: relative;
     left: 30px;
-    background: #C71838;
+    background: #FFF;
 }
 /***** Media Quries *****/
 @media only screen and (max-width: 1366px) {
@@ -640,9 +622,6 @@ span.next:hover {
 	.f_nav li {
 		margin-left: 10px;
 	}
-	.title {
-    width: 57%;
-}
 }
 @media only screen and (max-width: 1024px) {
 	.wrap{
@@ -661,15 +640,9 @@ span.next:hover {
 	.f_nav li a {
 		padding: 0 0px;
 	}
-.title {
-    width: 65%;
-}
-.title1 {
-    width: 50%;
-}
-.images-slider {
-    min-height: 500px;
-}
+	.images-slider {
+	    min-height: 500px;
+	}
 }
 @media only screen and (max-width: 768px) {
 	.wrap{
@@ -684,9 +657,6 @@ span.next:hover {
 		width: 100%;
 		float: none;
 	}
-	.row {
-		width: 70% !important;
-	}
 	.top-nav {
 		display: block;
 		margin: 10px 0;
@@ -699,10 +669,6 @@ span.next:hover {
 	.reservation ul li {
 		float: none;
 		display: inline-block;
-	}
-	.booking_room {
-		float: none;
-		width: 98%;
 	}
 	.reservation {
 		float: none;
@@ -758,15 +724,11 @@ span.next:hover {
 	.reservation h5 {
 		margin: 10px 0;
 	}
-	.title {
-    width: 88%;
-}
-.title1 {
-    width: 65%;
-}
-.images-slider {
-    min-height: 440px;
-}
+
+
+	.images-slider {
+	    min-height: 440px;
+	}
 }
 @media only screen and (max-width: 640px){
 	.wrap{
@@ -831,14 +793,8 @@ span.next:hover {
 		float: none;
 		width: 100%;
 	}
-	.title {
-    width: 90%;
-	font-size:1.5em;
-}
-.title1 {
-    width: 65%;
-	font-size:1.2em;
-}
+	
+
 }
 @media only screen and (max-width: 480px) {
 	.wrap{
@@ -859,18 +815,10 @@ span.next:hover {
 	.date_btn {
 		margin: 0 0 20px;
 	}
-		.title {
-    width: 100%;
-	font-size:1.3em;
-	 padding: 8px 8px 0px;
-}
-.title1 {
-    width: 90%;
-	font-size:1em;
-}
-.images-slider {
-    min-height: 350px;
-}
+
+	.images-slider {
+	    min-height: 350px;
+	}
 }
 @media only screen and (max-width: 320px) {
 	.wrap{
@@ -890,10 +838,7 @@ span.next:hover {
 		padding: 10px;
 		width: 97%;
 	}
-	.booking_room {
-		width: 97%;
-		padding: 10px;
-	}
+
 	.hide{
 		display: none;
 	}
@@ -941,17 +886,9 @@ span.next:hover {
 		padding: 10px;
 		width: 50% !important;
 	}
-	.title {
-    width: 75%;
-    font-size: 1.1em;
-	height: 32px;
-}
-.title1 {
-    width: 49%;
-    font-size: 0.875em;
-	height: 23px;
-}
-.images-slider {
-    min-height: 200px;
-}
+
+
+	.images-slider {
+	    min-height: 200px;
+	}
 }

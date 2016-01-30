@@ -8,3 +8,13 @@ h2 {
     margin: 0;
     text-transform: uppercase;
 }
+
+a {
+	&:hover {
+		text-decoration:none;
+	}
+}
+
+.bg-black {
+	background-color:$bg-black;
+}

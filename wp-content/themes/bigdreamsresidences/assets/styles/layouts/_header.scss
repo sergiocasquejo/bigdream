@@ -39,7 +39,7 @@
 
 .header_mobile, .header_mobile .header_menu {
     z-index: 999;
-    background-color: $bg-transparent-red;
+    background-color: $bg-transparent-black;
 }
 
 
@@ -169,7 +169,7 @@
             text-transform: uppercase;
             font-weight: 500;
             line-height: 50px;
-            border-bottom: solid 1px #8A0019;
+            border-bottom: solid 1px  #383736;
             position: relative;
             -webkit-transition: all .3s ease;
             -moz-transition: all .3s ease;
@@ -225,7 +225,7 @@
       li {
         float: left;
         position: relative;
-        border-right:solid 1px #8A0019;
+        border-right:solid 1px #383736;
         padding:0;
         a {
           display: block;
@@ -242,7 +242,7 @@
 
           &:hover {
             text-decoration:none;
-            background-color:$bg-dark-red;
+            background-color:$dark-transparent-black;
           }
         }
       }
@@ -251,7 +251,7 @@
 }
 
 .header_content {
-    background-color: $bg-transparent-red;
+    background-color: $bg-transparent-black;
     left: 0;
     right: 0;
     top: 32px;

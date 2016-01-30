@@ -50,7 +50,7 @@
                                 </select>
                                 <input type="hidden" name="action" value="book_room" />
                                 <input type="hidden" name="room_ID" value="<?php the_ID(); ?>" />
-                                <button type="submit" class="bdr-btn bdr-btn-fill-red">Book Now</button>
+                                <button type="submit" class="bdr-btn bdr-btn-fill-black">Book Now</button>
                             </div>
                         </form>
 

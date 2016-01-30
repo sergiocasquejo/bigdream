@@ -35,17 +35,25 @@ if (!function_exists('bigdream_save_booking')) {
 			'no_of_night' => $args['no_of_night'],
 			'booking_status' => $args['booking_status'],
 			'notes' => $args['notes'],
+			'type' => $args['type'],
 			'date_booked' => $args['date_booked'],
 		);
 
 		if (isset($args['booking_ID']) && $args['booking_ID'] != 0) {
-			$result = $wpdb->update( $wpdb->prefix . 'bookings', $data, array('booking_ID' => $args['booking_ID']), array('%d','%d','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s'), array('%d'));
+			$result = $wpdb->update( $wpdb->prefix . 'bookings', $data, array('booking_ID' => $args['booking_ID']), array('%d','%d','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s', '%s'), array('%d'));
 		} else {
-			$result = $wpdb->insert( $wpdb->prefix . 'bookings', $data, array('%d','%d','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s'));
+			$result = $wpdb->insert( $wpdb->prefix . 'bookings', $data, array('%d','%d','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s', '%s'));
 		}
 
 		return $result;
 	}
+}
+
+function generate_and_update_booking_no($booking_ID)  {
+	global $wpdb;
+	$sql = "UPDATE ". $wpdb->prefix . "bookings b  SET b.booking_no = CONCAT(DATE_FORMAT(b.date_booked, '%Y%m%d'), b.booking_ID) WHERE b.booking_ID =  $booking_ID";
+	
+	return $wpdb->query($sql);
 }
 
 /**

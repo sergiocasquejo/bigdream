@@ -25,6 +25,7 @@ function banner_slider_shortcode_handler($atts, $content = null, $tag) {
 				$output .= '</ul>';
 			$output .= '</div>';
 		$output .= '</section>';
+		$output .= do_shortcode('[reservation-form]');
 	$output .= '</div>';
 
 	return $output;
@@ -36,27 +37,26 @@ add_shortcode('banner-slider', 'banner_slider_shortcode_handler');
 function online_reservation_form_shortcode_handler($atts, $content = null, $tag) {
 	global $post;
 	extract(shortcode_atts( array(
-		'title' => 'Book A Room Online',
-		'intro' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry'
+		'title' => 'Check availability',
 	), $atts));
 	$output = '';
 
 	$output .= '<div class="online_reservation">';
-		$output .= '<div class="b_room">';
-			$output .= '<div class="booking_room col-md-3">';
-				$output .= '<h4>'. $title .'</h4>';
-				$output .= '<p>'. $intro .'</p>';
+		$output .= '<div class="container">';
+			$output .= '<div class="booking_room col-md-12 col-lg-3">';
+				$output .= '<h2>'. $title .'</h2>';
 			$output .= '</div>';
-			$output .= '<div class="reservation_form col-md-9">';
+			$output .= '<div class="reservation_form col-md-12 col-lg-9">';
+			$output .= '<div class="row">';
 			$output .= '<form method="post">';
 					$output .= '<ul>';
-						$output .= '<li class="col-md-4">';
+						$output .= '<li class="col-md-3">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>check-in-date:</h5>';
 								$output .= '<input class="date form-control" name="date_in" id="date_in" type="text" value="'. booking_data('date_in', 'MM/DD/YYYY') .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\') {this.value = \'MM/DD/YYYY\';}">';
 							$output .= '</div>';
 						$output .= '</li>';
-						$output .= '<li  class="col-md-4">';
+						$output .= '<li  class="col-md-3">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>check-out-date:</h5>';
 								$output .= '<input class="date form-control" name="date_out" id="date_out" type="text" value="'. booking_data('date_out', 'MM/DD/YYYY') .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\') {this.value = \'MM/DD/YYYY\';}">';
@@ -73,14 +73,25 @@ function online_reservation_form_shortcode_handler($atts, $content = null, $tag)
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<li class="col-md-2">';
+							$output .= '<div class="form-group">';
+								$output .= '<h5>Child:</h5>';
+								$output .= '<select name="no_of_child" id="no_of_child" class="frm-field required  form-control">';
+									for($i = 1; $i <= 10; $i++) {
+									$output .= '<option value="'. $i .'">'. $i .'</option>';
+									}
+				        		$output .= '</select>';
+							$output .= '</div>';
+						$output .= '</li>';
+						$output .= '<li class="col-md-2">';
 							$output .= '<div class="date_btn">';
 									$output .= '<input type="hidden" name="action" value="check_availability" />';
-									$output .= '<input type="submit" value="book now" class="bdr-btn bdr-btn-fill-red" />';
+									$output .= '<input type="submit" value="book now" class="bdr-btn bdr-btn-fill-black" />';
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<div class="clear"></div>';
 					$output .= '</ul>';
 				$output .= '</form>';
+				$output .= '</div>';
 			$output .= '</div>';
 			$output .= '<div class="clear"></div>';
 		$output .= '</div>';
@@ -164,7 +175,7 @@ function room_listings_shortcode_handler($atts, $content = null) {
                		$output .= '</div>';
                		$output .= '<div class="bot">';
                			$output .= '<span class="price">Starting '. get_room_price_html($t->ID) .' /days</span>';
-               			$output .= '<a href="'.get_permalink($t->ID).'" class="bdr-btn bdr-btn-fill-red">VIEW DETAILS</a>';
+               			$output .= '<a href="'.get_permalink($t->ID).'" class="bdr-btn bdr-btn-fill-black">VIEW DETAILS</a>';
                		$output .= '</div>';
                 $output .= '</div>';
             $output .= '</div>';
@@ -235,9 +246,9 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	                        $output .= '</ul>';
 		                    $output .= '</div>';
 	                                   
-		                    $output .= '<div class="reservation-room-seleted_total bg-red">';
+		                    $output .= '<div class="reservation-room-seleted_total bg-black">';
 		                    	$output .= '<label>TOTAL</label>';
-		                    	$output .= '<span class="reservation-total">$470.00</span>';
+		                    	$output .= '<span class="reservation-total">'.  format_price(booking_data('amount'), false) .'</span>';
 		                    $output .= '</div>';
 		                $output .= '</div>';
 	                $output .= '</div>';
@@ -332,7 +343,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	                       	$output .= '</div>';*/
 
 	                       	$output .= '<input type="hidden" name="action" value="make_reservation" >';
-	                       	$output .= '<button type="submit" class="bdr-btn bdr-btn-fill-red">BOOK NOW</button>';
+	                       	$output .= '<button type="submit" class="bdr-btn bdr-btn-fill-black">BOOK NOW</button>';
 	                  	$output .= '</div>';
 	                $output .= '</div>';
 				$output .= '</div>';
@@ -352,10 +363,12 @@ function success_message_shortcode_handler($atts, $content = '') {
 	                <div class="reservation-success-message bg-gray text-center">
 	                    <h4>Thank you.</h4>
 	                    <p>You have successfully booked, <br />we will review your booking information and contact you shortly for confirmation.</p>
-	                    <a href="'. get_permalink(get_page_by_path('rooms-suits')) .'" class="bdr-btn bdr-btn-fill-red">Find Rooms</a>
+	                    <a href="'. get_permalink(get_page_by_path('rooms-suits')) .'" class="bdr-btn bdr-btn-fill-black">Find Rooms</a>
 	                </div>
 
 	            </div>';
+
+	$output .= success_booking_details();
     return $output;
 }
 add_shortcode('success_message', 'success_message_shortcode_handler');
@@ -397,6 +410,7 @@ function gallery_isotope_shortcode_handler($atts, $content = '') {
 add_shortcode('gallery_isotope', 'gallery_isotope_shortcode_handler');
 
 function contact_us_shortcode_handler() {
+	
 
 	$output = '';
 
@@ -430,3 +444,145 @@ function contact_us_shortcode_handler() {
 }
 
 add_shortcode('contact-us', 'contact_us_shortcode_handler');
+
+
+function success_booking_details() {
+
+	if (is_empty_booking()) {
+		exit(wp_redirect(get_bloginfo('url')));
+	}
+
+	$d = get_booking_by_id(get_booking_session('booking_ID'));
+
+
+	$output = '';
+
+	$output .= '<div id="successBookingDetails">';
+		$output .= '<a href="#" class="pull-right print-booking"><i class="fa fa-print"></i></a>';
+		$output .= '<div  id="bookingDetailContent">';
+		$output .= '<div class="success-booking-details">';
+			
+			$output .= '<div class="row">';
+					$output .= '<div class="col-md-4 col-lg-3">';
+						$output .= '<div class="reservation-sidebar">';
+							$output .= '<div class="reservation-date">';
+		                        $output .= '<h2 class="reservation-heading">Dates</h2>';
+		                        $output .= '<ul>';
+		                        	
+		                       		$output .= '<li>';
+		                       			$output .= '<span>Check-In</span>';
+		                       			$output .= '<span>'. format_date($d['date_in']) .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+		                       			$output .= '<span>Check-Out</span>';
+		                       			$output .= '<span>'. format_date($d['date_out']) .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Total Nights</span>';
+			                       		$output .= '<span>2</span>';
+		                       		$output .= '</li>';
+		                            $output .= '<li>';
+		                            	$output .= '<span>Total Guests</span>';
+		                            	$output .= '<span>'. $d['no_of_adult'] .' Adults '. $d['no_of_child'] .' Children</span>';
+		                            $output .= '</li>';
+		                        $output .= '</ul>';
+		                    $output .= '</div>';
+		                    $output .= '<div class="reservation-room-selected">';
+		                    	$output .= '<h2 class="reservation-heading">Selected Room</h2>';
+		                    	$output .= '<div class="reservation-room-seleted_item">';
+			                    	$output .= '<div class="reservation-room-seleted_name has-package">';
+			                    		$output .= '<h2><a href="'. get_the_permalink($d['room_ID']) .'">'. get_the_title($d['room_ID']) .'</a></h2>';
+			                    	$output .= '</div>';
+			                    	$output .= '<ul>';
+		                       		$output .= '<li>';
+		                       			$output .= '<span>Max</span>';
+		                       			$output .= '<span>4 Person(s)</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+		                       			$output .= '<span>Size</span>';
+		                       			$output .= '<span>35 m2 / 376 ft2</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Bed</span>';
+			                       		$output .= '<span>King-size or twin beds</span>';
+		                       		$output .= '</li>';
+		                        $output .= '</ul>';
+			                    $output .= '</div>';
+		                                   
+			                    $output .= '<div class="reservation-room-seleted_total">';
+			                    	$output .= '<label>TOTAL</label>';
+			                    	$output .= '<span class="reservation-total">'.  format_price($d['amount'], false) .'</span>';
+			                    $output .= '</div>';
+			                $output .= '</div>';
+		                $output .= '</div>';
+		            $output .= '</div>';
+					$output .= '<div class="col-md-8 col-lg-9">';
+						$output .= '<div class="reservation_content">';
+							$output .= '<div class="reservation-billing-detail success-details">';
+								$output .= '<h4>BILLING DETAILS</h4>';
+								$output .= '<ul>';
+									$output .= '<li>';
+		                       			$output .= '<span>Booking #</span>';
+		                       			$output .= '<span>'. format_date($d['booking_no']) .'</span>';
+		                       		$output .= '</li>';
+									$output .= '<li>';
+			                       		$output .= '<span>Country</span>';
+			                       		$output .= '<span>'. $d['country'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Full Name</span>';
+			                       		$output .= '<span>'. $d['salutation'] .' '. $d['first_name'] .' '. $d['middle_name'] .' '. $d['last_name'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Date of Birth</span>';
+			                       		$output .= '<span>'. $d['birth_date'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Nationality</span>';
+			                       		$output .= '<span>'. $d['nationality'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Email Address</span>';
+			                       		$output .= '<span>'. $d['email_address'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Phone</span>';
+			                       		$output .= '<span>'. $d['primary_phone'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Address</span>';
+			                       		$output .= '<span>'. $d['address_1'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Apartment, suite, unit etc.</span>';
+			                       		$output .= '<span>'. $d['address_2'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Town / City</span>';
+			                       		$output .= '<span>'. $d['city'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Province</span>';
+			                       		$output .= '<span>'. $d['province'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Zip Code</span>';
+			                       		$output .= '<span>'. $d['zipcode'] .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Notes</span><br />';
+			                       		$output .= '<span>'. $d['notes'] .'</span>';
+		                       		$output .= '</li>';
+								$output .= '</ul>';
+		                  	$output .= '</div>';
+		                $output .= '</div>';
+					$output .= '</div>';
+				$output .= '</form>';
+			$output .= '</div>';
+		$output .= '</div>';
+		$output .= '</div>';
+	$output .= '</div>';
+
+	empty_booking();
+	return $output;
+}

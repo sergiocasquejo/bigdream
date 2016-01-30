@@ -6,6 +6,12 @@
       ],
       "main": true
     },
+    "print.css": {
+      "files": [
+        "styles/print.scss"
+      ],
+      "main": false
+    },
     "main.js": {
       "files": [
         "scripts/vendor/jquery-ui.min.js",

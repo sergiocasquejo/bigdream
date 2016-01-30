@@ -32,6 +32,7 @@ class Booking_List_TBL extends WP_List_Table {
 		if (TEST_MODE) {
 			$columns['cb'] = '<input type="checkbox" />';
 		}
+		$columns['booking_no'] = 'Booking #';
 		$columns['room'] = 'Room';
 		$columns['name'] = 'Full Name';
 		$columns['email_address'] = 'Email Address';
@@ -84,7 +85,9 @@ class Booking_List_TBL extends WP_List_Table {
 
   		return sprintf('%1$s %2$s', $room_title, $this->row_actions($actions) );
 	}
-
+	public function column_booking_no($item) {
+		return sprintf('<span class="badge">%s</span>', $item['booking_no']);
+	}
 	public function column_name($item) {
 		return $item['name'];
 	}
@@ -229,20 +232,10 @@ class Booking_List_TBL extends WP_List_Table {
 		
 		$sql = "
 		SELECT 
-			b.booking_ID,
-			b.is_checked,
+			
 			p.post_title as room, 
-			CONCAT(b.first_name,' ', b.middle_name, ' ', b.last_name) as name, 
-			b.room_ID,
-			b.amount, 
-			b.amount_paid, 
-			b.salutation, 
-			b.birth_date, 
-			b.email_address, 
-			b.date_in, 
-			b.date_out, 
-			b.booking_status, 
-			b.date_booked 
+			b.*,
+			CONCAT(b.first_name,' ', b.middle_name, ' ', b.last_name) as name
 		FROM 
 			". $wpdb->prefix . "bookings b  
 		JOIN ". $wpdb->prefix ."posts p 

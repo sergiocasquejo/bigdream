@@ -19,8 +19,8 @@
     	border: 2px solid #000;
 
     	&:hover {
-		    border-color: $button-red;
-		    background-color: $button-red;
+            text-decoration:none;
+		    background-color: $dark-transparent-black;
 		    color: #fff;
 		}
     }
@@ -35,5 +35,15 @@
 		    background-color: #9E1E35;
 		    color: #fff;
 		}
+    }
+
+    &.bdr-btn-fill-black {
+        border:solid 2px #030608;
+        background-color: #020202;
+        color: #fff;
+        &:hover {
+            background-color: transparent;
+            color: #000;
+        }
     }
 }

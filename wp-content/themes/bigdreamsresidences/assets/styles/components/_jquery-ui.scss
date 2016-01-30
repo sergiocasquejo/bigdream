@@ -16,7 +16,7 @@
 /*----*/
 #ui-datepicker-div {
 	font-family: 'Open Sans', sans-serif;
-	background: rgba(199, 24, 56, 0.92);
+	background: $bg-transparent-black;
 }
 .ui-datepicker-title span{
 	color: #EEE;
@@ -95,7 +95,7 @@ padding: 0 0em 0;
 .ui-datepicker .ui-datepicker-header {
 	position: relative;
 	padding: .56em 0;
-	background: #A90A27;
+	background: $dark-transparent-black;
 	text-transform: uppercase;
 }
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 10px; width: 1.8em; height: 1.8em; }
@@ -291,7 +291,7 @@ body .ui-tooltip { border-width: 2px; }
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { 
     font-weight: 400;
     color: #FFF;
-    background-color: #A90A27;
+    background-color: #000000;
 }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #212121/*{fcActive}*/; text-decoration: none; }
 

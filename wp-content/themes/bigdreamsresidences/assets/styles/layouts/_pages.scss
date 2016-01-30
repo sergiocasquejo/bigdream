@@ -1,7 +1,41 @@
+.online_reservation {
+	.booking_room {
+		h2 {
+			font-size: 25px;
+			margin: 0;
+			font-weight: 400;
+			position: relative;
+			padding-left: 60px;
+			line-height: 1;
+			display: inline-block;
+			color: #5F5F5F;
+    		text-transform: capitalize;
+
+			&:before {
+			    content: '\f00c';
+			    font: normal normal normal 14px/1 FontAwesome;
+			    border: 3px solid #6D960C;
+			    color: #6D960C;
+			    font-size: 18px;
+			    display: block;
+			    width: 40px;
+			    height: 40px;
+			    text-align: center;
+			    line-height: 34px;
+			    font-family: FontAwesome;
+			    position: absolute;
+			    top: 0;
+			    bottom: 0;
+			    left: 0;
+			    margin: auto;
+			    -webkit-border-radius: 100%;
+			    -moz-border-radius: 100%;
+			    border-radius: 100%;
+			}
+		}
+	}
+}
 .section-featured-room {
-    padding-bottom: 100px;
-    margin-top: 20px;
-    padding-top: 50px;
 
     .room-featured_title {
 	    font-weight: 700;
@@ -13,6 +47,7 @@
 	    text-transform:uppercase;
     }
 	.room-item {
+		margin-bottom:20px;
 		.text {
 		    margin-top: 15px;
 		    h2 {
@@ -387,7 +422,7 @@
 	    width: 100%;
 	}
 
-	.bdr-btn-fill-red {
+	.bdr-btn-fill-black {
 		margin-top: 20px;
 	}
 
@@ -509,9 +544,59 @@
 
 select.ui-datepicker-month,  
 select.ui-datepicker-year {
-    background-color: #A90A27;
+    background-color: $dark-transparent-black;
     color: #FFF;
     border: solid 1px #FFF;
     height: 33px;
     display: inline-block;
+}
+
+#successBookingDetails {
+	position:relative;
+	.pull-right.print-booking {
+	    position: absolute;
+	    top: 10px;
+	    right: 15px;
+	}	
+}
+
+.success-booking-details {
+    border: dashed 2px #AFADAD;
+    padding: 20px;
+    .reservation-sidebar {
+	    border-right: dashed 1px #AFADAD;
+		padding-right: 10px;
+		.reservation-room-selected {
+			background-color:transparent;
+		}
+		.reservation-room-seleted_total {
+			label {
+				color:#000;	
+			}
+		}
+		.reservation-total {
+			color:#000;
+		}
+    }
+
+    .success-details {
+    	ul {
+    		li {
+    			span {
+    				text-transform: uppercase;
+				    font-size: 12px;
+				    width: 200px;
+				    display: inline-block;
+				    &:last-child {
+				    	font-weight: bold;
+				    }
+    			}
+
+    			h5 {
+    				display:inline-block;
+    				color: #C71838;
+    			}
+    		}
+    	} 
+    }
 }

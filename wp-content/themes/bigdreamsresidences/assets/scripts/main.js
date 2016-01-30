@@ -10,6 +10,29 @@
     $('.header_menu').css('top', bottom + 'px').toggleClass('active');
   }
 
+
+  function PrintBooking(content) {
+
+    var str = '<html><head><title></title>' + 
+      '<link href="'+ BDR.template_dir_uri +'/dist/styles/main.css" rel="stylesheet" type="text/css" media="print" />' +
+      '</head><body >' + $(content).html() + '</body></html>';
+
+        console.log(str);
+    var mywindow = window.open('', 'my div', 'height=800,width=700');
+        mywindow.document.write(str);
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10
+
+        mywindow.print();
+        mywindow.close();
+
+      
+        return true;
+  }
+
+
+
   W.bind('resize', function () {
     if ($(window).width() < 1192) {
       $('.header-sticky').addClass('header_mobile').removeClass('header_content');
@@ -26,6 +49,8 @@
 
     $('.flexslider').flexslider({
       animation: "slide",
+      prevText: '<i class="fa fa-angle-left"></i>',
+      nextText: '<i class="fa fa-angle-right"></i>',
       start: function(slider){
         $('body').removeClass('loading');
       }
@@ -51,7 +76,8 @@
 
     $(".bdr-calendar").datepicker({
       changeMonth: true,
-      changeYear: true
+      changeYear: true,
+      yearRange: '1910:' + new Date().getFullYear(),
     });
   
     $('.create-accnt-radio').on('change', function() {
@@ -90,6 +116,12 @@
     });
 
     $('.gallery-cat li:first-child').trigger('click');
+
+    $('.print-booking').on('click', function(e) {
+      e.preventDefault();
+      PrintBooking('#bookingDetailContent');
+      return false;
+    })
   });
 
 })(window, document, jQuery); // Fully reference jQuery after this point.

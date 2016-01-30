@@ -1,0 +1,25 @@
+@media print {
+	.success-booking-details {
+		padding:0 !important;
+		border:none !important;
+
+		.reservation-sidebar {
+			padding-right:0 !important;
+			padding-top:0 !important;
+		}
+
+		.reservation-billing-detail {
+		    margin-left: 0 !important;
+		    width:500px !important;
+		}
+	}
+	.col-md-4 {
+		width:250px !important;
+	}
+
+	.col-lg-9 {
+		width:500px !important;
+	}
+
+
+}

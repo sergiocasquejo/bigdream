@@ -117,6 +117,7 @@ class BigDream_Booking {
 				'no_of_night' => count_nights($post['date_in'], $post['date_out']),
 				'booking_status' => $post['booking_status'],
 				'notes' => $post['notes'],
+				'type' => $post['booking_ID'] != 0 ? 'BOOKING' : $post['booking_ID'],
 				'date_booked' => date('Y-m-d H:i:s'),
 			);
 
