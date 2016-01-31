@@ -29,7 +29,7 @@
 				center: 'title',
 				right: 'month,basicWeek,basicDay'
 			},
-			defaultDate: '2016-01-12',
+			defaultDate: new Date(),
 			editable: false,
 			eventLimit: true, // allow "more" link when too many events
 			events: BDR.bookings,

@@ -76,6 +76,7 @@ function online_reservation_form_shortcode_handler($atts, $content = null, $tag)
 							$output .= '<div class="form-group">';
 								$output .= '<h5>Child:</h5>';
 								$output .= '<select name="no_of_child" id="no_of_child" class="frm-field required  form-control">';
+								$output .= '<option value="0"></option>';
 									for($i = 1; $i <= 10; $i++) {
 									$output .= '<option value="'. $i .'">'. $i .'</option>';
 									}
@@ -112,7 +113,7 @@ function featured_room_shortcode_handler($atts, $content = null) {
 		));
 
 	$output .= '<div class="section-featured-room">';
-		$output .= '<h2 class="room-featured_title">Featured Rooms</h2>';
+		$output .= '<h2 class="room-featured_title">Rooms</h2>';
 		$output .= '<div class="room-content">';
 			$output .= '<div class="row">';
 
@@ -129,11 +130,13 @@ function featured_room_shortcode_handler($atts, $content = null) {
 							$output .= '<div class="text">';
 							$output .= '<h2><a href="'. get_permalink($p->ID) .'">'. $p->post_title .'</a></h2>';
 							$output .= '<ul>';
-							$output .= '<li><i class="fa fa-male"></i>Max: 2 Person(s)</li>';
-							$output .= '<li><i class="fa fa-bed"></i>Bed: King-size or twin beds</li>';
-							$output .= '<li><i class="fa fa-eye"></i>View: Ocen</li>';
+							$output .= '<li><i class="fa fa-male"></i>Max: '. get_field('max_person', $p->ID) .' Person(s)</li>';
+							$output .= '<li><i class="fa fa-bed"></i>Bed: '. get_field('bed', $p->ID) .'</li>';
+							$output .= '<li><i class="fa fa-eye"></i>View: '. get_field('view', $p->ID) .'</li>';
+							$output .= '<li><i class="fa fa-calendar-check-o"></i>Availability: '. room_status_text(get_field('status', $p->ID)) .'</li>';
 							$output .= '</ul>';
-							$output .= '<a href="'. get_permalink($p->ID) .'" class="bdr-btn bdr-btn-default">View Details</a>';;
+							
+							$output .= '<a href="'. get_permalink($p->ID) .'" class="bdr-btn bdr-btn-default">View Details</a>';
 							$output .= '</div>';
 						$output .= '</div>';
 					$output .= '</div>';
@@ -167,10 +170,10 @@ function room_listings_shortcode_handler($atts, $content = null) {
                		$output .= '<div class="desc">';
                			$output .= '<p>'. wp_trim_words($t->post_content, 20) .'</p>';
                			$output .= '<ul>';
-               			$output .= '<li>Max: 4 Person(s)</li>';
-               			$output .= '<li>Size: 35 m2 / 376 ft2</li>';
-               			$output .= '<li>View: Ocen</li>';
-               			$output .= '<li>Bed: King-size or twin beds</li>';
+               			$output .= '<li><i class="fa fa-male"></i>Max: '. get_field('max_person', $t->ID) .' Person(s)</li>';
+						$output .= '<li><i class="fa fa-bed"></i>Bed: '. get_field('bed', $t->ID) .'</li>';
+						$output .= '<li><i class="fa fa-eye"></i>View: '. get_field('view', $t->ID) .'</li>';
+               			$output .= '<li><i class="fa fa-calendar-check-o"></i>Availability: '. room_status_text(get_field('status', $t->ID)) .'</li>';
                			$output .= '</ul>';
                		$output .= '</div>';
                		$output .= '<div class="bot">';
@@ -193,7 +196,12 @@ add_shortcode('room-listings', 'room_listings_shortcode_handler');
 function booking_review_shortcode_handler($atts, $content = null) {
 	$output = '';
 
+	if (is_empty_booking()) {
+		empty_booking();
+		echo bigdream_redirect_script(get_bloginfo('url'));
+	}
 
+	$room_ID = booking_data('room_ID');
 
 	$countries = json_decode(COUNTRY);
 
@@ -216,7 +224,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	                       		$output .= '</li>';
 	                       		$output .= '<li>';
 		                       		$output .= '<span>Total Nights</span>';
-		                       		$output .= '<span>2</span>';
+		                       		$output .= '<span>'. count_nights(booking_data('date_in'), booking_data('date_out')) .'</span>';
 	                       		$output .= '</li>';
 	                            $output .= '<li>';
 	                            	$output .= '<span>Total Guests</span>';
@@ -228,22 +236,30 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	                    	$output .= '<h2 class="reservation-heading">Selected Room</h2>';
 	                    	$output .= '<div class="reservation-room-seleted_item">';
 		                    	$output .= '<div class="reservation-room-seleted_name has-package">';
-		                    		$output .= '<h2><a href="'. get_the_permalink(booking_data('room_ID')) .'">'. get_the_title(booking_data('room_ID')) .'</a></h2>';
+		                    		$output .= '<h2><a href="'. get_the_permalink($room_ID) .'">'. get_the_title($room_ID) .'</a></h2>';
 		                    	$output .= '</div>';
-		                    	$output .= '<ul>';
-	                       		$output .= '<li>';
-	                       			$output .= '<span>Max</span>';
-	                       			$output .= '<span>4 Person(s)</span>';
-	                       		$output .= '</li>';
-	                       		$output .= '<li>';
-	                       			$output .= '<span>Size</span>';
-	                       			$output .= '<span>35 m2 / 376 ft2</span>';
-	                       		$output .= '</li>';
-	                       		$output .= '<li>';
-		                       		$output .= '<span>Bed</span>';
-		                       		$output .= '<span>King-size or twin beds</span>';
-	                       		$output .= '</li>';
-	                        $output .= '</ul>';
+			                    $output .= '<ul>';
+			                    	$output .= '<li>';
+		                       			$output .= '<span>Room #</span>';
+		                       			$output .= '<span>'. get_field('room_code', $room_ID) .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+		                       			$output .= '<span>Max</span>';
+		                       			$output .= '<span>'. get_field('max_person', $room_ID) .' Person(s)</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+		                       			$output .= '<span>Size</span>';
+		                       			$output .= '<span>'. get_field('room_size', $room_ID) .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Bed</span>';
+			                       		$output .= '<span>'. get_field('bed', $room_ID) .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>View</span>';
+			                       		$output .= '<span>'. get_field('view', $room_ID) .'</span>';
+		                       		$output .= '</li>';
+		                        $output .= '</ul>';
 		                    $output .= '</div>';
 	                                   
 		                    $output .= '<div class="reservation-room-seleted_total bg-black">';
@@ -449,7 +465,8 @@ add_shortcode('contact-us', 'contact_us_shortcode_handler');
 function success_booking_details() {
 
 	if (is_empty_booking()) {
-		echo '<script>window.location.href="'. get_bloginfo('url') .'"</script>';
+		empty_booking();
+		echo bigdream_redirect_script(get_bloginfo('url'));
 	}
 
 	$d = get_booking_by_id(get_booking_session('booking_ID'));
@@ -479,7 +496,7 @@ function success_booking_details() {
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 			                       		$output .= '<span>Total Nights</span>';
-			                       		$output .= '<span>2</span>';
+			                       		$output .= '<span>'. count_nights($d['date_in'], $d['date_out']) .'</span>';
 		                       		$output .= '</li>';
 		                            $output .= '<li>';
 		                            	$output .= '<span>Total Guests</span>';
@@ -491,20 +508,28 @@ function success_booking_details() {
 		                    	$output .= '<h2 class="reservation-heading">Selected Room</h2>';
 		                    	$output .= '<div class="reservation-room-seleted_item">';
 			                    	$output .= '<div class="reservation-room-seleted_name has-package">';
-			                    		$output .= '<h2><a href="'. get_the_permalink($d['room_ID']) .'">'. get_the_title($d['room_ID']) .'</a></h2>';
+			                    		$output .= '<h2><a>'. get_the_title($d['room_ID']) .'</a></h2>';
 			                    	$output .= '</div>';
 			                    	$output .= '<ul>';
+			                    	$output .= '<li>';
+		                       			$output .= '<span>Room #</span>';
+		                       			$output .= '<span>'. get_field('room_code', $d['room_ID']) .'</span>';
+		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Max</span>';
-		                       			$output .= '<span>4 Person(s)</span>';
+		                       			$output .= '<span>'. get_field('max_person', $d['room_ID']) .' Person(s)</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Size</span>';
-		                       			$output .= '<span>35 m2 / 376 ft2</span>';
+		                       			$output .= '<span>'. get_field('room_size', $d['room_ID']) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 			                       		$output .= '<span>Bed</span>';
-			                       		$output .= '<span>King-size or twin beds</span>';
+			                       		$output .= '<span>'. get_field('bed', $d['room_ID']) .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>View</span>';
+			                       		$output .= '<span>'. get_field('view', $d['room_ID']) .'</span>';
 		                       		$output .= '</li>';
 		                        $output .= '</ul>';
 			                    $output .= '</div>';

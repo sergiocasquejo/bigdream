@@ -4,9 +4,38 @@ if (!class_exists('Big_Dream')) {
 		public function __construct() {
 			add_action( 'admin_menu', array($this, 'admin_menu') );
 			add_action( 'admin_enqueue_scripts', array($this, 'enqueue_scripts') );
+			//Adds the simple role
+			add_action('init', array($this, 'add_capability'));
 			$this->includes();
 		}
+		public function add_capability() {
+			$administrator     = get_role('administrator');
+			$administrator->add_cap( 'publish_rooms' );
+			$administrator->add_cap( 'edit_rooms' );
+			$administrator->add_cap( 'edit_others_rooms' );
+			$administrator->add_cap( 'read_private_rooms' );
+			$administrator->add_cap( 'edit_room' );
+			$administrator->add_cap( 'delete_room' );
+			$administrator->add_cap( 'read_room' );
+			$administrator->add_cap( 'manage_bookings' );
 
+
+		    add_role( 'booking_manager', 'Booking Manager', array(
+		            'read' => true,
+		            'edit_posts' => false,
+		            'edit_rooms' => true,
+		            'edit_others_rooms' => true,
+		            'publish_rooms' => true,
+		            'edit_rooms' => true,
+		            'edit_others_rooms' => true,
+		            'read_private_rooms' => true,
+		            'edit_room' => true,
+		            'read_room' 	=> true,
+		            'upload_files' => true,
+		            'manage_bookings' => true
+		            ) );
+		}
+		
 
 		public function includes() {
 			include_once "includes/post_type.php";
@@ -17,8 +46,8 @@ if (!class_exists('Big_Dream')) {
 
 		public function admin_menu() {
 			global $menu;
-			add_menu_page( 'Big Dream System', 'BDR System', 'manage_options', 'big-dream-dashboard', array($this, 'dashboard'), 'dashicons-calendar-alt', BDR_MENU_POSITION );		
-			add_submenu_page( 'big-dream-dashboard', 'Rooms', 'Rooms', 'manage_options', 'edit.php?post_type=room', false );
+			add_menu_page( 'Big Dream System', 'BDR System', 'manage_bookings', 'big-dream-dashboard', array($this, 'dashboard'), 'dashicons-calendar-alt', BDR_MENU_POSITION );		
+			add_submenu_page( 'big-dream-dashboard', 'Rooms', 'Rooms', 'manage_bookings', 'edit.php?post_type=room', false );
 		}
 
 		public function enqueue_scripts() {

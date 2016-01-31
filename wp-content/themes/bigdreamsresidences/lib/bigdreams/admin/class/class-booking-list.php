@@ -188,6 +188,8 @@ class Booking_List_TBL extends WP_List_Table {
 		}
 
 		
+		//$views['x'] = '<a href="'. admin_url('/admin.php?page='. BigDream_Booking::LIST_PAGE_SLUG . '&view=calendar') .'"><span class="dashicons dashicons-calendar-alt"></span></a>';
+		//$views['y'] = '<a href="'. admin_url('/admin.php?page='. BigDream_Booking::LIST_PAGE_SLUG. '&view=list') .'"><span class="dashicons dashicons-list-view"></span></a>';
 
 		return $views;
 	}

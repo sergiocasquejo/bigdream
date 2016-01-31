@@ -10,7 +10,7 @@ define('CDR_ADMIN_DIR', CDR_SYSTEM_DIR . '/admin');
 define('CDR_ADMIN_DIR_URI', CDR_SYSTEM_DIR_URI . '/admin');
 define('BDR_MENU_POSITION', 6);
 define('BDR_TEXT_DOMAIN', 'bigdreamresidences');
-define('ROOM_STATUSES', json_encode(array('vacant_clean' => 'Vacant Clean', 'vacant_dirty' => 'Vacant Dirty', 'out_of_order', 'Out of Order')));
+define('ROOM_STATUSES', json_encode(array('vacant_clean' => 'Vacant Clean', 'vacant_dirty' => 'Vacant Dirty', 'out_of_order' => 'Out of Order')));
 define('ROOM_DEFAULT_STATUS', 'vacant_clean');
 define('BOOKING_STATUSES', json_encode(array('Unconfirmed', 'Complete', 'Not Paid', 'Cancelled')));
 define('BOOKING_DEFAULT_STATUS', 'Unconfirmed');

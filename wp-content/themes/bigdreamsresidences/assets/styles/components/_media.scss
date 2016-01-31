@@ -22,6 +22,18 @@
 
 
 @media screen and (max-width: 414px) {
+	.header_logo {
+		max-width:250px;
+	}
+	
+	.header_top {
+		display:none;
+	}
+
+	.header-sticky {
+		top:0;
+	}
+
 	.title1, 
 	.title {
 		display:none;
@@ -34,7 +46,6 @@
 
 			li {
 				float:none;
-				padding:0;
 			}
 		}
 
@@ -43,7 +54,14 @@
 			width:100%;
 		}
 	}
+	.room-detail_tab .room-detail_tab-header {
+		margin-right:0;
+	}
+	.ui-datepicker-multi-2 .ui-datepicker-group {
+		width: 100%;
+	}
 }
+
 
 @media screen and (max-width: 320px) {
 	.header_logo {

@@ -202,25 +202,29 @@
 			    -moz-transition: all .3s ease;
 			    -ms-transition: all .3s ease;
 			    -o-transition: all .3s ease;
+			    border:none;
 
-			    &:before {
-				    height: 2px;
-				    content: '';
-				    width: 0;
-				    position: absolute;
-				    left: 0;
-				    bottom: -2px;
-				    background-color: #e7c130;
+				&.active, 
+				&:hover,
+				&:focus,
+				&:visited,
+				&:active {
+				    color: $bg-red;
+				    border:none;
+				    background-color:transparent;
+				}
+			}
+
+			&.active {
+				a {
+					color: $bg-red;
+				    border:none;
+				    background-color:transparent;
 				}
 			}
 
 
-			&.active a, 
-			&:hover a {
-			    color: $bg-red;
-			    border:none;
-			    background-color:transparent;
-			}
+			
 		}
 	}
 
@@ -599,4 +603,50 @@ select.ui-datepicker-year {
     		}
     	} 
     }
+}
+
+.calendar_status {
+    margin-top: 30px;
+
+    span {
+    	color: #333;
+	    font-size: 12px;
+	    font-weight: 500;
+	    padding: 0 10px;
+
+	    &:before {
+		    width: 20px;
+		    height: 20px;
+		    border: 1px solid #333;
+		    display: inline-block;
+		    vertical-align: middle;
+		    content: '';
+		    margin-right: 10px;
+		}
+
+		&.not-available {
+			&:before {
+			    background-color: #333;
+			}
+		}
+    }
+}
+
+.room-detail_rates {
+	table {
+		width:100%;
+		th {
+		    color: #232323;
+		    font-size: 14px;
+		    background-color: #f1f1f1;
+		    padding: 15px 20px;
+		}
+
+		td {
+		    padding: 15px 20px;
+		    font-size: 12px;
+		    border-bottom: 1px solid #e4e4e4;
+		    vertical-align: top;
+		}
+	}
 }

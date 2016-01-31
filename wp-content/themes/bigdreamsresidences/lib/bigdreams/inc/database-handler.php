@@ -204,10 +204,59 @@ function get_inserted_ID() {
 function is_selected_date_and_room_available($roomID, $from, $to) {
   global $wpdb;
   
-  $sql = $wpdb->prepare("SELECT count(*) FROM ".$wpdb->prefix."bookings WHERE room_ID = %d AND date_in >= '%s' AND date_out <= '%s'", $roomID, $from, $to);
+  $sql = $wpdb->prepare("SELECT count(*) FROM ".$wpdb->prefix."bookings WHERE room_ID = %d AND '%s' BETWEEN date_in AND date_out", $roomID, $from);
   
   return $wpdb->get_var($sql);
 }
 
 
 
+function get_room_unavailable_schedule($room_ID, $output = 'ARRAY_A') {
+	global $wpdb;
+
+	$results = $wpdb->get_results("SELECT DATE_FORMAT(date_in, '%m/%d/%Y') AS date_in, DATE_FORMAT(date_out, '%m/%d/%Y') AS date_out FROM ".$wpdb->prefix."bookings WHERE room_ID = $room_ID AND date_out >= CURDATE()", $output);
+
+	return $results;
+}
+
+function get_today_sales() {
+	global $wpdb;
+
+	$amount = $wpdb->get_var("SELECT SUM(amount_paid) FROM ".$wpdb->prefix."bookings WHERE DATE_FORMAT(date_booked, '%Y-%m-%d') = CURDATE() AND booking_status IN('Complete', 'Not Paid')");
+
+	return $amount;	
+}
+
+function get_week_sales() {
+	global $wpdb;
+
+	$amount = $wpdb->get_var("SELECT SUM(amount_paid) FROM ".$wpdb->prefix."bookings WHERE WEEK(date_booked) = WEEK(CURDATE()) AND booking_status IN('Complete', 'Not Paid')");
+
+	return $amount;	
+}
+
+function get_month_sales() {
+	global $wpdb;
+
+	$amount = $wpdb->get_var("SELECT SUM(amount_paid) FROM ".$wpdb->prefix."bookings WHERE MONTH(date_booked) = MONTH(CURDATE()) AND booking_status IN('Complete', 'Not Paid')");
+
+	return $amount;	
+}
+
+function get_year_sales() {
+	global $wpdb;
+
+	$amount = $wpdb->get_var("SELECT SUM(amount_paid) FROM ".$wpdb->prefix."bookings WHERE YEAR(date_booked) = YEAR(CURDATE()) AND booking_status IN('Complete', 'Not Paid')");
+
+	return $amount;	
+}
+
+function get_monthly_sales($output = 'ARRAY_A') {
+	global $wpdb;
+
+	$sql = "SELECT MONTH(date_booked) as month, (SUM(amount) / (SELECT SUM(amount) FROM ".$wpdb->prefix."bookings WHERE year(CURDATE()) = YEAR(date_booked))) * 100 as amount, (SUM(amount_paid) / (SELECT SUM(amount) FROM ".$wpdb->prefix."bookings WHERE YEAR(CURDATE()) = YEAR(date_booked))) * 100 as amount_paid FROM ".$wpdb->prefix."bookings WHERE YEAR(date_booked) = YEAR(CURDATE()) GROUP BY MONTH(date_booked) ORDER BY MONTH(date_booked) ASC";
+
+	$sales = $wpdb->get_results($sql, $output);
+
+	return $sales;
+}

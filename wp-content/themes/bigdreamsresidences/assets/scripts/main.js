@@ -5,7 +5,7 @@
       deviceWidth = 0;
   function PlaceSideMenuPosition() {
     var $el = $('.header-sticky');
-    var bottom = $el.offset().top + $el.outerHeight();
+    var bottom = $el.outerHeight();
 
     $('.header_menu').css('top', bottom + 'px').toggleClass('active');
   }
@@ -17,7 +17,6 @@
       '<link href="'+ BDR.template_dir_uri +'/dist/styles/main.css" rel="stylesheet" type="text/css" media="print" />' +
       '</head><body >' + $(content).html() + '</body></html>';
 
-        console.log(str);
     var mywindow = window.open('', 'my div', 'height=800,width=700');
         mywindow.document.write(str);
 
@@ -57,6 +56,7 @@
     });
 
     $( "#date_in" ).datepicker({
+      minDate: new Date(),
       defaultDate: "+1w",
       changeMonth: false,
       numberOfMonths: 1,
@@ -79,6 +79,33 @@
       changeYear: true,
       yearRange: '1910:' + new Date().getFullYear(),
     });
+
+    
+    if ($(".room_calendar_availability").length) {
+      var events = {};
+      var dates = $(".room_calendar_availability").data('unavailable').split(',');
+
+      for(var i = 0; i < dates.length; i++) {
+        events[new Date(dates[i])] = true;
+      }
+
+      $(".room_calendar_availability").datepicker({
+          minDate: new Date(),
+          numberOfMonths: 2,
+          showButtonPanel: true,
+          prevText: '',
+          nextText: '',
+          beforeShowDay: function(date) {
+              var event = events[date];
+              if (event) {
+                  return [true, 'active'];
+              }
+              else {
+                  return [true, '', ''];
+              }
+          }
+      });
+    }
   
     $('.create-accnt-radio').on('change', function() {
       if ($(this).is(':checked')) {

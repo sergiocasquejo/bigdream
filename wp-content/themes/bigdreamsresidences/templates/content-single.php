@@ -48,9 +48,13 @@
                                     <option value="<?php echo $i; ?>" <?php selected($i, booking_data('no_of_child')); ?>><?php echo $i; ?></option>
                                     <?php endfor; ?>
                                 </select>
-                                <input type="hidden" name="action" value="book_room" />
                                 <input type="hidden" name="room_ID" value="<?php the_ID(); ?>" />
+                                <?php if (is_bookable(get_the_ID())): ?>
+                                <input type="hidden" name="action" value="book_room" />
                                 <button type="submit" class="bdr-btn bdr-btn-fill-black">Book Now</button>
+                                <?php else: ?>
+                                    <span class="bdr-btn bdr-btn-fill-red">This room is out of order.</span>
+                                <?php endif; ?>
                             </div>
                         </form>
 
@@ -63,105 +67,112 @@
                 <div class="col-md-3">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs room-detail_tab-header" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
-                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Package</a></li>
-                        <!--<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Calendar</a></li>-->
+                        <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
+                        <li role="presentation"><a href="#package" aria-controls="package" role="tab" data-toggle="tab">Package</a></li>
+                        <li role="presentation"><a href="#prices" aria-controls="prices" role="tab" data-toggle="tab">Rates</a></li>
+                        <li role="presentation"><a href="#calendar" aria-controls="calendar" role="tab" data-toggle="tab">Calendar</a></li>
                     </ul>
                 </div>
                 <div class="col-md-9">
                     <!-- Tab panes -->
                     <div class="room-detail_tab-content tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="home">
+                        <div role="tabpanel" class="tab-pane active" id="overview">
                             <div class="room-detail_overview">
-                                <h5 class="text-uppercase">de Finibus Bonorum et Malorum", written by Cicero in 45 BC</h5>
-                                <p>Located in the heart of Aspen with a unique blend of contemporary luxury and historic heritage, deluxe accommodations, superb amenities, genuine hospitality and dedicated service for an elevated experience in the Rocky Mountains.</p>
+                                <h5 class="text-uppercase">Room #: <?php the_field('room_code'); ?></h5>
+                                <p><?php the_content(); ?></p>
 
                                 <div class="row">
                                     <div class="col-xs-6 col-md-4">
                                         <h6>SPECIAL ROOM</h6>
                                         <ul>
-                                            <li>Max: 4 Person(s)</li>
-                                            <li>Size: 35 m2 / 376 ft2</li>
-                                            <li>View: Ocen</li>
-                                            <li>Bed: King-size or twin beds</li>
+                                            <li>Max: <?php the_field('max_person'); ?></li>
+                                            <li>Size: <?php the_field('room_size'); ?></li>
+                                            <li>View: <?php the_field('view'); ?></li>
+                                            <li>Bed: <?php the_field('bed'); ?></li>
                                         </ul>
                                     </div>
+                                    <?php if (have_rows('services')): ?>
                                     <div class="col-xs-6 col-md-4">
                                         <h6>SERVICE ROOM</h6>
                                         <ul>
-                                            <li>Oversized work desk</li>
-                                            <li>Hairdryer</li>
-                                            <li>Iron/ironing board upon request</li>
+                                            <?php while(have_rows('services')): the_row(); ?>
+                                            <li><?php the_sub_field('title'); ?></li>
+                                            <?php endwhile; ?>
                                         </ul>
                                     </div>
+                                    <?php endif; ?>
                                 </div>
 
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="profile">
+                        <div role="tabpanel" class="tab-pane" id="package">
                             <div class="room-detail_amenities">
-                                <p>Located in the heart of Aspen with a unique blend of contemporary luxury and historic heritage, deluxe accommodations, superb amenities, genuine hospitality and dedicated service for an elevated experience in the Rocky Mountains.</p>
-                                
+                                <p><?php the_content(); ?></p>
+                                <?php if (have_rows('packages')): ?>
                                 <div class="row">
+                                    <?php while (have_rows('packages')): the_row(); ?>
                                     <div class="col-xs-6 col-lg-4">
-                                        <h6>LIVING ROOM</h6>
+                                        <h6><?php the_sub_field('heading'); ?></h6>
+                                        <?php if (have_rows('package_list')): ?>
                                         <ul>
-                                            <li>Oversized work desk</li>
-                                            <li>Hairdryer</li>
-                                            <li>Iron/ironing board upon request</li>
+                                            <?php while (have_rows('package_list')): the_row(); ?>
+                                            <li><?php the_sub_field('title'); ?></li>
+                                            <?php endwhile; ?>
                                         </ul>
+                                        <?php endif; ?>    
                                     </div>
-                                    <div class="col-xs-6 col-lg-4">
-                                        <h6>KITCHEN ROOM</h6>
-                                        <ul>
-                                            <li>AM/FM clock radio</li>
-                                            <li>Voicemail</li>
-                                            <li>High-speed Internet access</li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-xs-6 col-lg-4">
-                                        <h6>balcony</h6>
-                                        <ul>
-                                            <li>AM/FM clock radio</li>
-                                            <li>Voicemail</li>
-                                            <li>High-speed Internet access</li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-xs-6 col-lg-4">
-                                        <h6>bedroom</h6>
-                                        <ul>
-                                            <li>Coffee maker</li>
-                                            <li>25 inch or larger TV</li>
-                                            <li>Cable/satellite TV channels</li>
-                                            <li>AM/FM clock radio</li>
-                                            <li>Voicemail</li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-xs-6 col-lg-4">
-                                        <h6>bathroom</h6>
-                                        <ul>
-                                            <li>Dataport</li>
-                                            <li>Phone access fees waived</li>
-                                            <li>24-hour Concierge service</li>
-                                            <li>Private concierge</li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-xs-6 col-lg-4">
-                                        <h6>Oversized work desk</h6>
-                                        <ul>
-                                            <li>Dataport</li>
-                                            <li>Phone access fees waived</li>
-                                            <li>24-hour Concierge service</li>
-                                            <li>Private concierge</li>
-                                        </ul>
-                                    </div>
+                                    <?php endwhile; ?>
                                 </div>
+                                <?php endif; ?>
 
                             </div>
                         </div>
-                        <!--<div role="tabpanel" class="tab-pane" id="settings">
-                            <div class="bdr-calendar"></div>
-                        </div>-->
+                        <div role="tabpanel" class="tab-pane" id="prices">
+                            <div class="room-detail_rates">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Rate Period</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php if (have_rows('price_configuration', $id)): ?>
+                                            <?php while (have_rows('price_configuration', $id)): the_row(); 
+                                                if (get_sub_field('enable')) :
+                                                    $from = format_date(get_sub_field('from'), 'D M d, Y');
+                                                    $to = format_date(get_sub_field('to'), 'D M d, Y');
+                                                ?>
+                                                <tr>
+                                                    <td>
+                                                        <ul>
+                                                            <li><?php echo $from .' - '. $to; ?></li>
+                                                            <li><?php echo count_nights($from, $to); ?> night minimum stay</li>
+                                                        </ul>
+                                                    </td>
+                                                    <td>
+                                                        <p class="price"><?php format_price(get_sub_field('price')); ?></p>
+                                                    </td>
+                                                </tr>
+                                    <?php endif; 
+                                    endwhile; ?>
+                                <?php else: ?>    
+                                    <tr>
+                                        <td colspan="2">No rates available this time.</td>
+                                    </tr>
+                                <?php endif; ?>
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="calendar">
+                            <?php $dates = implode(',', unavailable_dates(get_the_ID())); ?>
+                            <div class="room_calendar_availability" data-unavailable="<?php echo $dates; ?>"></div>
+                            <div class="calendar_status text-center col-sm-12">
+                                <span>Available</span>
+                                <span class="not-available">Not Available</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

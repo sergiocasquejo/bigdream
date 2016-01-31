@@ -1,0 +1,52 @@
+.room_calendar_availability {
+	.ui-datepicker .ui-datepicker-header {
+		background:transparent;
+	}
+	.ui-datepicker-title {
+		span {
+			color:#000;
+		}
+	}
+
+	button {
+		color:#000 !important;
+	}
+
+	span.ui-icon.ui-icon-circle-triangle-e:before,
+	span.ui-icon.ui-icon-circle-triangle-w:before {
+		color:#000;
+	}
+	.ui-datepicker-inline {
+	    width: 100% !important;
+	    padding: 0;
+	    margin: 0;
+
+	    th {
+	    	span {
+	    		color:#000;
+	    	}
+	    }
+
+	    td {
+	    	&.active {
+	    		a {
+	    			color:#FFF;
+			    	background-color:#000;
+	    		}
+	    	}
+		    a,span {
+		    	color: #000;
+			    width: 100%;
+			    height: 53px;
+			    border: solid 1px #000;
+			    text-align: right;
+			    padding: 5px;
+			    &.ui-state-active,
+			    &.ui-state-hover {
+			    	color:#000;
+			    	background-color:transparent;
+			    }
+		    }
+	    }
+	}
+}

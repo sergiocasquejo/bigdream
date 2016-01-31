@@ -151,6 +151,7 @@ function push_to_booking_session($args) {
 }
 
 function empty_booking() {
+	$_SESSION['_bdr_booking'] = array();
 	unset($_SESSION['_bdr_booking']);
 }
 
@@ -199,17 +200,24 @@ function booking_init_action_handler() {
 				break;
 			case 'book_room':
 				$data = $_POST;
-				/*if (!is_selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
+				if (!is_bookable($data['room_ID'])) {
+					bigdream_add_notices('error', 'Selected room is Out of Order.');
+				  	return;
+				}
+
+				if (is_selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out'])) > 0) {
 				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 				  return;
-				}*/
+				}
+
+				
 				push_to_booking_session(array(
 						'date_in' => $data['date_in'],
 						'date_out' => $data['date_out'],
 						'no_of_adult' => $data['no_of_adult'],
 						'no_of_child' => isset($data['no_of_child']) ? $data['no_of_child'] : 0,
 						'room_ID' => $data['room_ID'],
-						'amount' => get_room_price($data['room_ID']), 
+						'amount' => get_room_price($data['room_ID'], $data['date_in'], $data['date_out']), 
 					));
 				exit(wp_redirect(get_permalink(get_page_by_path('review'))));
 				break;
@@ -221,11 +229,19 @@ function booking_init_action_handler() {
 					break;
 				}
 			  	$data = get_booking_session();
+
+			  	if (!is_bookable($data['room_ID'])) {
+					bigdream_add_notices('error', 'Selected room is Out of Order.');
+				  	return;
+				}
 			  
-        		/*if (!is_selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
+        		if (is_selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out'])) > 0) {
 				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 				  return;
-				}*/
+				}
+
+				
+
 				$booking = push_to_booking_session(array_merge($data, $_POST, 
 						array(
 							'booking_ID' => 0,
@@ -373,12 +389,33 @@ function booking_data($key, $default = '') {
  * @param int $id - Room/Post ID
  * @return Decimal $price
  */
-function get_room_price($id = false) {
+function get_room_price($id = false, $date_in = false, $date_out = false) {
 	if (!$id) {
 		global $post;
 		$id = $post->ID;
 	}
 	$price = get_field('price', $id);
+	if ($date_in && $date_out) {
+		$date_in = strtotime($date_in);
+		$date_out = strtotime($date_out);
+
+		if (have_rows('price_configuration', $id)) {
+			while (have_rows('price_configuration', $id)) { the_row();
+				if (get_sub_field('enable')) {
+					$from = strtotime(get_sub_field('from'));
+					$to = strtotime(get_sub_field('to'));
+					if (($date_in >= $from && $date_in <= $to) && ($date_out >= $from && $date_out <= $to)) {
+						$price = get_sub_field('price');
+						break;
+					}
+				}
+			}
+		}
+	}
+
+
+
+
 	return $price;
 }
 
@@ -515,17 +552,29 @@ function count_nights($from, $to) {
  * @param Date $to
  * @return Array $dates
  */
-function get_dates_from_date_range($from, $to) {
+function get_dates_from_date_range($from, $to, $format = 'Y-m-d') {
   $dates = array();
   $current = strtotime($from);
   $end = strtotime($to);
   
   while ($current <= $end) {
-      $dates[] = date('Y-m-d', $current);
+      $dates[] = date($format, $current);
       $current = strtotime('+1 days', $current);
   }
   
   return $dates;
+}
+
+function unavailable_dates($room_ID) {
+	$dates = get_room_unavailable_schedule($room_ID);
+                           
+    $arr = array();
+    for($i = 0; $i < count($dates); $i++) {
+        $arr = array_merge($arr, get_dates_from_date_range($dates[$i]['date_in'], $dates[$i]['date_out'], 'm/d/Y'));
+        
+    }
+
+    return $arr;
 }
 
 /**
@@ -539,6 +588,13 @@ function send_success_booking_notification() {
   ob_start();
   
   $d = get_booking_by_id(get_booking_session('booking_ID'));
+  $d['room_title'] = get_the_title($d['room_ID']);
+  $d['room_code'] = get_field('room_code', $d['room_ID']);
+  $d['max_person'] = get_field('max_person', $d['room_ID']);
+  $d['room_size'] = get_field('room_size', $d['room_ID']);
+  $d['bed'] = get_field('bed', $d['room_ID']);
+  $d['view'] = get_field('view', $d['room_ID']);
+
   $logo = get_template_directory_uri() . '/dist/images/logo.png';
   $d['no_of_nights'] = count_nights($d['date_in'], $d['date_out']);
   
@@ -556,4 +612,29 @@ function send_success_booking_notification() {
   $subject = 'Your Booking Details';
   wp_mail($to, $subject, $message);
 
+}
+
+
+function get_monthly_chart_sales() {
+
+	$arr = array();
+	$sales = get_monthly_sales();
+
+	foreach($sales as $i => $s) {
+		$arr['amount'][] = round($s['amount'], 2);
+		$arr['amount_paid'][] = round($s['amount_paid'], 2);
+	}
+
+	return $arr;
+}
+
+function is_bookable($room_ID) {
+	return get_field('room_status', $room_ID) != 'out_of_order';
+}
+
+function room_status_text($status) {
+	$statuses = json_decode(ROOM_STATUSES, true);
+
+
+	return '<span class="badge '. $status .'">'. $statuses[$status] . '</span>';
 }

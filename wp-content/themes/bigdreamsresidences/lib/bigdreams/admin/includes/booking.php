@@ -25,8 +25,8 @@ class BigDream_Booking {
 	}
 	public function admin_menu() {
 		global $menu;
-		$hook = add_submenu_page( 'big-dream-dashboard', 'Bookings', 'Bookings', 'manage_options', self::LIST_PAGE_SLUG, array($this, 'bookings') );
-		add_submenu_page( self::NEW_BOOKING_SLUG, 'Edit Booking', 'Edit Booking', 'manage_options', self::NEW_BOOKING_SLUG, array($this, 'add_edit_booking') );
+		$hook = add_submenu_page( 'big-dream-dashboard', 'Bookings', 'Bookings', 'manage_bookings', self::LIST_PAGE_SLUG, array($this, 'bookings') );
+		add_submenu_page( self::NEW_BOOKING_SLUG, 'Edit Booking', 'Edit Booking', 'manage_bookings', self::NEW_BOOKING_SLUG, array($this, 'add_edit_booking') );
 		//add_submenu_page( self::VIEW_BOOKING_SLUG, 'View Booking', 'View Booking', 'manage_options', self::VIEW_BOOKING_SLUG, array($this, 'booking_details') );
 
 

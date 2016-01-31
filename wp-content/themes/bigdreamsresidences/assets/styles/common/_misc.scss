@@ -18,3 +18,21 @@ a {
 .bg-black {
 	background-color:$bg-black;
 }
+
+
+span.badge.vacant_clean {
+    background-color: #45920B;
+    color:#FFF;
+}
+
+
+
+span.badge.vacant_dirty {
+    background-color: #FF8100;
+    color:#FFF;
+}
+
+span.badge.out_of_order {
+    background-color: #FF0000;
+    color:#FFF;
+}

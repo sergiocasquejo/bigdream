@@ -8,12 +8,6 @@
 
 
 .header_top {
-    background-color: #1f232b;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right:0;
-    z-index: 999;
     .social-media-icon {
         margin-top: 3px;
         li {
@@ -113,7 +107,6 @@
 
 .header-sticky {
   position: fixed;
-  top: 32px;
   -webkit-backface-visibility: hidden;
 
 
@@ -137,7 +130,7 @@
     .header_menu {
         position: fixed;
         -webkit-overflow-scrolling: touch;
-        top: 0;
+        top: 101px;
         bottom: 0;
         right: -270px;
         width: 270px;
@@ -254,7 +247,7 @@
     background-color: $bg-transparent-black;
     left: 0;
     right: 0;
-    top: 32px;
+    top: 0;
     padding: 0;
     text-align: right;
     font-size: 0;
