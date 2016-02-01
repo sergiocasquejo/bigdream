@@ -94,7 +94,7 @@ class BigDream_Booking {
 			$args = array(
 				'booking_ID' => $post['booking_ID'],
 				'room_ID' => $post['room_ID'],
-				'amount' => $post['amount'],
+				'amount' =>  get_room_price($post['room_ID'], $post['date_in'], $post['date_out']), ,
 				'amount_paid' => $post['amount_paid'],
 				'salutation' => $post['salutation'],
 				'country' => $post['country'],
