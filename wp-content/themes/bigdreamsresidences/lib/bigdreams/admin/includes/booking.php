@@ -125,6 +125,19 @@ class BigDream_Booking {
 			  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 			} else {
   			if (bigdream_save_booking($args)) {
+  			  
+					if ($post['booking_ID'] == 0) {
+					  $booking_ID = get_inserted_ID();
+					  // Update booking no
+					  generate_and_update_booking_no($booking_ID);
+					  // Empty booking info
+					  empty_booking();
+					  // replace data in booking session with booking ID
+					  push_to_booking_session(array('booking_ID' => $booking_ID));
+					  // Send email notification
+					  send_success_booking_notification();
+					}
+						
   				bigdream_add_notices('updated', 'Successully Saved.');
   				bigdream_redirect_script('admin.php?page=big-dream-bookings&view=list');
   			} else {
