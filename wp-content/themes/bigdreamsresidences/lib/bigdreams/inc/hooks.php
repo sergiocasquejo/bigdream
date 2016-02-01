@@ -39,3 +39,18 @@ add_filter('login_headertitle', 'custom_logo_title');
 function custom_logo_title() {
     return get_bloginfo('name');
 }
+
+
+function bdr_login_logo() { ?>
+    <style type="text/css">
+    	body {
+    	    background-color: #000;
+    	 }
+        .login h1 a {
+            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/dist/images/logo.png);
+            background-size: 100%;
+            width: 250px;
+        }
+    </style>
+<?php }
+add_action( 'login_enqueue_scripts', 'bdr_login_logo' );
