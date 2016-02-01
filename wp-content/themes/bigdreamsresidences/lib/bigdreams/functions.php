@@ -205,7 +205,7 @@ function booking_init_action_handler() {
 				  	return;
 				}
 
-				if (is_selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out'])) > 0) {
+				if (is_date_and_room_not_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
 				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 				  return;
 				}
@@ -230,12 +230,12 @@ function booking_init_action_handler() {
 				}
 			  	$data = get_booking_session();
 
-			  	if (!is_bookable($data['room_ID'])) {
+			  if (!is_bookable($data['room_ID'])) {
 					bigdream_add_notices('error', 'Selected room is Out of Order.');
 				  	return;
 				}
 			  
-        		if (is_selected_date_and_room_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out'])) > 0) {
+        if (is_date_and_room_not_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
 				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 				  return;
 				}
@@ -637,4 +637,17 @@ function room_status_text($status) {
 
 
 	return '<span class="badge '. $status .'">'. $statuses[$status] . '</span>';
+}
+
+
+function is_date_and_room_not_available($room_ID, $from , $to) {
+  
+  $range = get_dates_from_date_range($from, $to);
+  foreach ($range as $i => $k) {
+    if (is_selected_date_and_room_not_available($data['room_ID'], format_db_date($k)) > 0) {
+  	  return true;
+  	}
+  }
+  
+  return false;
 }
