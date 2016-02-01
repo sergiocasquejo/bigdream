@@ -121,29 +121,40 @@ class BigDream_Booking {
 				'date_booked' => date('Y-m-d H:i:s'),
 			);
 			
-      if ($post['booking_ID'] == 0 && is_date_and_room_not_available($post['room_ID'], format_db_date($post['date_in']),  format_db_date($post['date_out']))) {
-			  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
+			if (	
+					$post['booking_ID'] == 0 
+					&& is_date_and_room_not_available($post['room_ID'], format_db_date($post['date_in']),  format_db_date($post['date_out']))
+				) {
+				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 			} else {
-  			if (bigdream_save_booking($args)) {
+			
+				$val = validate_booking_data($args);
+
+			    if($val['valid'] === false) {
+			    	bigdream_javacript_notices($val['errors']);
+			        bigdream_add_notices('error', 'Please review the fields.');
+		
+			    } else if (bigdream_save_booking($args)) {
   			  
 					if ($post['booking_ID'] == 0) {
-					  $booking_ID = get_inserted_ID();
-					  // Update booking no
-					  generate_and_update_booking_no($booking_ID);
-					  // Empty booking info
-					  empty_booking();
-					  // replace data in booking session with booking ID
-					  push_to_booking_session(array('booking_ID' => $booking_ID));
-					  // Send email notification
-					  send_success_booking_notification();
+						$booking_ID = get_inserted_ID();
+						// Update booking no
+						generate_and_update_booking_no($booking_ID);
+						// Empty booking info
+						empty_booking();
+						// replace data in booking session with booking ID
+						push_to_booking_session(array('booking_ID' => $booking_ID));
+						// Send email notification
+						send_success_booking_notification();
 					}
 						
-  				bigdream_add_notices('updated', 'Successully Saved.');
-  				bigdream_redirect_script('admin.php?page=big-dream-bookings&view=list');
+  					bigdream_add_notices('updated', 'Successully Saved.');
+	  				bigdream_redirect_script('admin.php?page=big-dream-bookings&view=list');
+  					
   			} else {
   				bigdream_add_notices('error', 'Error while Saving.');
   			}
-			}
+		}
 		} elseif(isset($_GET['bid']) && !empty($_GET['bid'])) {
 			// Update booking to checked
 			update_to_checked($_GET['bid']);
