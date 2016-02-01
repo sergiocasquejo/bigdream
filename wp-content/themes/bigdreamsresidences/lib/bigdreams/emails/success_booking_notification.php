@@ -78,7 +78,7 @@
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
 									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">View: <?php echo $d['view']; ?></span></li>
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Bed: <?php echo $d['view']; ?></span></li>
+									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Bed: <?php echo $d['bed']; ?></span></li>
 							</ul>
 						</div>
 						<div style="padding:25px;background-color: #333333;"><span style="text-transform:uppercase;color:#FFF;font-weight:bold;">Total</span><span style="float:right;color:#FFF;font-weight:bold;"><?php echo format_price($d['amount']); ?></span></div>
