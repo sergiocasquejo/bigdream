@@ -1,4 +1,4 @@
-<div class="wrap">
+<div class="wrap" id="BookingDashboard">
 	<h1>Dashboard</h1>
     <?php bigdream_notices(); ?>
 	<div class="row text-center">

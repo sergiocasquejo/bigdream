@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-md-6 form-group">
         <label class="form-label" for="first_name">Room Type</label>
-        <select name="room_ID" class="form-control" required>
+        <select name="room_ID" class="form-control" required <?php echo !$editable ? 'disabled' : ''; ?>>
           <?php foreach ($available_rooms as $i => $r): ?>
             <option value="<?php echo $r->ID; ?>" <?php selected($r->ID, $post['room_ID']); ?>><?php echo $r->post_title; ?></option>
           <?php endforeach; ?>
@@ -42,7 +42,7 @@
     <div class="row">
       <div class="col-md-3 form-group">
         <label class="form-label" for="birth_date">Date of Birth</label>
-        <input type="text" name="birth_date" class="form-control" value="<?php echo $post['birth_date']; ?>" required/>
+        <input type="text" name="birth_date" class="form-control bdr-calendar" value="<?php echo $post['birth_date']; ?>" required/>
       </div>
       <div class="col-md-3 form-group">
         <label class="form-label" for="email_address">Email Address</label>
@@ -88,11 +88,11 @@
     <div class="row">
       <div class="col-md-6 form-group">
         <label class="form-label" for="date_in">Date In</label>
-        <input type="text" name="date_in" class="form-control" value="<?php echo $post['date_in']; ?>" required/>
+        <input type="text" name="date_in" id="date_in" class="form-control" value="<?php echo $post['date_in']; ?>" required <?php echo !$editable ? 'disabled' : ''; ?>/>
       </div>
       <div class="col-md-6 form-group">
         <label class="form-label" for="date_out">Date Out</label>
-        <input type="text" name="date_out" class="form-control" value="<?php echo $post['date_out']; ?>" required/>
+        <input type="text" name="date_out" id="date_out" class="form-control" value="<?php echo $post['date_out']; ?>" required <?php echo !$editable ? 'disabled' : ''; ?>/>
       </div>
     </div>
     <div class="row">

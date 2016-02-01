@@ -21,6 +21,15 @@
 }
 
 
+
+@media screen and (max-width: 736px) {
+	.reservation-billing-detail {
+		margin-left:0;
+		max-width:100%;
+	}
+}
+
+
 @media screen and (max-width: 414px) {
 	.header_logo {
 		max-width:250px;

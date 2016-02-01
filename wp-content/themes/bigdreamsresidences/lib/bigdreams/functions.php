@@ -209,15 +209,22 @@ function booking_init_action_handler() {
 				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 				  return;
 				}
+				$nights = count_nights($data['date_in'], $data['date_out']);
+				$nights = $nights <= 0 ? 1 : $nights;
+				$room_price = get_room_price($data['room_ID'], $data['date_in'], $data['date_out']);
 
-				
 				push_to_booking_session(array(
 						'date_in' => $data['date_in'],
 						'date_out' => $data['date_out'],
 						'no_of_adult' => $data['no_of_adult'],
 						'no_of_child' => isset($data['no_of_child']) ? $data['no_of_child'] : 0,
 						'room_ID' => $data['room_ID'],
-						'amount' => get_room_price($data['room_ID'], $data['date_in'], $data['date_out']), 
+						'no_of_night' => $nights,
+						'room_price' => $room_price,
+						'amount' => $room_price * $nights, 
+						'booking_ID' => 0,
+						'amount_paid' => 0,
+						'booking_status' => BOOKING_DEFAULT_STATUS
 					));
 				exit(wp_redirect(get_permalink(get_page_by_path('review'))));
 				break;
@@ -230,30 +237,25 @@ function booking_init_action_handler() {
 				}
 			  	$data = get_booking_session();
 
-			  if (!is_bookable($data['room_ID'])) {
+			  	if (!is_bookable($data['room_ID'])) {
 					bigdream_add_notices('error', 'Selected room is Out of Order.');
 				  	return;
 				}
 			  
-        if (is_date_and_room_not_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
+        		if (is_date_and_room_not_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
 				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 				  return;
 				}
 
 				
 
-				$booking = push_to_booking_session(array_merge($data, $_POST, 
-						array(
-							'booking_ID' => 0,
-							'amount_paid' => 0,
-							'booking_status' => BOOKING_DEFAULT_STATUS
-						)
-					));
+				$booking = push_to_booking_session(array_merge($data, $_POST));
 
 			
 				$args = array(
 					'booking_ID' => $booking['booking_ID'],
 					'room_ID' => $booking['room_ID'],
+					'room_price' => $booking['room_price'],
 					'amount' => $booking['amount'],
 					'amount_paid' => $booking['amount_paid'],
 					'salutation' => $booking['salutation'],
@@ -274,7 +276,7 @@ function booking_init_action_handler() {
 					'date_out' => format_db_date($booking['date_out']),
 					'no_of_adult' => $booking['no_of_adult'],
 					'no_of_child' => $booking['no_of_child'],
-					'no_of_night' => count_nights($booking['date_in'], $booking['date_out']),
+					'no_of_night' => $booking['no_of_night'],
 					'booking_status' => $booking['booking_status'],
 					'notes' => $booking['notes'],
 					'type' => 'BOOKING',
@@ -596,7 +598,6 @@ function send_success_booking_notification() {
   $d['view'] = get_field('view', $d['room_ID']);
 
   $logo = get_template_directory_uri() . '/dist/images/logo.png';
-  $d['no_of_nights'] = count_nights($d['date_in'], $d['date_out']);
   
   include "emails/success_booking_notification.php";
   $message = ob_get_clean();

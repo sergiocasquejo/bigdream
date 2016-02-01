@@ -35,7 +35,7 @@ class Booking_List_TBL extends WP_List_Table {
 		$columns['booking_no'] = 'Booking #';
 		$columns['room'] = 'Room';
 		$columns['name'] = 'Full Name';
-		$columns['email_address'] = 'Email Address';
+		//$columns['email_address'] = 'Email Address';
 		$columns['amount'] = 'Amount';
 		$columns['amount_paid'] = 'Amount Paid';
 		$columns['date_in'] = 'Date In';
@@ -76,12 +76,14 @@ class Booking_List_TBL extends WP_List_Table {
     }
 
 	public function column_room($item) {
-		$room_title = sprintf('<a href="#">%s</a>', $item['room']);
+		$room_title = sprintf('<a href="#">%s</a>', get_field('room_code', $item['room_ID']));
 		$room_title .= $item['is_checked'] == 0 ? ' <span class="badge new">New</span>' : '';
-		  $actions = array(
-            'edit'      => sprintf('<a href="?page=%s&bid=%s">Edit</a>',BigDream_Booking::NEW_BOOKING_SLUG, $item['booking_ID']),
-            'view'    => sprintf('<a href="?page=%s&bid=%d" class="view-booking-details" data-id="%d">View</a>',BigDream_Booking::VIEW_BOOKING_SLUG, $item['booking_ID'], $item['booking_ID']),
-        );
+
+		if ($item['booking_status'] != 'Complete') {
+			$actions['edit'] = sprintf('<a href="?page=%s&bid=%s">Edit</a>',BigDream_Booking::NEW_BOOKING_SLUG, $item['booking_ID']);
+		}
+
+        $actions['view'] = sprintf('<a href="?page=%s&bid=%d" class="view-booking-details" data-id="%d">View</a>',BigDream_Booking::VIEW_BOOKING_SLUG, $item['booking_ID'], $item['booking_ID']);
 
   		return sprintf('%1$s %2$s', $room_title, $this->row_actions($actions) );
 	}

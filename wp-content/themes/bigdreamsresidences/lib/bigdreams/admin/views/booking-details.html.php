@@ -6,7 +6,11 @@
 		<strong><?php echo $details['room']; ?></strong>
 	</p>
 	<p class="form-group">
-		<label class="form-label" for="amount">Amount</label>
+		<label class="form-label" for="amount">Room Price</label>
+		<strong><?php echo format_price($details['room_price']); ?></strong>
+	</p>
+	<p class="form-group">
+		<label class="form-label" for="amount">Total</label>
 		<strong><?php echo format_price($details['amount']); ?></strong>
 	</p>
 	<p class="form-group">

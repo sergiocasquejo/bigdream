@@ -20,6 +20,14 @@ a {
 }
 
 
+span.badge {
+    background-color: red;
+    color: #FFF;
+    border-radius: 3px;
+    font-weight: normal;
+    font-size: 10px;
+}
+
 span.badge.vacant_clean {
     background-color: #45920B;
     color:#FFF;

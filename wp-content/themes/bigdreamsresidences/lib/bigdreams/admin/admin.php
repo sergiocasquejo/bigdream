@@ -51,13 +51,19 @@ if (!class_exists('Big_Dream')) {
 		}
 
 		public function enqueue_scripts() {
-		   wp_enqueue_style('admin-style', CDR_SYSTEM_DIR_URI . '/assets/style/admin.css');	
-			 wp_enqueue_script( 'chart-script', CDR_SYSTEM_DIR_URI . '/assets/vendor/Chart.min.js', array('jquery'), true, false );
-			 wp_enqueue_script('admin-script', CDR_SYSTEM_DIR_URI . '/assets/js/admin.js', array('chart-script', 'jquery'), true, true);
-			 wp_localize_script('admin-script', 'BDR', array(
-			 	'AjaxUrl' => admin_url('admin-ajax.php'),
-			 	'bookings' => get_booking_calendar()
-			 ));
+			if (isset($_GET['page']) && in_array($_GET['page'], array('big-dream-dashboard', 'big-dream-bookings', 'big-dream-booking-edit'))) {
+			   	wp_enqueue_style('admin-style', CDR_SYSTEM_DIR_URI . '/assets/style/admin.css');	
+				
+			   	wp_enqueue_script('jquery-ui-datepicker');
+				wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+
+				wp_enqueue_script( 'chart-script', CDR_SYSTEM_DIR_URI . '/assets/vendor/Chart.min.js', array('jquery'), true, false );
+				wp_enqueue_script('admin-script', CDR_SYSTEM_DIR_URI . '/assets/js/admin.js', array('chart-script', 'jquery'), true, true);
+				wp_localize_script('admin-script', 'BDR', array(
+					'AjaxUrl' => admin_url('admin-ajax.php'),
+					'bookings' => get_booking_calendar()
+				));
+			}
 
 		}
 

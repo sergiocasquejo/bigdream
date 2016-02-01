@@ -204,6 +204,8 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	$room_ID = booking_data('room_ID');
 
 	$countries = json_decode(COUNTRY);
+	$nights = count_nights(booking_data('date_in'), booking_data('date_out'));
+	$room_price = booking_data('room_price');
 
 	$output .= '<div class="reservation-page">';
 		//$output .= get_booking_steps();
@@ -224,7 +226,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 	                       		$output .= '</li>';
 	                       		$output .= '<li>';
 		                       		$output .= '<span>Total Nights</span>';
-		                       		$output .= '<span>'. count_nights(booking_data('date_in'), booking_data('date_out')) .'</span>';
+		                       		$output .= '<span>'. $nights .'</span>';
 	                       		$output .= '</li>';
 	                            $output .= '<li>';
 	                            	$output .= '<span>Total Guests</span>';
@@ -244,6 +246,10 @@ function booking_review_shortcode_handler($atts, $content = null) {
 		                       			$output .= '<span>'. get_field('room_code', $room_ID) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
+		                       			$output .= '<span>Room Price</span>';
+		                       			$output .= '<span>'. nf($room_price) .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
 		                       			$output .= '<span>Max</span>';
 		                       			$output .= '<span>'. get_field('max_person', $room_ID) .' Person(s)</span>';
 		                       		$output .= '</li>';
@@ -258,6 +264,10 @@ function booking_review_shortcode_handler($atts, $content = null) {
 		                       		$output .= '<li>';
 			                       		$output .= '<span>View</span>';
 			                       		$output .= '<span>'. get_field('view', $room_ID) .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Sub Total</span>';
+			                       		$output .= '<span>'. nf($room_price) .' x ' . $nights . ' = '. nf(booking_data('amount')) .'</span>';
 		                       		$output .= '</li>';
 		                        $output .= '</ul>';
 		                    $output .= '</div>';
@@ -470,7 +480,8 @@ function success_booking_details() {
 	}
 
 	$d = get_booking_by_id(get_booking_session('booking_ID'));
-
+	$room_price = $d['room_price'];
+	$nights = $d['no_of_night'];
 
 	$output = '';
 
@@ -516,6 +527,10 @@ function success_booking_details() {
 		                       			$output .= '<span>'. get_field('room_code', $d['room_ID']) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
+		                       			$output .= '<span>Room Price</span>';
+		                       			$output .= '<span>'. nf($room_price) .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
 		                       			$output .= '<span>Max</span>';
 		                       			$output .= '<span>'. get_field('max_person', $d['room_ID']) .' Person(s)</span>';
 		                       		$output .= '</li>';
@@ -531,6 +546,11 @@ function success_booking_details() {
 			                       		$output .= '<span>View</span>';
 			                       		$output .= '<span>'. get_field('view', $d['room_ID']) .'</span>';
 		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Sub Total</span>';
+			                       		$output .= '<span>'. nf($room_price) .' x ' . $nights . ' = '. nf($d['amount']) .'</span>';
+		                       		$output .= '</li>';
+		                       		
 		                        $output .= '</ul>';
 			                    $output .= '</div>';
 		                                   

@@ -87,21 +87,40 @@ class BigDream_Booking {
 	}
 
 	public function add_edit_booking() {
-
+		$editable = true;
 		if ( isset( $_POST['save_booking_field'] ) && wp_verify_nonce( $_POST['save_booking_field'], 'save_booking_action' ) ) {
 			$post = $_POST;
+			
 
+			if ($post['booking_ID'] <= 0) {
+				$nights = count_nights($post['date_in'], $post['date_out']);
+				$nights = $nights <= 0 ? 1 : $nights;
+				$room_price = get_room_price($post['room_ID'], $post['date_in'], $post['date_out']);
+				$total_amount = $room_price * $nights;
+			} else {
+				$b = get_booking_by_id($post['booking_ID']);
+				$room_price = $b['room_price'];
+				$nights = $b['no_of_night'];
+				$total_amount = $b['amount'];
+				$post['date_in'] = $b['date_in'];
+				$post['date_out'] = $b['date_out'];
+				$post['room_ID'] = $b['room_ID'];
+				
+			}
+
+			
 			$args = array(
 				'booking_ID' => $post['booking_ID'],
 				'room_ID' => $post['room_ID'],
-				'amount' =>  get_room_price($post['room_ID'], $post['date_in'], $post['date_out']),
+				'room_price' => $room_price,
+				'amount' =>  $total_amount,
 				'amount_paid' => $post['amount_paid'],
 				'salutation' => $post['salutation'],
 				'country' => $post['country'],
 				'first_name' => $post['first_name'],
 				'last_name' => $post['last_name'],
 				'middle_name' => $post['middle_name'],
-				'birth_date' => $post['birth_date'],
+				'birth_date' => format_db_date($post['birth_date']),
 				'email_address' => $post['email_address'],
 				'primary_phone' => $post['primary_phone'],
 				'address_1' => $post['address_1'],
@@ -110,11 +129,11 @@ class BigDream_Booking {
 				'province' => $post['province'],
 				'zipcode' => $post['zipcode'],
 				'nationality' => $post['nationality'],
-				'date_in' => $post['date_in'],
-				'date_out' => $post['date_out'],
+				'date_in' => format_db_date($post['date_in']),
+				'date_out' => format_db_date($post['date_out']),
 				'no_of_adult' => $post['no_of_adult'],
 				'no_of_child' => $post['no_of_child'],
-				'no_of_night' => count_nights($post['date_in'], $post['date_out']),
+				'no_of_night' => $nights,
 				'booking_status' => $post['booking_status'],
 				'notes' => $post['notes'],
 				'type' => $post['booking_ID'] != 0 ? 'BOOKING' : $post['booking_ID'],
@@ -159,6 +178,9 @@ class BigDream_Booking {
 			// Update booking to checked
 			update_to_checked($_GET['bid']);
 			$post = get_booking_by_id($_GET['bid']);
+			if ($post['booking_ID'] > 0 && !in_array($post['booking_status'], array('Unconfirmed', 'Cancelled'))) {
+				$editable = false;
+			}
 		} else {
 			$post = array(
 				'booking_ID' => 0,
