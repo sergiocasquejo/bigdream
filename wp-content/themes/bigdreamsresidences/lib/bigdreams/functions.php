@@ -644,7 +644,7 @@ function is_date_and_room_not_available($room_ID, $from , $to) {
   
   $range = get_dates_from_date_range($from, $to);
   foreach ($range as $i => $k) {
-    if (is_selected_date_and_room_not_available($data['room_ID'], format_db_date($k)) > 0) {
+    if (is_selected_date_and_room_not_available($room_ID, format_db_date($k)) > 0) {
   	  return true;
   	}
   }
