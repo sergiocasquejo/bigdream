@@ -13,8 +13,8 @@
   			</select>
   		</div>
   		<div class="col-md-6 form-group">
-  			<label class="form-label" for="amount">Amount</label>
-  			<input type="number" name="amount" class="form-control" value="<?php echo $post['amount']; ?>" required/>
+  			<label class="form-label" for="amount_paid">Amount Paid</label>
+  			<input type="number" name="amount_paid" class="form-control" value="<?php echo $post['amount_paid']; ?>" />
   		</div>
 		</div>
 		<div class="gap-30"></div>
@@ -109,10 +109,7 @@
     </div>
 		<div class="gap-30"></div>
 		<div clas="row">
-  		<div class="col-md-6 form-group">
-  			<label class="form-label" for="amount_paid">Amount Paid</label>
-  			<input type="number" name="amount_paid" class="form-control" value="<?php echo $post['amount_paid']; ?>" />
-  		</div>
+  		
   		<div class="col-md-6 form-group">
   			<label class="form-label" for="booking_status">Booking Status</label>
   			<select name="booking_status" class="form-control" required>
