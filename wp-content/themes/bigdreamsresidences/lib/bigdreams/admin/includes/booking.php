@@ -120,14 +120,17 @@ class BigDream_Booking {
 				'type' => $post['booking_ID'] != 0 ? 'BOOKING' : $post['booking_ID'],
 				'date_booked' => date('Y-m-d H:i:s'),
 			);
-
-			if (bigdream_save_booking($args)) {
-				bigdream_add_notices('updated', 'Successully Saved.');
-				bigdream_redirect_script('admin.php?page=big-dream-bookings&view=list');
+			
+      if ($post['booking_ID'] == 0 && is_date_and_room_not_available($post['room_ID'], format_db_date($post['date_in']),  format_db_date($post['date_out']))) {
+			  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
 			} else {
-				bigdream_add_notices('error', 'Error while Saving.');
+  			if (bigdream_save_booking($args)) {
+  				bigdream_add_notices('updated', 'Successully Saved.');
+  				bigdream_redirect_script('admin.php?page=big-dream-bookings&view=list');
+  			} else {
+  				bigdream_add_notices('error', 'Error while Saving.');
+  			}
 			}
-
 		} elseif(isset($_GET['bid']) && !empty($_GET['bid'])) {
 			// Update booking to checked
 			update_to_checked($_GET['bid']);
