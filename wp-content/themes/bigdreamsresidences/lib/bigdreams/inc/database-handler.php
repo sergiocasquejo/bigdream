@@ -201,7 +201,7 @@ function get_inserted_ID() {
  * @param Int $count
  */
  
-function is_selected_date_and_room_available($roomID, $from, $to) {
+function is_selected_date_and_room_not_available($roomID, $from) {
   global $wpdb;
   
   $sql = $wpdb->prepare("SELECT count(*) FROM ".$wpdb->prefix."bookings WHERE room_ID = %d AND '%s' BETWEEN date_in AND date_out", $roomID, $from);
