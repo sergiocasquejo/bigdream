@@ -16,11 +16,11 @@ class BigDream_Booking {
 		add_action('wp_ajax_nopriv_booking-details', array($this, 'booking_details'));
 	}
 	public function enqueue_scripts() {
-		wp_enqueue_style('fullcalendar.min-style', CDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.min.css');
-		wp_enqueue_style('fullcalendar.print.min-style', CDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.print.css', array(), null, 'print');
+		wp_enqueue_style('fullcalendar.min-style', BDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.min.css');
+		wp_enqueue_style('fullcalendar.print.min-style', BDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.print.css', array(), null, 'print');
 
-		wp_enqueue_script('moment.min-script', CDR_SYSTEM_DIR_URI .'/assets/vendor/moment.min.js');
-		wp_enqueue_script('fullcalendar.min-script', CDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.min.js', array('moment.min-script', 'jquery'), false, false);
+		wp_enqueue_script('moment.min-script', BDR_SYSTEM_DIR_URI .'/assets/vendor/moment.min.js');
+		wp_enqueue_script('fullcalendar.min-script', BDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.min.js', array('moment.min-script', 'jquery'), false, false);
 
 	}
 	public function admin_menu() {
@@ -53,27 +53,25 @@ class BigDream_Booking {
 		if ($count > 0) {
 
 			echo '<div class="updated">';
-        		echo '<p>' . get_count_newly_booked() . ' Guest Newly booked. <a href="'. admin_url('admin.php?page='. self::LIST_PAGE_SLUG .'&view=list&new=0') .'">Click here.</a></p>';
+        		echo '<p>' . get_count_newly_booked() . ' Guest Newly booked. <a href="'. admin_url('admin.php?page='. self::LIST_PAGE_SLUG .'&view=list&status=NEW') .'">Click here.</a></p>';
     		echo '</div>';
     	}
 	}
 
 	public function bookings() {
-		if (isset($_GET['view']) && $_GET['view'] =='list') {
-			global $booking_list_table;
+		if (isset($_GET['view']) && $_GET['view'] =='calendar') {
+			include_once BDR_ADMIN_DIR . '/views/bookings-calendar-view.html.php';
 
-			$booking_list_table->prepare_items();
-			include_once CDR_ADMIN_DIR . '/views/bookings.html.php';
 		} else {
-			include_once CDR_ADMIN_DIR . '/views/bookings-calendar-view.html.php';
+			global $booking_list_table;
+			$booking_list_table->prepare_items();
+			include_once BDR_ADMIN_DIR . '/views/bookings.html.php';
 		}
 	}
 
 	public function booking_details() {
 		if (defined('DOING_AJAX') && DOING_AJAX) {
 			
-			// Update booking to checked
-			update_to_checked($_GET['bid']);
 			$details = get_booking_by_id($_GET['bid']);
 
 			$featured_image = '';
@@ -81,7 +79,7 @@ class BigDream_Booking {
 				$featured_image = wp_get_attachment_image_src(get_post_thumbnail_id($details['room_ID']), 'large')[0];
 			}
 
-			include_once CDR_ADMIN_DIR . '/views/booking-details.html.php';
+			include_once BDR_ADMIN_DIR . '/views/booking-details.html.php';
 			exit;
 		}
 	}
@@ -134,6 +132,7 @@ class BigDream_Booking {
 				'no_of_adult' => $post['no_of_adult'],
 				'no_of_child' => $post['no_of_child'],
 				'no_of_night' => $nights,
+				'payment_status' => $post['payment_status'],
 				'booking_status' => $post['booking_status'],
 				'notes' => $post['notes'],
 				'type' => $post['booking_ID'] != 0 ? 'BOOKING' : $post['booking_ID'],
@@ -175,8 +174,6 @@ class BigDream_Booking {
   			}
 		}
 		} elseif(isset($_GET['bid']) && !empty($_GET['bid'])) {
-			// Update booking to checked
-			update_to_checked($_GET['bid']);
 			$post = get_booking_by_id($_GET['bid']);
 			if ($post['booking_ID'] > 0 && !in_array($post['booking_status'], array('Unconfirmed', 'Cancelled'))) {
 				$editable = false;
@@ -206,16 +203,17 @@ class BigDream_Booking {
 				'no_of_adult' => 0,
 				'no_of_child' => 0,
 				'booking_status' => '',
+				'payment_status' => PAYMENT_DEFAULT_STATUS,
 				'notes' => '',
 				'date_booked' => date('Y-m-d H:i:s'),
 			);
 		}
 
 		$available_rooms = get_available_rooms();
-		$booking_statuses = json_decode(BOOKING_STATUSES);
-		$guest_title = json_decode(GUEST_TITLE);
+		$booking_statuses = booking_statuses();
+		$guest_title = salutations();
 
-		include_once CDR_ADMIN_DIR . '/views/edit-booking.html.php';	
+		include_once BDR_ADMIN_DIR . '/views/edit-booking.html.php';	
 	}
 
 

@@ -133,7 +133,6 @@ function featured_room_shortcode_handler($atts, $content = null) {
 							$output .= '<li><i class="fa fa-male"></i>Max: '. get_field('max_person', $p->ID) .' Person(s)</li>';
 							$output .= '<li><i class="fa fa-bed"></i>Bed: '. get_field('bed', $p->ID) .'</li>';
 							$output .= '<li><i class="fa fa-eye"></i>View: '. get_field('view', $p->ID) .'</li>';
-							$output .= '<li><i class="fa fa-calendar-check-o"></i>Availability: '. room_status_text(get_field('status', $p->ID)) .'</li>';
 							$output .= '</ul>';
 							
 							$output .= '<a href="'. get_permalink($p->ID) .'" class="bdr-btn bdr-btn-default">View Details</a>';
@@ -173,7 +172,6 @@ function room_listings_shortcode_handler($atts, $content = null) {
                			$output .= '<li><i class="fa fa-male"></i>Max: '. get_field('max_person', $t->ID) .' Person(s)</li>';
 						$output .= '<li><i class="fa fa-bed"></i>Bed: '. get_field('bed', $t->ID) .'</li>';
 						$output .= '<li><i class="fa fa-eye"></i>View: '. get_field('view', $t->ID) .'</li>';
-               			$output .= '<li><i class="fa fa-calendar-check-o"></i>Availability: '. room_status_text(get_field('status', $t->ID)) .'</li>';
                			$output .= '</ul>';
                		$output .= '</div>';
                		$output .= '<div class="bot">';
@@ -203,7 +201,7 @@ function booking_review_shortcode_handler($atts, $content = null) {
 
 	$room_ID = booking_data('room_ID');
 
-	$countries = json_decode(COUNTRY);
+	$countries = countries();
 	$nights = count_nights(booking_data('date_in'), booking_data('date_out'));
 	$room_price = booking_data('room_price');
 

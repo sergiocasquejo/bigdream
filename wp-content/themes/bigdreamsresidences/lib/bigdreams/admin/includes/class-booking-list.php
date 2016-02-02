@@ -16,15 +16,11 @@ class Booking_List_TBL extends WP_List_Table {
 			'ajax'     => true //should this table support ajax?
 		] );
 
-		
-
 	}
 
 	public function no_items() {
 	  _e( 'No bookings found, dude.' );
 	}
-
-	
 
 	public function get_columns() {
 		$columns = array();
@@ -33,14 +29,13 @@ class Booking_List_TBL extends WP_List_Table {
 			$columns['cb'] = '<input type="checkbox" />';
 		}
 		$columns['booking_no'] = 'Booking #';
-		$columns['room'] = 'Room';
-		$columns['name'] = 'Full Name';
-		//$columns['email_address'] = 'Email Address';
+		$columns['room'] = 'Room #';
 		$columns['amount'] = 'Amount';
 		$columns['amount_paid'] = 'Amount Paid';
 		$columns['date_in'] = 'Date In';
 		$columns['date_out'] = 'Date Out';
 		$columns['booking_status'] = 'Status';
+		$columns['name'] = 'Booked By';
 		$columns['date_booked'] = 'Date Booked';
 
 		return $columns;
@@ -77,12 +72,7 @@ class Booking_List_TBL extends WP_List_Table {
 
 	public function column_room($item) {
 		$room_title = sprintf('<a href="#">%s</a>', get_field('room_code', $item['room_ID']));
-		$room_title .= $item['is_checked'] == 0 ? ' <span class="badge new">New</span>' : '';
-
-		if ($item['booking_status'] != 'Complete') {
-			$actions['edit'] = sprintf('<a href="?page=%s&bid=%s">Edit</a>',BigDream_Booking::NEW_BOOKING_SLUG, $item['booking_ID']);
-		}
-
+		$actions['edit'] = sprintf('<a href="?page=%s&bid=%s">Edit</a>',BigDream_Booking::NEW_BOOKING_SLUG, $item['booking_ID']);
         $actions['view'] = sprintf('<a href="?page=%s&bid=%d" class="view-booking-details" data-id="%d">View</a>',BigDream_Booking::VIEW_BOOKING_SLUG, $item['booking_ID'], $item['booking_ID']);
 
   		return sprintf('%1$s %2$s', $room_title, $this->row_actions($actions) );
@@ -93,7 +83,6 @@ class Booking_List_TBL extends WP_List_Table {
 	public function column_name($item) {
 		return $item['name'];
 	}
-
 
 	public function column_booking_status($item) {
 
@@ -151,9 +140,6 @@ class Booking_List_TBL extends WP_List_Table {
 		// only ncessary because we have sample data
 		$this->data = array_slice($this->data,(($current_page-1)*$per_page),$per_page);
 
-		
-
-
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,                  //WE have to calculate the total number of items
 			'per_page'    => $per_page                     //WE have to determine how many items to show on a page
@@ -168,30 +154,18 @@ class Booking_List_TBL extends WP_List_Table {
 		$views = array();
 		$current = ( !empty($_REQUEST['status']) ? $_REQUEST['status'] : 'all');
 
-		$statuses = json_decode(BOOKING_STATUSES);
+		$statuses = booking_statuses();
 		//All link
 		$class = ($current == 'all' ? ' class="current"' :'');
 		$all_url = remove_query_arg('status');
 		$views['all'] = "<a href='{$all_url }' {$class} >All</a>";
 
-
-		$current = ( !empty($_REQUEST['is_checked']) ? $_REQUEST['is_checked'] : -1 );
-
-		$class = ($current === 0 ? ' class="current"' :'');
-		$new_url = add_query_arg('new', 0);
-		$views['new'] = "<a href='{$new_url }' {$class} >New</a>";
-
-
 		foreach ($statuses as $s) {
 			$slug = sanitize_title_with_dashes($s);
 			$url = add_query_arg('status', $s);
 			$class = ($current == $slug ? ' class="current"' :'');
-			$views[$slug] = '<a href="'. $url .'" '. $class .' ><span class="booking_status '. $slug .'"></span> '. $s .'</a>';
+			$views[$slug] = '<a href="'. $url .'" '. $class .' >'. $s .'</a>';
 		}
-
-		
-		//$views['x'] = '<a href="'. admin_url('/admin.php?page='. BigDream_Booking::LIST_PAGE_SLUG . '&view=calendar') .'"><span class="dashicons dashicons-calendar-alt"></span></a>';
-		//$views['y'] = '<a href="'. admin_url('/admin.php?page='. BigDream_Booking::LIST_PAGE_SLUG. '&view=list') .'"><span class="dashicons dashicons-list-view"></span></a>';
 
 		return $views;
 	}
@@ -251,10 +225,6 @@ class Booking_List_TBL extends WP_List_Table {
 		}
 		if (isset($_REQUEST['status']) && !empty($_REQUEST['status'])) {
 			$sql .= " AND (b.booking_status = '". $_REQUEST['status'] ."') ";
-		}
-
-		if (isset($_REQUEST['new']) && $_REQUEST['new'] === 0) {
-			$sql .= " AND (b.is_checked = ". $_REQUEST['new'] .") ";
 		}
 
 		$results = $wpdb->get_results($sql, ARRAY_A);
