@@ -112,6 +112,14 @@
           <?php endforeach; ?>
         </select>
       </div>
+      <div class="col-md-6 form-group">
+        <label class="form-label" for="booking_status">Payment Status</label>
+        <select name="booking_status" class="form-control" required>
+          <?php foreach ($payment_statuses as $s): ?>
+          <option value="<?php echo $s; ?>" <?php selected($s, $post['payment_status']); ?>><?php echo $s; ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
     </div>
     <div class="row">
       <div class="col-md-12 form-group">
