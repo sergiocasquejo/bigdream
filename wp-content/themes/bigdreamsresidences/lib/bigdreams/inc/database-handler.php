@@ -50,6 +50,16 @@ if (!function_exists('bigdream_save_booking')) {
 	}
 }
 
+
+function get_all_bookings() {
+	global $wpdb
+	
+	$sql = "SELECT * FROM ". $wpdb->prefix . "bookings";
+
+	return $wpdb->get_results($sql, ARRAY_A);
+
+}
+
 function generate_and_update_booking_no($booking_ID)  {
 	global $wpdb;
 	$sql = "UPDATE ". $wpdb->prefix . "bookings b  SET b.booking_no = CONCAT(DATE_FORMAT(b.date_booked, '%Y%m%d'), b.booking_ID) WHERE b.booking_ID =  $booking_ID";
@@ -154,8 +164,8 @@ if (!function_exists('get_available_rooms')) {
 			'numberposts'	=> -1,
 			'fields' => 'ids,titles',
 			'post_type'		=> 'room',
-			'meta_key'		=> 'room_status',
-			'meta_value'	=> 'vacant_clean'
+			//'meta_key'		=> 'room_status',
+			//'meta_value'	=> 'VACANT CLEAN'
 		));
 
 	
