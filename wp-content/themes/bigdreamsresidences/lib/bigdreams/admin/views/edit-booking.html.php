@@ -8,7 +8,7 @@
         <label class="form-label" for="first_name">Room Type</label>
         <select name="room_ID" class="form-control" required <?php echo !$editable ? 'disabled' : ''; ?>>
           <?php foreach ($available_rooms as $i => $r): ?>
-            <option value="<?php echo $r->ID; ?>" <?php selected($r->ID, $post['room_ID']); ?>><?php echo $r->post_title; ?></option>
+            <option value="<?php echo $r->ID; ?>" <?php selected($r->ID, $post['room_ID']); ?>><?php the_field('room_code', $r->ID); ?></option>
           <?php endforeach; ?>
         </select>
       </div>
