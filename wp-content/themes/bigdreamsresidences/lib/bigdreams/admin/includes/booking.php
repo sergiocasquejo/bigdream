@@ -1,6 +1,6 @@
 <?php 
 
-class BigDream_Booking {
+class Admin_Booking {
 	const LIST_PAGE_SLUG = 'big-dream-bookings';
 	const NEW_BOOKING_SLUG = 'big-dream-booking-edit';
 	const VIEW_BOOKING_SLUG = 'big-dream-booking-view';
@@ -14,7 +14,40 @@ class BigDream_Booking {
 		// Get booking details
 		add_action('wp_ajax_booking-details', array($this, 'booking_details'));
 		add_action('wp_ajax_nopriv_booking-details', array($this, 'booking_details'));
+
+		add_action('admin_init', array($this, 'admin_init'));
 	}
+
+	public function admin_init() {
+
+		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'export-bookings') {
+
+			$results = get_all_bookings();
+
+			// When executed in a browser, this script will prompt for download 
+			// of 'test.xls' which can then be opened by Excel or OpenOffice.
+			require BDR_SYSTEM_DIR .'/inc/php-export-data.class.php';
+			// 'browser' tells the library to stream the data directly to the browser.
+			// other options are 'file' or 'string'
+			// 'test.xls' is the filename that the browser will use when attempting to 
+			// save the download
+			$exporter = new ExportDataExcel('browser', 'reports.xls');
+
+			$exporter->initialize(); // starts streaming data to web browser
+
+			// pass addRow() an array and it converts it to Excel XML format and sends 
+			// it to the browser
+			$exporter->addRow($results); 
+
+
+			$exporter->finalize(); // writes the footer, flushes remaining data to browser.
+
+			exit(); // all done
+
+		}
+	}
+
+
 	public function enqueue_scripts() {
 		wp_enqueue_style('fullcalendar.min-style', BDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.min.css');
 		wp_enqueue_style('fullcalendar.print.min-style', BDR_SYSTEM_DIR_URI .'/assets/vendor/fullcalendar.print.css', array(), null, 'print');
@@ -230,4 +263,4 @@ class BigDream_Booking {
 	}
 }
 
-new BigDream_Booking();
+new Admin_Booking();
