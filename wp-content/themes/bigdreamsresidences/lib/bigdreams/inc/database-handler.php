@@ -12,6 +12,7 @@ if (!function_exists('bigdream_save_booking')) {
 		$data = array(
 			'booking_ID' => $args['booking_ID'],
 			'room_ID' => $args['room_ID'],
+			'room_code' => $args['room_code'],
 			'room_price' => $args['room_price'],
 			'amount' => $args['amount'],
 			'amount_paid' => $args['amount_paid'],
@@ -41,9 +42,9 @@ if (!function_exists('bigdream_save_booking')) {
 		);
 
 		if (isset($args['booking_ID']) && $args['booking_ID'] != 0) {
-			$result = $wpdb->update( $wpdb->prefix . 'bookings', $data, array('booking_ID' => $args['booking_ID']), array('%d','%d','%f','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s', '%s'), array('%d'));
+			$result = $wpdb->update( $wpdb->prefix . 'bookings', $data, array('booking_ID' => $args['booking_ID']), array('%d','%d', '%d', '%f','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s', '%s'), array('%d'));
 		} else {
-			$result = $wpdb->insert( $wpdb->prefix . 'bookings', $data, array('%d','%d','%f','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s', '%s'));
+			$result = $wpdb->insert( $wpdb->prefix . 'bookings', $data, array('%d','%d', '%d','%f','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s', '%s'));
 		}
 
 		return $result;
