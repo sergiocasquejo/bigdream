@@ -145,6 +145,7 @@ class Admin_Booking {
       $args = array(
         'booking_ID' => $post['booking_ID'],
         'room_ID' => $post['room_ID'],
+        'room_code' => get_field('room_code', $post['room_ID']),
         'room_price' => $room_price,
         'amount' =>  $total_amount,
         'amount_paid' => $post['amount_paid'],
