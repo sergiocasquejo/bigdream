@@ -12,32 +12,32 @@
  */
 
 if(!function_exists('nf')) {
-	function nf($number , $decimals = 0 , $dec_point = "." , $thousands_sep = ",") {
-		return number_format($number, $decimals, $dec_point, $thousands_sep);
-	}
+  function nf($number , $decimals = 0 , $dec_point = "." , $thousands_sep = ",") {
+    return number_format($number, $decimals, $dec_point, $thousands_sep);
+  }
 }
 
 
 
 function room_statuses() {
-	return array('VACANT CLEAN', 'OCCUPIED', 'VACANT DIRTY', 'OUT OF ORDER', 'OUT OF SERVICE');
+  return array('VACANT CLEAN', 'OCCUPIED', 'VACANT DIRTY', 'OUT OF ORDER', 'OUT OF SERVICE');
 }
 
 function booking_statuses() {
-	return array('NEW', 'CONFIRMED', 'ARRIVED', 'CHECKOUT');
+  return array('NEW', 'CONFIRMED', 'ARRIVED', 'CHECKOUT');
 }
 
 
 function payment_statuses() {
-	return array('UNPAID', 'PARTIAL', 'PAID');
+  return array('UNPAID', 'PARTIAL', 'PAID');
 }
 
 function salutations() {
-	return array('Mr', 'Ms', 'Mrs');
+  return array('Mr', 'Ms', 'Mrs');
 }
 
 function countries() {
-	return array("Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe");
+  return array("Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe");
 }
 
 /**
@@ -50,9 +50,9 @@ function countries() {
  */
 
 function bigdream_redirect_script($url) {
-	echo '<script>';
-	echo 'window.location.replace("'. $url .'")';
-	echo '</script>';
+  echo '<script>';
+  echo 'window.location.replace("'. $url .'")';
+  echo '</script>';
 }
 /**
  * bigdream_add_notices()
@@ -64,7 +64,7 @@ function bigdream_redirect_script($url) {
  * @return none
  */
 function bigdream_add_notices($type, $message) {
-	$_SESSION['bigdream_notices'][] = array('type' => $type, 'message' => $message);
+  $_SESSION['bigdream_notices'][] = array('type' => $type, 'message' => $message);
 }
 
 /**
@@ -104,27 +104,27 @@ function get_notices() {
  
  
 if (!function_exists('bigdream_notices')) {
-	function bigdream_notices($echo = true) {
+  function bigdream_notices($echo = true) {
 
-		$output = '';
-		if (has_notices()) {
-			$output .= '<div class="notices-box">';
-			$output .= '<div class="container">';
-			$notices = get_notices();
-			
-			foreach ($notices as $i => $n) {
-				$output .= '<div class="'. (!isset($n['type']) ? 'updated' : $n['type']) .'">';
-			        $output .= '<p>'. $n['message'] .'</p>';
-			    $output .= '</div>';
-			}
-			unset($_SESSION['bigdream_notices']);
-			$output .= '</div>';
-			$output .= '</div>';
-		}
-		if (!$echo) return $output;
-		
-	    echo $output;
-	}
+    $output = '';
+    if (has_notices()) {
+      $output .= '<div class="notices-box">';
+      $output .= '<div class="container">';
+      $notices = get_notices();
+      
+      foreach ($notices as $i => $n) {
+        $output .= '<div class="'. (!isset($n['type']) ? 'updated' : $n['type']) .'">';
+              $output .= '<p>'. $n['message'] .'</p>';
+          $output .= '</div>';
+      }
+      unset($_SESSION['bigdream_notices']);
+      $output .= '</div>';
+      $output .= '</div>';
+    }
+    if (!$echo) return $output;
+    
+      echo $output;
+  }
 }
 
 
@@ -138,17 +138,17 @@ if (!function_exists('bigdream_notices')) {
  */
  
 function modal_notices() {
-	$output = '';
-	if (has_notices()) {
-		$output .= '<div id="bigdreamNoticesModal" class="modal fade bs-notice-modal-sm" tabindex="-1" role="dialog" aria-labelledby="bigdreamNoticeModal">';
-			$output .= '<div class="modal-dialog modal-sm">';
-				$output .= '<div class="modal-content">';
-					$output .= '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-					$output .= bigdream_notices(false);
-				$output .= '</div>';
-			$output .= '</div>';
-		$output .= '</div>';
-	}
+  $output = '';
+  if (has_notices()) {
+    $output .= '<div id="bigdreamNoticesModal" class="modal fade bs-notice-modal-sm" tabindex="-1" role="dialog" aria-labelledby="bigdreamNoticeModal">';
+      $output .= '<div class="modal-dialog modal-sm">';
+        $output .= '<div class="modal-content">';
+          $output .= '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+          $output .= bigdream_notices(false);
+        $output .= '</div>';
+      $output .= '</div>';
+    $output .= '</div>';
+  }
   echo $output;
 }
 
@@ -166,20 +166,20 @@ function bigdream_booking_list_set_option($status, $option, $value) {
  */
  
 function push_to_booking_session($args) {
-	$current = isset($_SESSION['_bdr_booking']) ? $_SESSION['_bdr_booking'] : array();
-  	$_SESSION['_bdr_booking'] = array_merge($current, $args);
+  $current = isset($_SESSION['_bdr_booking']) ? $_SESSION['_bdr_booking'] : array();
+    $_SESSION['_bdr_booking'] = array_merge($current, $args);
   
-  	return get_booking_session();
+    return get_booking_session();
 }
 
 function empty_booking() {
-	$_SESSION['_bdr_booking'] = array();
-	unset($_SESSION['_bdr_booking']);
+  $_SESSION['_bdr_booking'] = array();
+  unset($_SESSION['_bdr_booking']);
 }
 
 
 function is_empty_booking() {
-	return isset($_SESSION['_bdr_booking']) && count($_SESSION['_bdr_booking']) > 0 ? false : true;
+  return isset($_SESSION['_bdr_booking']) && count($_SESSION['_bdr_booking']) > 0 ? false : true;
 }
 /**
  * get_booking_session()
@@ -206,136 +206,138 @@ function get_booking_session() {
 add_action('init', 'booking_init_action_handler');
 function booking_init_action_handler() {
 
-	if (isset($_REQUEST['action'])) {
-		$action = $_REQUEST['action'];
-		switch($action) {
-			case 'check_availability':
-				$data = $_POST;
+  if (isset($_REQUEST['action'])) {
+    $action = $_REQUEST['action'];
+    switch($action) {
+      case 'check_availability':
+        $data = $_POST;
 
-				push_to_booking_session(array(
-						'date_in' => $data['date_in'],
-						'date_out' => $data['date_out'],
-						'no_of_adult' => $data['no_of_adult'],
-						'no_of_child' => isset($data['no_of_child']) ? $data['no_of_child'] : 0,
-					));
-				exit(wp_redirect(get_permalink(get_page_by_path('rooms-suits'))));
-				break;
-			case 'book_room':
-				$data = $_POST;
-				if (!is_bookable($data['room_ID'])) {
-					bigdream_add_notices('error', 'Selected room is Out of Order.');
-				  	return;
-				}
+        push_to_booking_session(array(
+            'date_in' => $data['date_in'],
+            'date_out' => $data['date_out'],
+            'no_of_adult' => $data['no_of_adult'],
+            'no_of_child' => isset($data['no_of_child']) ? $data['no_of_child'] : 0,
+          ));
+        exit(wp_redirect(get_permalink(get_page_by_path('rooms-suits'))));
+        break;
+      case 'book_room':
+        $data = $_POST;
+        if (!is_bookable($data['room_ID'])) {
+          bigdream_add_notices('error', 'Selected room is Out of Order.');
+            return;
+        }
 
-				if (is_date_and_room_not_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
-				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
-				  return;
-				}
-				$nights = count_nights($data['date_in'], $data['date_out']);
-				$nights = $nights <= 0 ? 1 : $nights;
-				$room_price = get_room_price($data['room_ID'], $data['date_in'], $data['date_out']);
+        if (is_date_and_room_not_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
+          bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
+          return;
+        }
+        $nights = count_nights($data['date_in'], $data['date_out']);
+        $nights = $nights <= 0 ? 1 : $nights;
+        $room_price = get_room_price($data['room_ID'], $data['date_in'], $data['date_out']);
 
-				push_to_booking_session(array(
-						'date_in' => $data['date_in'],
-						'date_out' => $data['date_out'],
-						'no_of_adult' => $data['no_of_adult'],
-						'no_of_child' => isset($data['no_of_child']) ? $data['no_of_child'] : 0,
-						'room_ID' => $data['room_ID'],
-						'no_of_night' => $nights,
-						'room_price' => $room_price,
-						'amount' => $room_price * $nights, 
-						'booking_ID' => 0,
-						'amount_paid' => 0,
-						'payment_status' => PAYMENT_DEFAULT_STATUS,
-						'booking_status' => BOOKING_DEFAULT_STATUS
-					));
-				exit(wp_redirect(get_permalink(get_page_by_path('review'))));
-				break;
+        push_to_booking_session(array(
+            'date_in' => $data['date_in'],
+            'date_out' => $data['date_out'],
+            'no_of_adult' => $data['no_of_adult'],
+            'no_of_child' => isset($data['no_of_child']) ? $data['no_of_child'] : 0,
+            'room_ID' => $data['room_ID'],
+            'room_code' => get_field('room_code', $data['room_ID']),
+            'no_of_night' => $nights,
+            'room_price' => $room_price,
+            'amount' => $room_price * $nights, 
+            'booking_ID' => 0,
+            'amount_paid' => 0,
+            'payment_status' => PAYMENT_DEFAULT_STATUS,
+            'booking_status' => BOOKING_DEFAULT_STATUS
+          ));
+        exit(wp_redirect(get_permalink(get_page_by_path('review'))));
+        break;
 
-			case 'make_reservation':
-				if (is_empty_booking()) {
-					bigdream_add_notices('error', 'Please select date.');
-					exit(wp_redirect(get_bloginfo('url')));
-					break;
-				}
-			  	$data = get_booking_session();
+      case 'make_reservation':
+        if (is_empty_booking()) {
+          bigdream_add_notices('error', 'Please select date.');
+          exit(wp_redirect(get_bloginfo('url')));
+          break;
+        }
+          $data = get_booking_session();
 
-			  	if (!is_bookable($data['room_ID'])) {
-					bigdream_add_notices('error', 'Selected room is Out of Order.');
-				  	return;
-				}
-			  
-        		if (is_date_and_room_not_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
-				  bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
-				  return;
-				}
+          if (!is_bookable($data['room_ID'])) {
+          bigdream_add_notices('error', 'Selected room is Out of Order.');
+            return;
+        }
+        
+            if (is_date_and_room_not_available($data['room_ID'], format_db_date($data['date_in']),  format_db_date($data['date_out']))) {
+          bigdream_add_notices('error', 'Selected room is not available on that date. Please check calendar to see availability.');
+          return;
+        }
 
-				
+        
 
-				$booking = push_to_booking_session(array_merge($data, $_POST));
+        $booking = push_to_booking_session(array_merge($data, $_POST));
 
-			
-				$args = array(
-					'booking_ID' => $booking['booking_ID'],
-					'room_ID' => $booking['room_ID'],
-					'room_price' => $booking['room_price'],
-					'amount' => $booking['amount'],
-					'amount_paid' => $booking['amount_paid'],
-					'salutation' => $booking['salutation'],
-					'country' => $booking['country'],
-					'first_name' => $booking['first_name'],
-					'last_name' => $booking['last_name'],
-					'middle_name' => $booking['middle_name'],
-					'birth_date' => format_db_date($booking['birth_date']),
-					'email_address' => $booking['email_address'],
-					'primary_phone' => $booking['primary_phone'],
-					'address_1' => $booking['address_1'],
-					'address_2' => $booking['address_2'],
-					'city' => $booking['city'],
-					'province' => $booking['province'],
-					'zipcode' => $booking['zipcode'],
-					'nationality' => $booking['nationality'],
-					'date_in' => format_db_date($booking['date_in']),
-					'date_out' => format_db_date($booking['date_out']),
-					'no_of_adult' => $booking['no_of_adult'],
-					'no_of_child' => $booking['no_of_child'],
-					'no_of_night' => $booking['no_of_night'],
-					'payment_status' => $post['payment_status'],
-					'booking_status' => $booking['booking_status'],
-					'notes' => $booking['notes'],
-					'type' => 'BOOKING',
-					'date_booked' => date('Y-m-d H:i:s'),
-				);
-				$val = validate_booking_data($args);
-			
-				/*** if there are errors show them ***/
-			    if($val['valid'] === false)
-			    {
-			    	bigdream_javacript_notices($val['errors']);
-			        bigdream_add_notices('error', 'Please review the fields.');
-		
-			    } else {
+      
+        $args = array(
+          'booking_ID' => $booking['booking_ID'],
+          'room_ID' => $booking['room_ID'],
+          'room_code' => $booking['room_code'],
+          'room_price' => $booking['room_price'],
+          'amount' => $booking['amount'],
+          'amount_paid' => $booking['amount_paid'],
+          'salutation' => $booking['salutation'],
+          'country' => $booking['country'],
+          'first_name' => $booking['first_name'],
+          'last_name' => $booking['last_name'],
+          'middle_name' => $booking['middle_name'],
+          'birth_date' => format_db_date($booking['birth_date']),
+          'email_address' => $booking['email_address'],
+          'primary_phone' => $booking['primary_phone'],
+          'address_1' => $booking['address_1'],
+          'address_2' => $booking['address_2'],
+          'city' => $booking['city'],
+          'province' => $booking['province'],
+          'zipcode' => $booking['zipcode'],
+          'nationality' => $booking['nationality'],
+          'date_in' => format_db_date($booking['date_in']),
+          'date_out' => format_db_date($booking['date_out']),
+          'no_of_adult' => $booking['no_of_adult'],
+          'no_of_child' => $booking['no_of_child'],
+          'no_of_night' => $booking['no_of_night'],
+          'payment_status' => $post['payment_status'],
+          'booking_status' => $booking['booking_status'],
+          'notes' => $booking['notes'],
+          'type' => 'BOOKING',
+          'date_booked' => date('Y-m-d H:i:s'),
+        );
+        $val = validate_booking_data($args);
+      
+        /*** if there are errors show them ***/
+          if($val['valid'] === false)
+          {
+            bigdream_javacript_notices($val['errors']);
+              bigdream_add_notices('error', 'Please review the fields.');
+    
+          } else {
 
-					if (bigdream_save_booking($args)) {
-						$booking_ID = get_inserted_ID();
-						// Update booking no
-						generate_and_update_booking_no($booking_ID);
-						// Empty booking info
-						empty_booking();
-						// replace data in booking session with booking ID
-						push_to_booking_session(array('booking_ID' => $booking_ID));
-						// Send email notification
-						send_success_booking_notification();
-						
-						exit(wp_redirect(get_permalink(get_page_by_path('success'))));
-					} else {
-						bigdream_add_notices('error', 'Error while Saving.');
-					}
-				}
-				break;
-		}
+          if (bigdream_save_booking($args)) {
+            $booking_ID = get_inserted_ID();
+            // Update booking no
+            generate_and_update_booking_no($booking_ID);
+            // Empty booking info
+            empty_booking();
+            // replace data in booking session with booking ID
+            push_to_booking_session(array('booking_ID' => $booking_ID));
+            // Send email notification
+            send_success_booking_notification();
+            
+            exit(wp_redirect(get_permalink(get_page_by_path('success'))));
+          } else {
+            bigdream_add_notices('error', 'Error while Saving.');
+          }
+        }
+        break;
+    }
 
-	}
+  }
 }
 
 function validate_booking_data($data) {
@@ -345,21 +347,21 @@ function validate_booking_data($data) {
     $data = $gump->sanitize($data);
 
     $gump->validation_rules(array(
-    	'first_name' => 'required|min_len,1|max_len,100',
-    	'last_name' => 'required|min_len,1|max_len,100',
-    	'middle_name' => 'required|min_len,1|max_len,100',
-    	'birth_date' => 'required|date',
-		'room_ID' => 'required|numeric',
-		'amount' => 'required|numeric',
-		'email_address' => 'required|valid_email',
-		'primary_phone' => 'required',
-		'address_1' => 'required',
-		'city' => 'required',
-		'province' => 'required',
-		'zipcode' => 'required',
-		'nationality' => 'required',
-		'date_in' => 'required|date',
-		'date_out' => 'required|date',
+      'first_name' => 'required|min_len,1|max_len,100',
+      'last_name' => 'required|min_len,1|max_len,100',
+      'middle_name' => 'required|min_len,1|max_len,100',
+      'birth_date' => 'required|date',
+    'room_ID' => 'required|numeric',
+    'amount' => 'required|numeric',
+    'email_address' => 'required|valid_email',
+    'primary_phone' => 'required',
+    'address_1' => 'required',
+    'city' => 'required',
+    'province' => 'required',
+    'zipcode' => 'required',
+    'nationality' => 'required',
+    'date_in' => 'required|date',
+    'date_out' => 'required|date',
     ));
 
 
@@ -371,25 +373,25 @@ function validate_booking_data($data) {
 
 add_action('wp_footer', 'print_javascript_notices');
 function print_javascript_notices() {
-	if (isset($_SESSION['javascript_error_notice'])) {
-		echo $_SESSION['javascript_error_notice'];
-		unset($_SESSION['javascript_error_notice']);
-	}
+  if (isset($_SESSION['javascript_error_notice'])) {
+    echo $_SESSION['javascript_error_notice'];
+    unset($_SESSION['javascript_error_notice']);
+  }
 }
 function bigdream_javacript_notices($errors = array()) {
-	if (count($errors) > 0) {
-		$output = '';
-		$output .= '<script>
-		jQuery(function($) {';
+  if (count($errors) > 0) {
+    $output = '';
+    $output .= '<script>
+    jQuery(function($) {';
 
-			foreach ($errors as $k => $v) {
-				$output .= '$("<span class=\'error_field\'>'.$v. '</span>").insertAfter($(\':input[name="'. $k .'"]\'));';
-			}
-		$output .= '});
-		</script>';
+      foreach ($errors as $k => $v) {
+        $output .= '$("<span class=\'error_field\'>'.$v. '</span>").insertAfter($(\':input[name="'. $k .'"]\'));';
+      }
+    $output .= '});
+    </script>';
 
-		$_SESSION['javascript_error_notice'] = $output;
-	}
+    $_SESSION['javascript_error_notice'] = $output;
+  }
 }
 
 /**
@@ -402,9 +404,9 @@ function bigdream_javacript_notices($errors = array()) {
  * @return String $array_value
  */
 function booking_data($key, $default = '') {
-	$booking = isset($_SESSION['_bdr_booking']) ? $_SESSION['_bdr_booking'] : array();
+  $booking = isset($_SESSION['_bdr_booking']) ? $_SESSION['_bdr_booking'] : array();
 
-	return isset($booking[$key]) ? $booking[$key] : $default;
+  return isset($booking[$key]) ? $booking[$key] : $default;
 }
 
 /**
@@ -416,33 +418,33 @@ function booking_data($key, $default = '') {
  * @return Decimal $price
  */
 function get_room_price($id = false, $date_in = false, $date_out = false) {
-	if (!$id) {
-		global $post;
-		$id = $post->ID;
-	}
-	$price = get_field('price', $id);
-	if ($date_in && $date_out) {
-		$date_in = strtotime($date_in);
-		$date_out = strtotime($date_out);
+  if (!$id) {
+    global $post;
+    $id = $post->ID;
+  }
+  $price = get_field('price', $id);
+  if ($date_in && $date_out) {
+    $date_in = strtotime($date_in);
+    $date_out = strtotime($date_out);
 
-		if (have_rows('price_configuration', $id)) {
-			while (have_rows('price_configuration', $id)) { the_row();
-				if (get_sub_field('enable')) {
-					$from = strtotime(get_sub_field('from'));
-					$to = strtotime(get_sub_field('to'));
-					if (($date_in >= $from && $date_in <= $to) && ($date_out >= $from && $date_out <= $to)) {
-						$price = get_sub_field('price');
-						break;
-					}
-				}
-			}
-		}
-	}
-
-
+    if (have_rows('price_configuration', $id)) {
+      while (have_rows('price_configuration', $id)) { the_row();
+        if (get_sub_field('enable')) {
+          $from = strtotime(get_sub_field('from'));
+          $to = strtotime(get_sub_field('to'));
+          if (($date_in >= $from && $date_in <= $to) && ($date_out >= $from && $date_out <= $to)) {
+            $price = get_sub_field('price');
+            break;
+          }
+        }
+      }
+    }
+  }
 
 
-	return $price;
+
+
+  return $price;
 }
 
 /**
@@ -454,13 +456,13 @@ function get_room_price($id = false, $date_in = false, $date_out = false) {
  * @return none
  */
 function the_room_price($id = false) {
-	if (!$id) {
-		global $post;
-		$id = $post->ID;
-	}
-	$price = get_field('price', $id);
+  if (!$id) {
+    global $post;
+    $id = $post->ID;
+  }
+  $price = get_field('price', $id);
 
-	echo $price;
+  echo $price;
 }
 
 /**
@@ -472,7 +474,7 @@ function the_room_price($id = false) {
  * @return String $formatted_price
  */
 function the_room_price_html($id = false) {
-	echo get_room_price_html($id);
+  echo get_room_price_html($id);
 }
 
 /**
@@ -484,7 +486,7 @@ function the_room_price_html($id = false) {
  * @return String $formatted_price
  */
 function get_room_price_html($id = false) {
-	return sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf(get_room_price($id)));
+  return sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf(get_room_price($id)));
 }
 
 /**
@@ -496,11 +498,11 @@ function get_room_price_html($id = false) {
  * @return none
  */
 function format_price($price, $echo = true) {
-	$price = sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf($price));
+  $price = sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf($price));
 
-	if (!$echo) {
-		return $price;
-	}
+  if (!$echo) {
+    return $price;
+  }
   echo $price;
 }
 
@@ -514,8 +516,8 @@ function format_price($price, $echo = true) {
  */
 
 function get_booking_steps() {
-	$output = '';
-	$output .= '<div class="reservation_step">';
+  $output = '';
+  $output .= '<div class="reservation_step">';
         $output .= '<ul>';
             $output .= '<li><a href="#"><span>1.</span>  Choose Date</a></li>';
             $output .= '<li class="active"><a href="#"><span>2.</span> Choose Room</a></li>';
@@ -538,7 +540,7 @@ function get_booking_steps() {
  */
  
 function format_date($date,  $format = 'D m/d/Y') {
-	return date($format, strtotime($date));
+  return date($format, strtotime($date));
 }
 
 /**
@@ -551,7 +553,7 @@ function format_date($date,  $format = 'D m/d/Y') {
  * @return String $formatted_date
  */
 function format_db_date($date, $format = 'Y-m-d') {
-	return date($format, strtotime($date));	
+  return date($format, strtotime($date)); 
 }
 
 /**
@@ -592,7 +594,7 @@ function get_dates_from_date_range($from, $to, $format = 'Y-m-d') {
 }
 
 function unavailable_dates($room_ID) {
-	$dates = get_room_unavailable_schedule($room_ID);
+  $dates = get_room_unavailable_schedule($room_ID);
                            
     $arr = array();
     for($i = 0; $i < count($dates); $i++) {
@@ -642,19 +644,19 @@ function send_success_booking_notification() {
 
 function get_monthly_chart_sales() {
 
-	$arr = array();
-	$sales = get_monthly_sales();
+  $arr = array();
+  $sales = get_monthly_sales();
 
-	foreach($sales as $i => $s) {
-		$arr['amount'][] = round($s['amount'], 2);
-		$arr['amount_paid'][] = round($s['amount_paid'], 2);
-	}
+  foreach($sales as $i => $s) {
+    $arr['amount'][] = round($s['amount'], 2);
+    $arr['amount_paid'][] = round($s['amount_paid'], 2);
+  }
 
-	return $arr;
+  return $arr;
 }
 
 function is_bookable($room_ID) {
-	return get_field('room_status', $room_ID) != 'out_of_order';
+  return get_field('room_status', $room_ID) != 'out_of_order';
 }
 
 
@@ -663,8 +665,8 @@ function is_date_and_room_not_available($room_ID, $from , $to) {
   $range = get_dates_from_date_range($from, $to);
   foreach ($range as $i => $k) {
     if (is_selected_date_and_room_not_available($room_ID, format_db_date($k)) > 0) {
-  	  return true;
-  	}
+      return true;
+    }
   }
   
   return false;
