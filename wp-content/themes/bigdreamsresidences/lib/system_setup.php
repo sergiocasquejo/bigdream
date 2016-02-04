@@ -21,4 +21,3 @@ include "bigdreams/inc/database-handler.php";
 include "bigdreams/inc/gump.class.php";
 include "bigdreams/inc/hooks.php";
 include "bigdreams/admin/admin.php";
-include "bigdreams/scheduler/scheduler.php";
