@@ -35,9 +35,11 @@ class Admin_Booking {
 
       $exporter->initialize(); // starts streaming data to web browser
 
-      // pass addRow() an array and it converts it to Excel XML format and sends 
-      // it to the browser
-      $exporter->addRow($results); 
+      foreach ($results as $i => $r) {
+        // pass addRow() an array and it converts it to Excel XML format and sends 
+        // it to the browser
+        $exporter->addRow($r); 
+      }
 
 
       $exporter->finalize(); // writes the footer, flushes remaining data to browser.
