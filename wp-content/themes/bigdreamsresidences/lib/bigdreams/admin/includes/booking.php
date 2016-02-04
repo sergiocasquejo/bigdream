@@ -249,10 +249,6 @@ class Admin_Booking {
 		include_once BDR_ADMIN_DIR . '/views/edit-booking.html.php';	
 	}
 
-
-	
-
-
 	public function admin_footer() {
 		add_thickbox();
 
