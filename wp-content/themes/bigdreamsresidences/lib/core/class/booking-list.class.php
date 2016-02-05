@@ -30,7 +30,7 @@ class Booking_List_Table extends WP_List_Table {
 			$columns['cb'] = '<input type="checkbox" />';
 		}
 		$columns['booking_no'] = 'Booking #';
-		$columns['room'] = 'Room #';
+		$columns['room_code'] = 'Room #';
 		$columns['amount'] = 'Amount';
 		$columns['amount_paid'] = 'Amount Paid';
 		$columns['date_in'] = 'Date In';
@@ -69,9 +69,9 @@ class Booking_List_Table extends WP_List_Table {
     }
 
 	public function column_room_code( $item ) {
-		$room_code = sprintf( '<a href="#">%s</a>', room_code( $item['room_ID'] );
+		$room_code = sprintf( '<a href="#">%s</a>', room_code( $item['room_ID'] ) );
 		$actions  = array(
-			'edit' => sprintf( '<a href="?page=%s&bid=%s">Edit</a>','big-dream-booking-edit', $item['booking_ID'] ),
+			'edit' => sprintf( '<a href="?page=%s&bid=%s">Edit</a>','edit-booking', $item['booking_ID'] ),
 			'view' => sprintf( '<a href="#" class="view-booking-details" data-id="%d">View</a>', $item['booking_ID'] )
 		);
 

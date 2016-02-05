@@ -53,13 +53,13 @@ function online_reservation_form_shortcode_handler( $atts, $content = null, $tag
 						$output .= '<li class="col-md-3">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>check-in-date:</h5>';
-								$output .= '<input class="date form-control" name="date_in" id="date_in" type="text" value="'. booking_date( 'date_in', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}">';
+								$output .= '<input class="date form-control" name="date_in" id="date_in" type="text" value="'. booking_data( 'date_in', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false">';
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<li  class="col-md-3">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>check-out-date:</h5>';
-								$output .= '<input class="date form-control" name="date_out" id="date_out" type="text" value="'. booking_date( 'date_out', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}">';
+								$output .= '<input class="date form-control" name="date_out" id="date_out" type="text" value="'. booking_data( 'date_out', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false">';
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<li class="col-md-2">';
@@ -199,10 +199,10 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 		redirect_js_script( get_bloginfo( 'url' ) );
 	}
 
-	$room_ID = booking_date( 'room_ID' );
+	$room_ID = booking_data( 'room_ID' );
 
 	$countries = countries();
-	$nights = count_nights( booking_date( 'date_in' ), booking_data( 'date_out' ) );
+	$nights = count_nights( booking_data( 'date_in' ), booking_data( 'date_out' ) );
 	$room_price = booking_data( 'room_price' );
 
 	$output .= '<div class="reservation-page">';
@@ -302,52 +302,52 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 	                       	$output .= '<div class="row">';
 	                       		$output .= '<div class="col-sm-4">';
 	                       			$output .= '<label for="first_name">First Name<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="first_name" class="form-control" value="'. booking_date( 'first_name' ) .'" required>';
+	                       			$output .= '<input type="text" name="first_name" class="form-control" value="'. booking_data( 'first_name' ) .'" required>';
 	                       		$output .= '</div>';
 	                       		$output .= '<div class="col-sm-4">';
 	                       			$output .= '<label for="middle_name">Middle Name<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="middle_name" class="form-control" value="'. booking_date( 'middle_name' ) .'" required>';
+	                       			$output .= '<input type="text" name="middle_name" class="form-control" value="'. booking_data( 'middle_name' ) .'" required>';
 	                       		$output .= '</div>';
 	                       		$output .= '<div class="col-sm-4">';
 	                       			$output .= '<label for="last_name">Last Name<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="last_name" class="form-control" value="'. booking_date( 'last_name' ) .'" required>';
+	                       			$output .= '<input type="text" name="last_name" class="form-control" value="'. booking_data( 'last_name' ) .'" required>';
 	                       		$output .= '</div>';
 	                       	$output .= '</div>';
 	                       	$output .= '<label>Date of Birth<sup>*</sup></label>';
-	                       	$output .= '<input type="text" name="birth_date" class="form-control bdr-calendar" value="'. booking_date( 'birth_date' ) .'" required>';
+	                       	$output .= '<input type="text" name="birth_date" class="form-control bdr-calendar" value="'. booking_data( 'birth_date' ) .'" required>';
 	                       	$output .= '<label>Nationality<sup>*</sup></label>';
-	                       	$output .= '<input type="text" name="nationality" class="form-control" value="'. booking_date( 'nationality' ) .'" required>';
+	                       	$output .= '<input type="text" name="nationality" class="form-control" value="'. booking_data( 'nationality' ) .'" required>';
 	                       	$output .= '<div class="row">';
 	                       		$output .= '<div class="col-sm-6">';
 	                       			$output .= '<label>Email Address<sup>*</sup></label>';
-	                       			$output .= '<input type="email" name="email_address" class="form-control" value="'. booking_date( 'email_address' ) .'">';
+	                       			$output .= '<input type="email" name="email_address" class="form-control" value="'. booking_data( 'email_address' ) .'">';
 	                       		$output .= '</div>';
 	                       		$output .= '<div class="col-sm-6">';
 	                       			$output .= '<label>Phone<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="primary_phone" class="form-control" value="'. booking_date( 'primary_phone' ) .'">';
+	                       			$output .= '<input type="text" name="primary_phone" class="form-control" value="'. booking_data( 'primary_phone' ) .'">';
 	                       		$output .= '</div>';
 	                       	$output .= '</div>';
 	                       	$output .= '<label>Address<sup>*</sup></label>';
-	                       	$output .= '<input type="text" name="address_1" class="form-control" placeholder="Street Address" value="'. booking_date( 'address_1' ) .'">';
+	                       	$output .= '<input type="text" name="address_1" class="form-control" placeholder="Street Address" value="'. booking_data( 'address_1' ) .'">';
 	                       	$output .= '<br><br>';
-	                       	$output .= '<input type="text" name="address_2" class="form-control" placeholder="Apartment, suite, unit etc. (Optional )" value="'. booking_date( 'address_2' ) .'">';
+	                       	$output .= '<input type="text" name="address_2" class="form-control" placeholder="Apartment, suite, unit etc. (Optional )" value="'. booking_data( 'address_2' ) .'">';
 	                       	$output .= '<div class="row">';
 	                       		$output .= '<div class="col-sm-4">';
 	                       			$output .= '<label>Town / City<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="city" class="form-control" value="'. booking_date( 'city' ) .'">';
+	                       			$output .= '<input type="text" name="city" class="form-control" value="'. booking_data( 'city' ) .'">';
 	                       		$output .= '</div>';
 	                       		$output .= '<div class="col-sm-4">';
 	                       			$output .= '<label>Province<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="province" class="form-control" value="'. booking_date( 'province' ) .'">';
+	                       			$output .= '<input type="text" name="province" class="form-control" value="'. booking_data( 'province' ) .'">';
 	                       		$output .= '</div>';
 	                       		$output .= '<div class="col-sm-4">';
 	                       		$output .= '<label>Zip Code<sup>*</sup></label>';
-	                       			$output .= '<input type="text" name="zipcode" class="form-control" value="'. booking_date( 'zipcode' ) .'">';
+	                       			$output .= '<input type="text" name="zipcode" class="form-control" value="'. booking_data( 'zipcode' ) .'">';
 	                       		$output .= '</div>';
 	                       	$output .= '</div>';
 	                       
 	                       	$output .= '<label>Notes</label>';
-	                       	$output .= '<textarea type="text" name="notes" class="form-controlarea form-control" placeholder="Notes about your book, eg. special notes for room">'. booking_date( 'notes' ) .'</textarea>';
+	                       	$output .= '<textarea type="text" name="notes" class="form-controlarea form-control" placeholder="Notes about your book, eg. special notes for room">'. booking_data( 'notes' ) .'</textarea>';
 
 
 	                       	$output .= '<input type="hidden" name="action" value="make_reservation" >';
@@ -459,7 +459,8 @@ function success_booking_details() {
 		redirect_js_script( get_bloginfo( 'url' ) );
 	}
 
-	$d = get_booking_by_id( get_booking_session( 'booking_ID' ) );
+	$d = get_booking_by_id( booking_data( 'booking_ID' ) );
+
 	$room_price = $d['room_price'];
 	$nights = $d['no_of_night'];
 

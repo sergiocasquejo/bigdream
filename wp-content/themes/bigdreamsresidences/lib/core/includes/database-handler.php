@@ -12,7 +12,6 @@ if ( ! function_exists( 'save_booking' ) ) {
 
 		$data = get_array_values_by_keys( $args, 
 				array(
-					'booking_ID',
 					'room_ID',
 					'room_code',
 					'room_price',
@@ -38,24 +37,29 @@ if ( ! function_exists( 'save_booking' ) ) {
 					'no_of_child',
 					'no_of_night',
 					'booking_status',
+					'payment_status',
 					'notes',
 					'type',
 					'date_booked'
 				) 
 			);
+		// print_me(array_data( $args, 'booking_ID', 0 ));
+		// print_me($data);
 
-
-		if ( array_data( $data, 'booking_ID', 0 ) != 0 ) {
-			return $wpdb->update( $wpdb->prefix . 'bookings', $data, array( 'booking_ID' => $args['booking_ID']), array( '%d','%d', '%d', '%f','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s', '%s' ), array( '%d' ) );
+		if ( array_data( $args, 'booking_ID', 0 ) > 0 ) {
+			//, array( '%d','%s', '%f','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s', '%s' ), array( '%d' )
+			$result = $wpdb->update( $wpdb->prefix . 'bookings', $data, array( 'booking_ID' => $args['booking_ID']) );
+		} else {
+			//, array( '%d','%s','%f','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s', '%s' )
+			$result = $wpdb->insert( $wpdb->prefix . 'bookings', $data );
 		}
-
-		return $wpdb->insert( $wpdb->prefix . 'bookings', $data, array( '%d','%d', '%d','%f','%f', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s', '%s', '%s' ) );
+		return $result;
 	}
 }
 
 
 function get_filtered_bookings() {
-	global $wpdb
+	global $wpdb;
 		
 	$sql = "SELECT p.post_title as room_title,  b.*, CONCAT(b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_ID WHERE 1 = 1";
 
@@ -176,7 +180,7 @@ if ( ! function_exists( 'get_available_rooms' ) ) {
 
 		$results = get_posts( array(
 			'numberposts'	=> -1,
-			'fields' => 'ids,titles',
+			// 'fields' => 'ID',
 			'post_type'		=> 'room',
 			//'meta_key'		=> 'room_status',
 			//'meta_value'	=> 'VACANT CLEAN'
@@ -212,10 +216,10 @@ function get_inserted_ID() {
  * @param Int $count
  */
  
-function is_selected_date_and_room_not_available( $roomID, $from ) {
+function is_selected_date_and_room_not_available( $roomID, $from, $booking_ID = 0 ) {
   global $wpdb;
   
-  $sql = $wpdb->prepare( "SELECT count(*) FROM ".$wpdb->prefix."bookings WHERE room_ID = %d AND '%s' BETWEEN date_in AND date_out", $roomID, $from );
+  $sql = $wpdb->prepare( "SELECT count(*) FROM ".$wpdb->prefix."bookings WHERE room_ID = %d AND '%s' >= date_in AND  '%s' < date_out AND booking_ID != %d", $roomID, $from, $from, $booking_ID );
   
   return $wpdb->get_var( $sql );
 }

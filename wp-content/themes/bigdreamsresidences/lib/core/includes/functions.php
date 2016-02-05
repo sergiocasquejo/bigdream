@@ -1,4 +1,10 @@
 <?php
+
+function print_me( $data ) {
+    echo '<pre>';
+    print_r($data);
+    echo '</pre>';
+}
 /**
  * nf()
  * 
@@ -31,7 +37,7 @@ function room_code( $room_id ) {
 }
 
 
-function assets( $file, $echo = true ) {
+function assets( $file, $echo = false ) {
   $assets = BDR_SYSTEM_DIR_URI . '/assets/'. $file;
 
   if ( ! $echo ) return $assets;
@@ -42,7 +48,7 @@ function assets( $file, $echo = true ) {
 function featured_image( $post_id, $size = 'thumbnail', $placeholder = '' ) {
   $featured_image = $placeholder;
 
-  if ( has_post_thumbnail( $details['room_ID'] ) ) {
+  if ( has_post_thumbnail( $post_id ) ) {
     $featured_image = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), $size )[0];
   }
 
@@ -50,29 +56,29 @@ function featured_image( $post_id, $size = 'thumbnail', $placeholder = '' ) {
 }
 
 function array_data( $arr, $key, $default = '' ) {
-  return ! isset( $arr[$key] ) ? $arr[$key] : $default;
+  return isset( $arr[$key] ) ? $arr[$key] : $default;
 }
 
 function browser_request( $key, $default = '' ) {
-  return ! isset( $_REQUEST[$key] ) ? $_REQUEST[$key] : $default;
+  return isset( $_REQUEST[$key] ) ? $_REQUEST[$key] : $default;
 }
 
 
 function browser_get( $key, $default = '' ) {
-  return ! isset( $_GET[$key] ) ? $_GET[$key] : $default;
+  return isset( $_GET[$key] ) ? $_GET[$key] : $default;
 }
 
 function browser_post( $key, $default = '' ) {
-  return ! isset( $_POST[$key] ) ? $_POST[$key] : $default;
+  return isset( $_POST[$key] ) ? $_POST[$key] : $default;
 }
 
 
-function include_view( $file ) {
+function include_view( $file, $data = false ) {
   include BDR_SYSTEM_DIR . '/views/'. $file;
 }
 
 function require_class( $file, $once = true ) {
-  $file = BDR_SYSTEM_DIR . '/views/'. $file;
+  $file = BDR_SYSTEM_DIR . '/class/'. $file;
   
   if ( $once ) {
     require_once $file;
@@ -172,18 +178,18 @@ if ( !function_exists( 'site_notices' ) ) {
   function site_notices( $echo = true ) {
 
     $output = '';
-    if (has_notices()) {
+    if ( has_notices() ) {
       $output .= '<div class="notices-box">';
-      $output .= '<div class="container">';
-      $notices = get_notices();
-      
-      foreach ($notices as $i => $n) {
-        $output .= '<div class="'. (!isset($n['type']) ? 'updated' : $n['type']) .'">';
-              $output .= '<p>'. $n['message'] .'</p>';
-          $output .= '</div>';
-      }
-      unset($_SESSION['_notices']);
-      $output .= '</div>';
+        $output .= '<div class="container">';
+        $notices = get_notices();
+        
+        foreach ($notices as $i => $n) {
+          $output .= '<div class="'. (!isset($n['type']) ? 'updated' : $n['type']) .'">';
+                $output .= '<p>'. $n['message'] .'</p>';
+            $output .= '</div>';
+        }
+        unset($_SESSION['_notices']);
+        $output .= '</div>';
       $output .= '</div>';
     }
 
@@ -351,10 +357,10 @@ function get_room_price($id = false, $date_in = false, $date_out = false) {
   return (float) $price;
 }
 
-function get_sub_total( $id = false, $date_in = false, $date_out = false ) {
-  $price = get_room_price( $post['room_ID'], $post['date_in'], $post['date_out'] );
-  $nights = count_nights( $post['date_in'], $post['date_out'] );
-  $amount = $room_price * $nights;;
+function get_sub_total( $room_ID = false, $date_in = false, $date_out = false ) {
+  $price = get_room_price( $room_ID, $date_in, $date_out );
+  $nights = count_nights( $date_in, $date_out );
+  $amount = $price * $nights;;
 
   return $amount;
 }
@@ -409,11 +415,14 @@ function get_room_price_html($id = false) {
  * @param Decimal $price
  * @return none
  */
-function format_price($price, $echo = true) {
-  $price = sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf($price));
+function format_price($price = 0, $echo = true) {
+  if ( is_numeric( $price ) ) {
+    $price = sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf($price));
 
-  if (!$echo) {
-    return $price;
+    if (!$echo) {
+      return $price;
+    }
+    
   }
   echo $price;
 }
@@ -551,7 +560,7 @@ function send_success_booking_notification( $booking_ID ) {
 
   $logo = get_template_directory_uri() . '/dist/images/logo.png';
   
-  include "emails/success_booking_notification.php";
+  include BDR_SYSTEM_DIR . "/emails/success_booking_notification.php";
   $message = ob_get_clean();
 
   add_filter( 'wp_mail_content_type',create_function( '', 'return "text/html"; ' ) );
@@ -586,11 +595,11 @@ function is_bookable( $room_ID ) {
 }
 
 
-function is_date_and_room_not_available( $room_ID, $from , $to ) {
+function is_date_and_room_not_available( $room_ID, $from , $to, $booking_ID = 0 ) {
   
   $range = get_dates_from_date_range( $from, $to );
   foreach ( $range as $i => $k ) {
-    if ( is_selected_date_and_room_not_available( $room_ID, format_db_date( $k ) ) > 0 ) {
+    if ( is_selected_date_and_room_not_available( $room_ID, format_db_date( $k ), $booking_ID ) > 0 ) {
       return true;
     }
   }

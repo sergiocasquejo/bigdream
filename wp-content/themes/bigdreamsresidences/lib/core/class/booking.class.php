@@ -6,8 +6,6 @@ if (! class_exists('Booking') ) {
 		public function __construct() {
 			// Register custom administrator menu
 			add_action( 'admin_menu', array( &$this, 'register_admin_menu' ) );
-			// Custom init method
-			add_action( 'admin_init', array( &$this, 'init' ) );
 			// Display notification to administrator for newly booked
 			add_action( 'admin_notices', array( &$this, 'notify_admin_for_newly_booked' ) );
 
@@ -19,7 +17,7 @@ if (! class_exists('Booking') ) {
 		    add_action( 'wp_ajax_booking-details', array( &$this, 'details' ) );
 		    add_action( 'wp_ajax_nopriv_booking-details', array( &$this, 'details' ) );
 
-		    add_action( 'init', array( &this, 'custom_init' ) );
+		    add_action( 'init', array( &$this, 'custom_init' ) );
 		}
 
 
@@ -55,11 +53,12 @@ if (! class_exists('Booking') ) {
 		}	
 
 		private function process( $data ) {
+
 			$data['birth_date'] = format_db_date( $data['birth_date'] );
 			$data['date_in'] = format_db_date( $data['date_in'] );
 			$data['date_out'] = format_db_date( $data['date_out'] );
 
-			if ( $data['booking_ID'] == 0 && is_date_and_room_not_available( $data['room_ID'], $data['date_in'], $data['date_out'] ) ) {
+			if ( is_date_and_room_not_available( $data['room_ID'], $data['date_in'], $data['date_out'], $data['booking_ID']) ) {
 				add_this_notices( 'error', 'Selected room is not available on that date. Please check calendar to see availability.' );
 
 				return false;
@@ -77,21 +76,23 @@ if (! class_exists('Booking') ) {
 			    $data = $gump->sanitize( $data );
 
 
-				if ( save_booking( $data ) ) {
+				if ( save_booking( $data ) !== false ) {
 					if ( $data['booking_ID'] < 1 ) {
 						$inserted_ID = get_inserted_ID();
+						send_success_booking_notification( $inserted_ID );
+
+						
 						// Update booking no
 						generate_and_update_booking_no( $inserted_ID );
 						// replace data in booking session with booking ID
-						push_to_booking_session( array( 'booking_ID' => $bid ) );
-						send_success_booking_notification( $inserted_ID );
+						push_to_booking_session( array( 'booking_ID' => $inserted_ID ) );
+						
 					}
 
 					add_this_notices( 'updated', 'Successully Saved.' );
 					return true;
 
 				} else {
-
 					add_this_notices( 'error', 'Error while Saving.' );
 
 				}
@@ -109,8 +110,9 @@ if (! class_exists('Booking') ) {
 		 * @return none
 		 */
 		public function custom_init() {
+			$action = browser_request( 'action' );
 
-			if ( $action = browser_request( 'action' ) != '' ) {
+			if ( $action != '' ) {
 
 				switch( $action ) {
 
@@ -172,8 +174,8 @@ if (! class_exists('Booking') ) {
 					case 'make_reservation':
 						if ( is_empty_booking() ) {
 							add_this_notices( 'error', 'Please select date.' );
-							redirect_by_page_path( '/' )
-							break;
+							redirect_by_page_path( '/' );
+							return;
 						}
 
 						$data = get_booking_session();
@@ -185,12 +187,33 @@ if (! class_exists('Booking') ) {
 
 						$data = push_to_booking_session( array_merge( $data, $_POST, array( 'date_booked' => date( 'Y-m-d H:i:s' ) ) ) );
 						if ( $this->process( $data ) ) {
-							// Empty booking info
-							empty_booking();
 							redirect_by_page_path( 'success' );
 						}
 						break;
-				
+					case 'export-bookings':
+
+						$results = get_filtered_bookings();
+
+						// When executed in a browser, this script will prompt for download 
+						// of 'test.xls' which can then be opened by Excel or OpenOffice.
+						require_class( 'php-export-data.class.php' );
+						// 'browser' tells the library to stream the data directly to the browser.
+						// other options are 'file' or 'string'
+						// 'test.xls' is the filename that the browser will use when attempting to 
+						// save the download
+						$exporter = new ExportDataExcel( 'browser', 'reports.xls' );
+
+						$exporter->initialize(); // starts streaming data to web browser
+
+						foreach ( $results as $i => $r ) {
+							// pass addRow() an array and it converts it to Excel XML format and sends 
+							// it to the browser
+							$exporter->addRow($r); 
+						}
+
+						$exporter->finalize(); // writes the footer, flushes remaining data to browser.
+						exit(); // all done
+						break;
 				}
 
 			}
@@ -199,47 +222,100 @@ if (! class_exists('Booking') ) {
 
 		public function add_edit_booking() {
 
-			$editable = true;
 
+			$info = get_booking_by_id( browser_request( 'bid', 0 ) );
+
+			$date_in = date( 'Y-m-d' );
+			$date_out = date( 'Y-m-d', time() + 86400 );
+			$post = array_merge(array(
+					'booking_ID' => 0,
+					'room_ID' => 0,
+					'room_code' => 0,
+					'room_price' => 0,
+					'amount' => 0,
+					'amount_paid' => 0,
+					'salutation' => 'Mr',
+					'country' => 'Philippines',
+					'first_name' => '',
+					'last_name' => '',
+					'middle_name' => '',
+					'birth_date' => '',
+					'email_address' => '',
+					'primary_phone' => '',
+					'address_1' => '',
+					'address_2' => '',
+					'city' => '',
+					'province' => '',
+					'zipcode' => '',
+					'nationality' => 'Filipino',
+					'date_in' => $date_in,
+					'date_out' => $date_out,
+					'no_of_adult' => 1,
+					'no_of_child' => 0,
+					'no_of_night' => 0,
+					'booking_status' => BOOKING_DEFAULT_STATUS,
+					'payment_status' => PAYMENT_DEFAULT_STATUS,
+					'notes' => '',
+					'type' => 'RESERVATION',
+					'date_booked' => date('Y-m-d H:i:s')
+				), (array) $info);
+
+			
 			if ( isset( $_POST['save_booking_field'] ) && wp_verify_nonce( $_POST['save_booking_field'], 'save_booking_action' ) ) {
 
-				$post = $_POST;
+				$post = array_merge( $post, $_POST );
 
-				$post['nights'] = count_nights( $post['date_in'], $post['date_out'] );
-				$post['amount'] = get_sub_total( $post['room_ID'], $post['date_in'], $post['date_out'] );
-				$post['date_booked'] = date( 'Y-m-d H:i:s' );
+				$post['no_of_night'] = count_nights( $post['date_in'], $post['date_out'] );
+				$post['room_price'] = get_room_price( $post['room_ID'], $post['date_in'], $post['date_out'] );
+				$post['amount'] = $post['room_price'] * $post['no_of_night'];
+				$post['date_booked'] = array_data( $info, 'date_booked' , date( 'Y-m-d H:i:s' ) );
 				$post['type'] = 'RESERVATION';
 				$post['room_code'] = room_code( $post['room_ID'] );
 
 				// Check if booking is exists
-				if ( count( $b = get_booking_by_id( $post['booking_ID'] ) ) > 0 ) {
-					$post = array_merge( $post, get_array_values_by_keys( $b, array( 'room_ID', 'room_code', 'room_price', 'no_of_night', 'amount', 'type', 'date_booked' ) );
-				}
+				// if ( count( $b = get_booking_by_id( $post['booking_ID'] ) ) > 0 ) {
+				// 	$post = array_merge( $post, get_array_values_by_keys( $b, array( 'room_ID', 'room_code', 'room_price', 'no_of_night', 'amount', 'type', 'date_booked' ) ) );
+				// }
 
 				if ( $this->process( $post ) ) {
-					redirect_js_script( 'admin.php?page=big-dream-bookings&view=list' );
+					redirect_js_script( 'admin.php?page=manage-bookings&view=list' );
 				}
 
 			}
 
-			$post = get_booking_by_id( browser_request( 'bid', 0 ) );
-			$editable = in_array( $post['booking_status'], array( 'NEW', 'CONFIRMED' ) );
+			
+			$post['editable'] = in_array( $post['booking_status'], array( 'NEW', 'CONFIRMED' ) );
+			$post['available_rooms'] = get_available_rooms();
+			$post['booking_statuses'] = booking_statuses();
+			$post['payment_statuses'] = payment_statuses();
+			$post['salutations'] = salutations();
 
-			$available_rooms = get_available_rooms();
-			$booking_statuses = booking_statuses();
-			$payment_statuses = payment_statuses();
-			$guest_title = salutations();
-
-			include_view( 'edit-booking.html.php' );  
+			include_view( 'edit-booking.html.php', $post );  
 		}
 
 
 		public function enqueue_styles_and_scripts() {
 
-			wp_enqueue_style( 'fullcalendar.min-style', assets( 'vendor/fullcalendar.min.css' ) );
-			wp_enqueue_style( 'fullcalendar.print.min-style', assets( 'vendor/fullcalendar.print.css' ), array(), null, 'print' );
-			wp_enqueue_script( 'moment.min-script', assets( 'vendor/moment.min.js' ) );
-			wp_enqueue_script( 'fullcalendar.min-script', assets( 'vendor/fullcalendar.min.js' ), array( 'moment.min-script', 'jquery' ), false, false );
+			global $post_type;
+
+			if ( ( isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'booking-system', 'manage-bookings', 'edit-booking' ) ) ) ||  'room' == $post_type ) {
+
+			   	wp_enqueue_style( 'admin-style', assets( 'style/admin.css' ) );	
+			   	wp_enqueue_style( 'jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
+
+			   	wp_enqueue_style( 'fullcalendar.min-style', assets( 'vendor/fullcalendar.min.css' ) );
+				wp_enqueue_style( 'fullcalendar.print.min-style', assets( 'vendor/fullcalendar.print.css' ), array(), null, 'print' );
+				wp_enqueue_script( 'moment.min-script', assets( 'vendor/moment.min.js' ) );
+				wp_enqueue_script( 'fullcalendar.min-script', assets( 'vendor/fullcalendar.min.js' ), array( 'moment.min-script', 'jquery' ), false, false );
+			   	wp_enqueue_script( 'jquery-ui-datepicker' );
+				wp_enqueue_script( 'chart-script', assets( 'vendor/Chart.min.js' ), array( 'jquery' ), true, false );
+				wp_enqueue_script( 'admin-script', assets( 'js/admin.js' ), array( 'chart-script', 'jquery' ), true, true );
+				wp_localize_script( 'admin-script', 'BDR', array(
+					'AjaxUrl' => admin_url( 'admin-ajax.php' ),
+					'bookings' => get_booking_calendar()
+				) );
+			}
+			
 
 		}
 
@@ -267,7 +343,9 @@ if (! class_exists('Booking') ) {
 
 		public function register_admin_menu() {
 			global $menu;
-
+			
+			add_menu_page( 'Booking System', 'Booking System', 'manage_bookings', 'booking-system', array( &$this, 'admin_dashboard' ), 'dashicons-calendar-alt', BDR_MENU_POSITION );
+			add_submenu_page( 'booking-system', 'Rooms', 'Rooms', 'manage_bookings', 'edit.php?post_type=room', false );
 			$hook = add_submenu_page( 'booking-system', 'Bookings', 'Bookings', 'manage_bookings', 'manage-bookings', array( &$this, 'bookings' ) );
 			add_submenu_page( 'edit-booking', 'Edit Booking', 'Edit Booking', 'manage_bookings', 'edit-booking', array( &$this, 'add_edit_booking' ) );
 
@@ -279,11 +357,15 @@ if (! class_exists('Booking') ) {
 		}
 
 
+		public function admin_dashboard() {
+			include_view( "dashboard.html.php" );
+		}
+
 		public function add_options() {
 			
 			global $booking_list_table;
 
-			require_class( 'class-booking-list.php' );
+			require_class( 'booking-list.class.php' );
 
 			$option = 'per_page';
 			
@@ -295,33 +377,7 @@ if (! class_exists('Booking') ) {
 		}
 
 
-		public function init() {
-
-			if ( browser_request( 'action' ) == 'export-bookings' ) {
-
-				$results = get_filtered_bookings();
-
-				// When executed in a browser, this script will prompt for download 
-				// of 'test.xls' which can then be opened by Excel or OpenOffice.
-				require_class( 'php-export-data.class.php' );
-				// 'browser' tells the library to stream the data directly to the browser.
-				// other options are 'file' or 'string'
-				// 'test.xls' is the filename that the browser will use when attempting to 
-				// save the download
-				$exporter = new ExportDataExcel( 'browser', 'reports.xls' );
-
-				$exporter->initialize(); // starts streaming data to web browser
-
-				foreach ( $results as $i => $r ) {
-					// pass addRow() an array and it converts it to Excel XML format and sends 
-					// it to the browser
-					$exporter->addRow($r); 
-				}
-
-				$exporter->finalize(); // writes the footer, flushes remaining data to browser.
-				exit(); // all done
-			}
-		}
+		
 
 
 		public function bookings() {
@@ -332,10 +388,8 @@ if (! class_exists('Booking') ) {
 			} else {
 
 				global $booking_list_table;
-				
-				$booking_list_table->prepare_items();
 
-				include_view ( 'bookings.html.php' );
+				include_view ( 'bookings.html.php', $booking_list_table );
 			}
 		}
 
@@ -345,9 +399,9 @@ if (! class_exists('Booking') ) {
 
 				$details = get_booking_by_id( browser_get( 'bid' ) );
 
-				$featured_image = featured_image( $details['room_ID'], 'large' );
+				$details['featured_image'] = featured_image( $details['room_ID'], 'large' );
 
-				include_view( 'booking-details.html.php' );
+				include_view( 'booking-details.html.php', $details );
 				exit;
 			}
 			
