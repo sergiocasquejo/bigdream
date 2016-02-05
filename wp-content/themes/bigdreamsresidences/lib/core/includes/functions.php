@@ -119,7 +119,7 @@ function redirect_js_script( $url ) {
   echo '</script>';
 }
 /**
- * bigdream_add_notices()
+ * add_this_notices()
  * 
  * Add notice message
  * 
@@ -127,8 +127,8 @@ function redirect_js_script( $url ) {
  * @param String $message
  * @return none
  */
-function bigdream_add_notices( $type, $message ) {
-  $_SESSION['bigdream_notices'][] = array( 'type' => $type, 'message' => $message );
+function add_this_notices( $type, $message ) {
+  $_SESSION['_notices'][] = array( 'type' => $type, 'message' => $message );
 }
 
 /**
@@ -154,11 +154,11 @@ function has_notices() {
  */
  
 function get_notices() {
-  return isset( $_SESSION['bigdream_notices'] ) ? $_SESSION['bigdream_notices'] : array();
+  return array_data( $_SESSION, '_notices', array() );
 }
 
 /**
- * bigdream_notices()
+ * site_notices()
  * 
  * Print|Return notices when exists
  * 
@@ -167,9 +167,9 @@ function get_notices() {
  */
  
  
-if ( !function_exists( 'bigdream_notices' ) ) {
+if ( !function_exists( 'site_notices' ) ) {
 
-  function bigdream_notices( $echo = true ) {
+  function site_notices( $echo = true ) {
 
     $output = '';
     if (has_notices()) {
@@ -182,7 +182,7 @@ if ( !function_exists( 'bigdream_notices' ) ) {
               $output .= '<p>'. $n['message'] .'</p>';
           $output .= '</div>';
       }
-      unset($_SESSION['bigdream_notices']);
+      unset($_SESSION['_notices']);
       $output .= '</div>';
       $output .= '</div>';
     }
@@ -271,7 +271,7 @@ function print_javascript_notices() {
 }
 
 
-function bigdream_javacript_notices($errors = array()) {
+function javacript_notices($errors = array()) {
   if (count($errors) > 0) {
     $output = '';
     $output .= '<script>
@@ -305,7 +305,7 @@ function booking_data($key, $default = '') {
 function get_array_values_by_keys( $data = array(), $keys = array() ) {
   $arr = array();
   foreach ( $keys as $i => $k ) {
-    $arr[$k] = $data[$k];
+    $arr[$k] = array_data($data, $k, '');
   }
   return $arr;
 }
@@ -538,10 +538,10 @@ function unavailable_dates( $room_ID ) {
  * @param none
  * @return none
  */
-function send_success_booking_notification() {
+function send_success_booking_notification( $booking_ID ) {
   ob_start();
   
-  $d = get_booking_by_id( get_booking_session( 'booking_ID' ) );
+  $d = get_booking_by_id( $booking_ID );
   $d['room_title'] = get_the_title( $d['room_ID'] );
   $d['room_code'] = get_field( 'room_code', $d['room_ID'] );
   $d['max_person'] = get_field( 'max_person', $d['room_ID'] );

@@ -1,6 +1,6 @@
 <div class="wrap" id="BookingDashboard">
 	<h1>Dashboard</h1>
-    <?php bigdream_notices(); ?>
+    <?php site_notices(); ?>
 	<div class="row text-center">
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-primary">

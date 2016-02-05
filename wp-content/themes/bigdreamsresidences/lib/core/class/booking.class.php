@@ -55,70 +55,44 @@ if (! class_exists('Booking') ) {
 		}	
 
 		private function process( $data ) {
+			$data['birth_date'] = format_db_date( $data['birth_date'] );
+			$data['date_in'] = format_db_date( $data['date_in'] );
+			$data['date_out'] = format_db_date( $data['date_out'] );
 
-			if ( $data['booking_ID'] == 0 && is_date_and_room_not_available( $data['room_ID'], format_db_date( $data['date_in'] ),  format_db_date( $data['date_out'] ) ) ) {
-				bigdream_add_notices( 'error', 'Selected room is not available on that date. Please check calendar to see availability.' );
+			if ( $data['booking_ID'] == 0 && is_date_and_room_not_available( $data['room_ID'], $data['date_in'], $data['date_out'] ) ) {
+				add_this_notices( 'error', 'Selected room is not available on that date. Please check calendar to see availability.' );
 
 				return false;
 			} 
 
-			$args = array(
-				'booking_ID' 	=> $data['booking_ID'],
-				'room_ID' 		=> $data['room_ID'],
-				'room_code' 	=> $data['room_code'],
-				'room_price' 	=> $data['room_price'],
-				'amount'		=> $data['amount'],
-				'amount_paid' 	=> $data['amount_paid'],
-				'salutation' 	=> $data['salutation'],
-				'country'	 	=> $data['country'],
-				'first_name' 	=> $data['first_name'],
-				'last_name' 	=> $data['last_name'],
-				'middle_name' 	=> $data['middle_name'],
-				'birth_date' 	=> format_db_date( $data['birth_date'] ),
-				'email_address' => $data['email_address'],
-				'primary_phone' => $data['primary_phone'],
-				'address_1' 	=> $data['address_1'],
-				'address_2' 	=> $data['address_2'],
-				'city' 			=> $data['city'],
-				'province' 		=> $data['province'],
-				'zipcode' 		=> $data['zipcode'],
-				'nationality' 	=> $booking['nationality'],
-				'date_in' 		=> format_db_date( $data['date_in'] ),
-				'date_out' 		=> format_db_date( $data['date_out'] ),
-				'no_of_adult' 	=> $data['no_of_adult'],
-				'no_of_child' 	=> $data['no_of_child'],
-				'no_of_night' 	=> $data['no_of_night'],
-				'payment_status' => $post['payment_status'],
-				'booking_status' => $data['booking_status'],
-				'notes' 		=> $data['notes'],
-				'type' 			=> $data['type'],
-				'date_booked' 	=> date('Y-m-d H:i:s'),
-			);
-
-			$val = $this->validate_booking_data($args);
+			$val = $this->validate_booking_data( $data );
 
 			if( $val['valid'] === false ) {
-				bigdream_javacript_notices( $val['errors'] );
-				bigdream_add_notices( 'error', 'Please review the fields.' );
+				javacript_notices( $val['errors'] );
+				add_this_notices( 'error', 'Please review the fields.' );
 			} else {
 
-				if ( bigdream_save_booking( $args ) ) {
-					$inserted_ID = 0;
-					// Check if insert
+				require_class( 'gump.class.php' );
+			    $gump = new GUMP();
+			    $data = $gump->sanitize( $data );
+
+
+				if ( save_booking( $data ) ) {
 					if ( $data['booking_ID'] < 1 ) {
 						$inserted_ID = get_inserted_ID();
 						// Update booking no
 						generate_and_update_booking_no( $inserted_ID );
-						// Send email notification
-						send_success_booking_notification();
+						// replace data in booking session with booking ID
+						push_to_booking_session( array( 'booking_ID' => $bid ) );
+						send_success_booking_notification( $inserted_ID );
 					}
 
-					bigdream_add_notices( 'updated', 'Successully Saved.' );
-					return $inserted_ID;
+					add_this_notices( 'updated', 'Successully Saved.' );
+					return true;
 
 				} else {
 
-					bigdream_add_notices( 'error', 'Error while Saving.' );
+					add_this_notices( 'error', 'Error while Saving.' );
 
 				}
 			}
@@ -162,12 +136,12 @@ if (! class_exists('Booking') ) {
 						$data = $_POST;
 						if ( ! is_bookable( $data['room_ID'] ) ) {
 
-							bigdream_add_notices( 'error', 'Selected room is Out of Order.' );
+							add_this_notices( 'error', 'Selected room is Out of Order.' );
 							return;
 						}
 
 						if ( is_date_and_room_not_available( $data['room_ID'], format_db_date( $data['date_in'] ),  format_db_date( $data['date_out'] ) ) ) {
-							bigdream_add_notices( 'error', 'Selected room is not available on that date. Please check calendar to see availability.' );
+							add_this_notices( 'error', 'Selected room is not available on that date. Please check calendar to see availability.' );
 							return;
 						}
 
@@ -197,7 +171,7 @@ if (! class_exists('Booking') ) {
 
 					case 'make_reservation':
 						if ( is_empty_booking() ) {
-							bigdream_add_notices( 'error', 'Please select date.' );
+							add_this_notices( 'error', 'Please select date.' );
 							redirect_by_page_path( '/' )
 							break;
 						}
@@ -205,21 +179,16 @@ if (! class_exists('Booking') ) {
 						$data = get_booking_session();
 
 						if ( ! is_bookable( $data['room_ID'] ) ) {
-							bigdream_add_notices( 'error', 'Selected room is Out of Order.' );
+							add_this_notices( 'error', 'Selected room is Out of Order.' );
 							return;
 						}
 
-						$data = push_to_booking_session( array_merge( $data, $_POST ) );
-
-						if ( $bid = process( $data ) != 0 ) {
+						$data = push_to_booking_session( array_merge( $data, $_POST, array( 'date_booked' => date( 'Y-m-d H:i:s' ) ) ) );
+						if ( $this->process( $data ) ) {
 							// Empty booking info
 							empty_booking();
-							// replace data in booking session with booking ID
-							push_to_booking_session( array( 'booking_ID' => $bid ) );
-							
 							redirect_by_page_path( 'success' );
 						}
-						
 						break;
 				
 				}
@@ -247,7 +216,7 @@ if (! class_exists('Booking') ) {
 					$post = array_merge( $post, get_array_values_by_keys( $b, array( 'room_ID', 'room_code', 'room_price', 'no_of_night', 'amount', 'type', 'date_booked' ) );
 				}
 
-				if ( $bid = process( $post ) > 0 ) {
+				if ( $this->process( $post ) ) {
 					redirect_js_script( 'admin.php?page=big-dream-bookings&view=list' );
 				}
 
@@ -269,7 +238,6 @@ if (! class_exists('Booking') ) {
 
 			wp_enqueue_style( 'fullcalendar.min-style', assets( 'vendor/fullcalendar.min.css' ) );
 			wp_enqueue_style( 'fullcalendar.print.min-style', assets( 'vendor/fullcalendar.print.css' ), array(), null, 'print' );
-
 			wp_enqueue_script( 'moment.min-script', assets( 'vendor/moment.min.js' ) );
 			wp_enqueue_script( 'fullcalendar.min-script', assets( 'vendor/fullcalendar.min.js' ), array( 'moment.min-script', 'jquery' ), false, false );
 
