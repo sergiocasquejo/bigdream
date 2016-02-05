@@ -44,29 +44,27 @@ class Booking_List_Table extends WP_List_Table {
 
 	public function get_sortable_columns() {
 		$sortable_columns = array(
-			'room_code'  	=> array('room_code',false),
-			'guest_name' 	=> array('guest_name',false),
-			'amount'   		=> array('amount',false),
-			'amount_paid'   => array('amount',false),
-			'date_in'   	=> array('date_in',false),
-			'date_out'   	=> array('date_out',false),
-			'booking_status'   => array('booking_status',false),
-			'date_booked'   => array('date_booked',false),
+			'room_code'  	=> array( 'room_code',false ),
+			'guest_name' 	=> array( 'guest_name',false ),
+			'amount'   		=> array( 'amount',false ),
+			'amount_paid'   => array( 'amount',false ),
+			'date_in'   	=> array( 'date_in',false ),
+			'date_out'   	=> array( 'date_out',false ),
+			'booking_status'   => array( 'booking_status',false ),
+			'date_booked'   => array( 'date_booked',false ),
 		);
 		return $sortable_columns;
 	}
 
-	public function column_cb($item) {
+	public function column_cb( $item ) {
 		return sprintf( '<input type="checkbox" name="bid[]" value="%s" />', $item['booking_ID'] ); 
 	}
 
 	public function get_bulk_actions() {
 		//Check if test mode is enabled
-		if (!TEST_MODE) return;
+		if ( !TEST_MODE ) return;
 
-        return array(
-        	'delete' => __( 'Delete', BDR_TEXT_DOMAIN ),
-        );
+        return array( 'delete' => __( 'Delete', BDR_TEXT_DOMAIN ) );
 
     }
 
@@ -77,20 +75,20 @@ class Booking_List_Table extends WP_List_Table {
 			'view' => sprintf( '<a href="#" class="view-booking-details" data-id="%d">View</a>', $item['booking_ID'] )
 		);
 
-  		return sprintf('%1$s %2$s', $room_code, $this->row_actions($actions) );
+  		return sprintf( '%1$s %2$s', $room_code, $this->row_actions( $actions ) );
 	}
-	public function column_booking_no($item) {
-		return sprintf('<span class="badge">%s</span>', $item['booking_no']);
+	public function column_booking_no( $item ) {
+		return sprintf( '<span class="badge">%s</span>', $item['booking_no'] );
 	}
 
 
-	public function column_booking_status($item) {
-		$output = sprintf('<span class="badge %s">%s</span>', sanitize_title_with_dashes($item['booking_status']), $item['booking_status']);
+	public function column_booking_status( $item ) {
+		$output = sprintf( '<span class="badge %s">%s</span>', sanitize_title_with_dashes( $item['booking_status'] ), $item['booking_status'] );
 		return $output;
 	}
 
-	public function column_default($item, $column_name) {
-		switch ($column_name) {
+	public function column_default( $item, $column_name ) {
+		switch ( $column_name ) {
 			case 'date_in':
 			case 'date_out':
 				return format_date( $item[$column_name], 'M j, Y' );
@@ -120,7 +118,7 @@ class Booking_List_Table extends WP_List_Table {
 		$columns = $this->get_columns();
 		$hidden = array();
 		$sortable = $this->get_sortable_columns();
-		$this->_column_headers = array($columns, $hidden, $sortable);
+		$this->_column_headers = array( $columns, $hidden, $sortable );
 
 		$this->process_bulk_action();
 
@@ -132,7 +130,7 @@ class Booking_List_Table extends WP_List_Table {
 		
 		$current_page = $this->get_pagenum();
 
-		$total_items = count($this->data);
+		$total_items = count( $this->data);
 
 		// only ncessary because we have sample data
 		$this->data = array_slice( $this->data, ( ( $current_page-1 ) * $per_page ), $per_page );
@@ -153,14 +151,14 @@ class Booking_List_Table extends WP_List_Table {
 		$current = browser_request( 'status', 'all' );
 		$statuses = booking_statuses();
 		//All link
-		$class = ($current == 'all' ? ' class="current"' :'');
-		$all_url = remove_query_arg('status');
+		$class = ( $current == 'all' ? ' class="current"' :'' );
+		$all_url = remove_query_arg( 'status' );
 		$views['all'] = "<a href='{$all_url }' {$class} >All</a>";
 
-		foreach ($statuses as $s) {
-			$slug = sanitize_title_with_dashes($s);
-			$url = add_query_arg('status', $s);
-			$class = ($current == $slug ? ' class="current"' :'');
+		foreach ( $statuses as $s) {
+			$slug = sanitize_title_with_dashes( $s);
+			$url = add_query_arg( 'status', $s);
+			$class = ( $current == $slug ? ' class="current"' :'' );
 			$views[$slug] = '<a href="'. $url .'" '. $class .' >'. $s .'</a>';
 		}
 
@@ -186,10 +184,10 @@ class Booking_List_Table extends WP_List_Table {
 
             case 'delete':
             	// Check if test mode is enabled
-            	if (TEST_MODE) {
+            	if ( TEST_MODE ) {
 	            	global $wpdb;
-	            	$sql = "DELETE FROM ". $wpdb->prefix . "bookings WHERE booking_ID IN (". implode(',', $_POST['bid']) .")";
-	            	$wpdb->query($sql);
+	            	$sql = "DELETE FROM ". $wpdb->prefix . "bookings WHERE booking_ID IN (". implode( ',', $_POST['bid'] ) .")";
+	            	$wpdb->query( $sql);
             	}
                 break;
             default:
