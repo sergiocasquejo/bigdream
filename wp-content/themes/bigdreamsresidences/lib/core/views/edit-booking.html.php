@@ -1,5 +1,5 @@
 <div class="wrap">
-  <h1>New Booking <a href="<?php echo admin_url('/admin.php?page=big-dream-bookings'); ?>" class="page-title-action">Back to Listing</a></h1>
+  <h1>New Booking <a href="<?php echo admin_url('/admin.php?page=manage-bookings'); ?>" class="page-title-action">Back to Listing</a></h1>
   <div class="gap-30"></div>
   <?php site_notices(); print_javascript_notices(); ?>
   <form method="post">

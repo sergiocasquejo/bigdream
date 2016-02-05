@@ -268,8 +268,8 @@ if (! class_exists('Booking') ) {
 		public function register_admin_menu() {
 			global $menu;
 
-			$hook = add_submenu_page( 'big-dream-dashboard', 'Bookings', 'Bookings', 'manage_bookings', 'big-dream-bookings', array( &$this, 'bookings' ) );
-			add_submenu_page( 'big-dream-booking-edit', 'Edit Booking', 'Edit Booking', 'manage_bookings', 'big-dream-booking-edit', array( &$this, 'add_edit_booking' ) );
+			$hook = add_submenu_page( 'booking-system', 'Bookings', 'Bookings', 'manage_bookings', 'manage-bookings', array( &$this, 'bookings' ) );
+			add_submenu_page( 'edit-booking', 'Edit Booking', 'Edit Booking', 'manage_bookings', 'edit-booking', array( &$this, 'add_edit_booking' ) );
 
 			// Add badge notification to menu
 			$newitem = get_count_newly_booked();

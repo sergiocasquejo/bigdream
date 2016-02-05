@@ -1,14 +1,6 @@
 <?php
-
-add_action( 'admin_menu', 'bdr_admin_register_menu' );
-add_action( 'admin_enqueue_scripts', 'bdr_admin_enqueue_scripts' );
-add_filter( 'manage_room_posts_columns', 'bdr_admin_set_custom_edit_room_columns' );
-add_action( 'manage_room_posts_custom_column' , 'bdr_admin_custom_room_column', 10, 2 );
-add_action( 'init', 'bdr_admin_custom_init' );
-
-
 /**
- * bdr_admin_register_menu()
+ * admin_register_menu()
  * 
  * Register admin custom menus
  * 
@@ -16,16 +8,16 @@ add_action( 'init', 'bdr_admin_custom_init' );
  * @return none
  */
 
-function bdr_admin_register_menu() {
+function admin_register_menu() {
 	global $menu;
 
-	add_menu_page( 'Big Dream System', 'BDR System', 'manage_bookings', 'big-dream-dashboard', 'bdr_admin_dashboard', 'dashicons-calendar-alt', BDR_MENU_POSITION );		
-	add_submenu_page( 'big-dream-dashboard', 'Rooms', 'Rooms', 'manage_bookings', 'edit.php?post_type=room', false );
+	add_menu_page( 'Booking System', 'Booking System', 'manage_bookings', 'booking-system', 'admin_dashboard', 'dashicons-calendar-alt', BDR_MENU_POSITION );		
+	add_submenu_page( 'booking-system', 'Rooms', 'Rooms', 'manage_bookings', 'edit.php?post_type=room', false );
 }
-
+add_action( 'admin_menu', 'admin_register_menu' );
 
 /**
- * bdr_admin_dashboard()
+ * admin_dashboard()
  * 
  * Include dashboard
  * 
@@ -33,14 +25,14 @@ function bdr_admin_register_menu() {
  * @return none
  */
 
-function bdr_admin_dashboard() {
+function admin_dashboard() {
 	include_view( "dashboard.html.php" );
 }
 
 
 
 /**
- * bdr_admin_enqueue_scripts()
+ * admin_enqueue_style_and_scripts()
  * 
  * Enqueue administrator script
  * 
@@ -49,27 +41,27 @@ function bdr_admin_dashboard() {
  */
 
 
-function bdr_admin_enqueue_scripts() {
+function admin_enqueue_style_and_scripts() {
 
 	global $post_type;
-	if ( ( isset($_GET['page'] ) && in_array( $_GET['page'], array( 'big-dream-dashboard', 'big-dream-bookings', 'big-dream-booking-edit'))) ||  'room' == $post_type ) {
-	   	wp_enqueue_style( 'admin-style', assets( 'style/admin.css' ) );	
-		
-	   	wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_enqueue_style( 'jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
+	if ( ( isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'big-dream-dashboard', 'big-dream-bookings', 'big-dream-booking-edit' ) ) ) ||  'room' == $post_type ) {
 
+	   	wp_enqueue_style( 'admin-style', assets( 'style/admin.css' ) );	
+	   	wp_enqueue_style( 'jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
+
+	   	wp_enqueue_script( 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'chart-script', assets( 'vendor/Chart.min.js' ), array( 'jquery' ), true, false );
-		wp_enqueue_script( 'admin-script', assets( 'js/admin.js' ), array('chart-script', 'jquery' ), true, true );
+		wp_enqueue_script( 'admin-script', assets( 'js/admin.js' ), array( 'chart-script', 'jquery' ), true, true );
 		wp_localize_script( 'admin-script', 'BDR', array(
 			'AjaxUrl' => admin_url( 'admin-ajax.php' ),
 			'bookings' => get_booking_calendar()
 		) );
 	}
 }
-
+add_action( 'admin_enqueue_scripts', 'admin_enqueue_style_and_scripts' );
 
 /**
- * bdr_admin_set_custom_edit_room_columns()
+ * admin_set_custom_edit_room_columns()
  * 
  * Add custom column to room table list
  * 
@@ -78,19 +70,19 @@ function bdr_admin_enqueue_scripts() {
  */
 
 
-function bdr_admin_set_custom_edit_room_columns($columns) {
+function admin_set_custom_edit_room_columns( $columns ) {
 	unset( $columns['author'] );
     unset( $columns['date'] );
-    $columns['room_price'] = __( 'Room Price', 'bigdream' );
-    $columns['room_status'] = __( 'Room Status', 'bigdream' );
+    $columns['room_price'] = __( 'Room Price', BDR_TEXT_DOMAIN );
+    $columns['room_status'] = __( 'Room Status', BDR_TEXT_DOMAIN );
 
 
     return $columns;
 }
-
+add_filter( 'manage_room_posts_columns', 'admin_set_custom_edit_room_columns' );
 
 /**
- * bdr_admin_custom_room_column()
+ * admin_custom_room_column()
  * 
  * Display custom column data
  * 
@@ -98,22 +90,22 @@ function bdr_admin_set_custom_edit_room_columns($columns) {
  * @return none
  */
 
-function bdr_admin_custom_room_column( $column, $post_id ) {
+function admin_custom_room_column( $column, $post_id ) {
     switch ( $column ) {
 
 	    case 'room_status' :
-	    	$status = get_field('room_status', $post_id);
-			echo sprintf('<span class="badge %s">%s</span>', sanitize_title_with_dashes($status), $status);
+	    	$status = get_field( 'room_status', $post_id);
+			echo sprintf( '<span class="badge %s">%s</span>', sanitize_title_with_dashes( $status ), $status );
 	        break;
 	    case 'room_price':
-	    	echo nf(get_field('price', $post_id));
+	    	echo nf(get_field( 'price', $post_id));
 	    	break;
 	}
 }
-
+add_action( 'manage_room_posts_custom_column' , 'admin_custom_room_column', 10, 2 );
 
 /**
- * bdr_admin_custom_init()
+ * admin_custom_init()
  * 
  * Custom admin init function
  * 
@@ -121,7 +113,7 @@ function bdr_admin_custom_room_column( $column, $post_id ) {
  * @return none
  */
 
-function bdr_admin_custom_init() {
+function admin_custom_init() {
 
 	// Register custom room post type
 	$labels = array(
@@ -208,7 +200,7 @@ function bdr_admin_custom_init() {
 
 
 
-	// Add new taxonomy, make it hierarchical (like categories)
+	// Add new taxonomy, make it hierarchical (like categories )
 	$labels = array(
 		'name'              => _x( 'Categories', 'taxonomy general name' ),
 		'singular_name'     => _x( 'Category', 'taxonomy singular name' ),
@@ -238,7 +230,7 @@ function bdr_admin_custom_init() {
 
 
 	// Add custom role
-	$administrator     = get_role('administrator');
+	$administrator = get_role( 'administrator' );
 	$administrator->add_cap( 'publish_rooms' );
 	$administrator->add_cap( 'edit_rooms' );
 	$administrator->add_cap( 'edit_others_rooms' );
@@ -265,6 +257,7 @@ function bdr_admin_custom_init() {
         ) );
 }
 
+add_action( 'init', 'admin_custom_init' );
 
 
 
