@@ -1,8 +1,10 @@
-add_action( 'admin_menu', 'bdr_admin_register_menu');
-add_action( 'admin_enqueue_scripts', 'bdr_admin_enqueue_scripts');
-add_filter( 'manage_room_posts_columns', 'bdr_admin_set_custom_edit_room_columns');
+<?php
+
+add_action( 'admin_menu', 'bdr_admin_register_menu' );
+add_action( 'admin_enqueue_scripts', 'bdr_admin_enqueue_scripts' );
+add_filter( 'manage_room_posts_columns', 'bdr_admin_set_custom_edit_room_columns' );
 add_action( 'manage_room_posts_custom_column' , 'bdr_admin_custom_room_column', 10, 2 );
-add_action('init', 'bdr_admin_custom_init');
+add_action( 'init', 'bdr_admin_custom_init' );
 
 
 /**
@@ -16,6 +18,7 @@ add_action('init', 'bdr_admin_custom_init');
 
 function bdr_admin_register_menu() {
 	global $menu;
+
 	add_menu_page( 'Big Dream System', 'BDR System', 'manage_bookings', 'big-dream-dashboard', 'bdr_admin_dashboard', 'dashicons-calendar-alt', BDR_MENU_POSITION );		
 	add_submenu_page( 'big-dream-dashboard', 'Rooms', 'Rooms', 'manage_bookings', 'edit.php?post_type=room', false );
 }
@@ -31,7 +34,7 @@ function bdr_admin_register_menu() {
  */
 
 function bdr_admin_dashboard() {
-	include "views/dashboard.html.php";
+	include_view( "dashboard.html.php" );
 }
 
 
@@ -47,19 +50,20 @@ function bdr_admin_dashboard() {
 
 
 function bdr_admin_enqueue_scripts() {
-	global $post_type;
-	if ( (isset($_GET['page']) && in_array($_GET['page'], array('big-dream-dashboard', 'big-dream-bookings', 'big-dream-booking-edit'))) ||  'room' == $post_type) {
-	   	wp_enqueue_style('admin-style', BDR_SYSTEM_DIR_URI . '/assets/style/admin.css');	
-		
-	   	wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 
-		wp_enqueue_script( 'chart-script', BDR_SYSTEM_DIR_URI . '/assets/vendor/Chart.min.js', array('jquery'), true, false );
-		wp_enqueue_script('admin-script', BDR_SYSTEM_DIR_URI . '/assets/js/admin.js', array('chart-script', 'jquery'), true, true);
-		wp_localize_script('admin-script', 'BDR', array(
-			'AjaxUrl' => admin_url('admin-ajax.php'),
+	global $post_type;
+	if ( ( isset($_GET['page'] ) && in_array( $_GET['page'], array( 'big-dream-dashboard', 'big-dream-bookings', 'big-dream-booking-edit'))) ||  'room' == $post_type ) {
+	   	wp_enqueue_style( 'admin-style', assets( 'style/admin.css' ) );	
+		
+	   	wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_style( 'jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
+
+		wp_enqueue_script( 'chart-script', assets( 'vendor/Chart.min.js' ), array( 'jquery' ), true, false );
+		wp_enqueue_script( 'admin-script', assets( 'js/admin.js' ), array('chart-script', 'jquery' ), true, true );
+		wp_localize_script( 'admin-script', 'BDR', array(
+			'AjaxUrl' => admin_url( 'admin-ajax.php' ),
 			'bookings' => get_booking_calendar()
-		));
+		) );
 	}
 }
 
@@ -263,6 +267,5 @@ function bdr_admin_custom_init() {
 
 
 
-include_once "includes/booking.php";
-include_once "includes/class-booking-list.php";
+
 

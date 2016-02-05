@@ -54,3 +54,11 @@ function bdr_login_logo() { ?>
     </style>
 <?php }
 add_action( 'login_enqueue_scripts', 'bdr_login_logo' );
+
+
+add_filter( 'set-screen-option', 'bigdream_booking_list_set_option', 10, 3 );
+function bigdream_booking_list_set_option( $status, $option, $value ) {
+
+  return $value;
+  
+}

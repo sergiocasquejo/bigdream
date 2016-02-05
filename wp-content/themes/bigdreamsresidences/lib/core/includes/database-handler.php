@@ -52,12 +52,22 @@ if (!function_exists('bigdream_save_booking')) {
 }
 
 
-function get_all_bookings() {
+function get_filtered_bookings() {
 	global $wpdb
-	
-	$sql = "SELECT * FROM ". $wpdb->prefix . "bookings";
+		
+	$sql = "SELECT p.post_title as room_title,  b.*, CONCAT(b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_ID WHERE 1 = 1";
 
-	return $wpdb->get_results($sql, ARRAY_A);
+	if ( $s = browser_post( 's' ) != '' ) {
+		$sql .= " AND ( p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%') ";
+	}
+
+	if ( $status = browser_request( 'status' ) != '' ) {
+		$sql .= " AND (b.booking_status = '". $status ."') ";
+	}
+
+	$results = $wpdb->get_results( $sql, ARRAY_A );
+
+	return $results;
 
 }
 
@@ -97,6 +107,7 @@ function get_booking_calendar() {
 
 	return $wpdb->get_results($sql, ARRAY_A);
 }
+
 
 
 

@@ -1,4 +1,4 @@
-<?php while (have_posts()) : the_post(); ?>
+<?php while ( have_posts() ) : the_post(); ?>
 <div class="section-room bg-white">
     <div class="container">
         <div class="room-detail">
@@ -8,8 +8,8 @@
                         <div class="slider">
                             <div class="flexslider">
                                 <ul class="slides">
-                                    <?php while(have_rows('gallery')): the_row(); 
-                                    $image = get_sub_field('image')['sizes']['gallery-post-thumbnails'];?>
+                                    <?php while( have_rows( 'gallery' ) ): the_row(); 
+                                    $image = get_sub_field( 'image' )['sizes']['gallery-post-thumbnails'];?>
                                     <li><img src="<?php echo $image; ?>" /></li>
                                     <?php endwhile; ?>
                                 </ul>
@@ -29,29 +29,29 @@
                             <div class="room-detail_form">
                                 <label>Arrive</label>
                                 <div class="form-group">
-                                    <input type="text" name="date_in" id="date_in" class="date form-control" placeholder="Arrive Date" value="<?php echo booking_data('date_in'); ?>" required>
+                                    <input type="text" name="date_in" id="date_in" class="date form-control" placeholder="Arrive Date" value="<?php echo booking_data( 'date_in' ); ?>" required>
                                 </div>
                                 <label>Depature</label>
                                 <div class="form-group">
-                                    <input type="text" name="date_out" id="date_out" class="date form-control" placeholder="Departure Date" value="<?php echo booking_data('date_out'); ?>"  required>
+                                    <input type="text" name="date_out" id="date_out" class="date form-control" placeholder="Departure Date" value="<?php echo booking_data( 'date_out' ); ?>"  required>
                                 </div>
                                 <label>Adult</label>
                                 <select name="no_of_adult" class="form-group">
-                                    <?php for($i = 1; $i <= 10; $i++): ?>
-                                    <option value="<?php echo $i; ?>" <?php selected($i, booking_data('no_of_adult')); ?>><?php echo $i; ?></option>
+                                    <?php for( $i = 1; $i <= 10; $i++ ): ?>
+                                    <option value="<?php echo $i; ?>" <?php selected( $i, booking_data( 'no_of_adult' ) ); ?>><?php echo $i; ?></option>
                                     <?php endfor; ?>
                                 </select>
                                 <label>Chirld</label>
                                 <select name="no_of_child" class="form-group">
                                     <option value="0"></option>
-                                    <?php for($i = 1; $i <= 10; $i++): ?>
-                                    <option value="<?php echo $i; ?>" <?php selected($i, booking_data('no_of_child')); ?>><?php echo $i; ?></option>
+                                    <?php for( $i = 1; $i <= 10; $i++ ): ?>
+                                    <option value="<?php echo $i; ?>" <?php selected( $i, booking_data( 'no_of_child' ) ); ?>><?php echo $i; ?></option>
                                     <?php endfor; ?>
                                 </select>
                                 <input type="hidden" name="room_ID" value="<?php the_ID(); ?>" />
-                                <?php if (is_bookable(get_the_ID())): ?>
-                                <input type="hidden" name="action" value="book_room" />
-                                <button type="submit" class="bdr-btn bdr-btn-fill-black">Book Now</button>
+                                <?php if (is_bookable( get_the_ID() )): ?>
+                                    <input type="hidden" name="action" value="book_room" />
+                                    <button type="submit" class="bdr-btn bdr-btn-fill-black">Book Now</button>
                                 <?php else: ?>
                                     <span class="bdr-btn bdr-btn-fill-red">This room is out of order.</span>
                                 <?php endif; ?>
@@ -78,25 +78,25 @@
                     <div class="room-detail_tab-content tab-content">
                         <div role="tabpanel" class="tab-pane active" id="overview">
                             <div class="room-detail_overview">
-                                <h5 class="text-uppercase">Room #: <?php the_field('room_code'); ?></h5>
+                                <h5 class="text-uppercase">Room #: <?php the_field( 'room_code' ); ?></h5>
                                 <p><?php the_content(); ?></p>
 
                                 <div class="row">
                                     <div class="col-xs-6 col-md-4">
                                         <h6>SPECIAL ROOM</h6>
                                         <ul>
-                                            <li>Max: <?php the_field('max_person'); ?></li>
-                                            <li>Size: <?php the_field('room_size'); ?></li>
-                                            <li>View: <?php the_field('view'); ?></li>
-                                            <li>Bed: <?php the_field('bed'); ?></li>
+                                            <li>Max: <?php the_field( 'max_person' ); ?></li>
+                                            <li>Size: <?php the_field( 'room_size' ); ?></li>
+                                            <li>View: <?php the_field( 'view' ); ?></li>
+                                            <li>Bed: <?php the_field( 'bed' ); ?></li>
                                         </ul>
                                     </div>
-                                    <?php if (have_rows('services')): ?>
+                                    <?php if ( have_rows( 'services' ) ): ?>
                                     <div class="col-xs-6 col-md-4">
                                         <h6>SERVICE ROOM</h6>
                                         <ul>
-                                            <?php while(have_rows('services')): the_row(); ?>
-                                            <li><?php the_sub_field('title'); ?></li>
+                                            <?php while( have_rows( 'services' ) ): the_row(); ?>
+                                            <li><?php the_sub_field( 'title' ); ?></li>
                                             <?php endwhile; ?>
                                         </ul>
                                     </div>
@@ -108,15 +108,15 @@
                         <div role="tabpanel" class="tab-pane" id="package">
                             <div class="room-detail_amenities">
                                 <p><?php the_content(); ?></p>
-                                <?php if (have_rows('packages')): ?>
+                                <?php if ( have_rows( 'packages' ) ): ?>
                                 <div class="row">
-                                    <?php while (have_rows('packages')): the_row(); ?>
+                                    <?php while ( have_rows( 'packages' ) ): the_row(); ?>
                                     <div class="col-xs-6 col-lg-4">
-                                        <h6><?php the_sub_field('heading'); ?></h6>
-                                        <?php if (have_rows('package_list')): ?>
+                                        <h6><?php the_sub_field( 'heading' ); ?></h6>
+                                        <?php if ( have_rows( 'package_list' ) ): ?>
                                         <ul>
-                                            <?php while (have_rows('package_list')): the_row(); ?>
-                                            <li><?php the_sub_field('title'); ?></li>
+                                            <?php while ( have_rows( 'package_list' ) ): the_row(); ?>
+                                            <li><?php the_sub_field( 'title' ); ?></li>
                                             <?php endwhile; ?>
                                         </ul>
                                         <?php endif; ?>    
@@ -137,21 +137,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php if (have_rows('price_configuration', $id)): ?>
-                                            <?php while (have_rows('price_configuration', $id)): the_row(); 
-                                                if (get_sub_field('enable')) :
-                                                    $from = format_date(get_sub_field('from'), 'D M d, Y');
-                                                    $to = format_date(get_sub_field('to'), 'D M d, Y');
+                                    <?php if ( have_rows( 'price_configuration', $id) ): ?>
+                                            <?php while ( have_rows( 'price_configuration', $id) ): the_row(); 
+                                                if ( get_sub_field( 'enable' ) ) :
+                                                    $from = format_date( get_sub_field( 'from' ), 'D M d, Y' );
+                                                    $to = format_date( get_sub_field( 'to' ), 'D M d, Y' );
                                                 ?>
                                                 <tr>
                                                     <td>
                                                         <ul>
                                                             <li><?php echo $from .' - '. $to; ?></li>
-                                                            <li><?php echo count_nights($from, $to); ?> night minimum stay</li>
+                                                            <li><?php echo count_nights( $from, $to); ?> night minimum stay</li>
                                                         </ul>
                                                     </td>
                                                     <td>
-                                                        <p class="price"><?php format_price(get_sub_field('price')); ?></p>
+                                                        <p class="price"><?php format_price( get_sub_field( 'price' ) ); ?></p>
                                                     </td>
                                                 </tr>
                                     <?php endif; 
@@ -166,7 +166,7 @@
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="calendar">
-                            <?php $dates = implode(',', unavailable_dates(get_the_ID())); ?>
+                            <?php $dates = implode( ',', unavailable_dates( get_the_ID() )); ?>
                             <div class="room_calendar_availability" data-unavailable="<?php echo $dates; ?>"></div>
                             <div class="calendar_status text-center col-sm-12">
                                 <span>Available</span>
