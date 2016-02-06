@@ -35,7 +35,8 @@ class Booking_List_Table extends WP_List_Table {
 		$columns['amount_paid'] = 'Amount Paid';
 		$columns['date_in'] = 'Date In';
 		$columns['date_out'] = 'Date Out';
-		$columns['booking_status'] = 'Status';
+		$columns['booking_status'] = 'Booking Status';
+		$columns['payment_status'] = 'Payment Status';
 		$columns['guest_name'] = 'Booked By';
 		$columns['date_booked'] = 'Date Booked';
 
@@ -51,6 +52,7 @@ class Booking_List_Table extends WP_List_Table {
 			'date_in'   	=> array( 'date_in',false ),
 			'date_out'   	=> array( 'date_out',false ),
 			'booking_status'   => array( 'booking_status',false ),
+			'payment_status'   => array( 'payment_status',false ),
 			'date_booked'   => array( 'date_booked',false ),
 		);
 		return $sortable_columns;
@@ -87,16 +89,21 @@ class Booking_List_Table extends WP_List_Table {
 		return $output;
 	}
 
+	public function column_payment_status( $item ) {
+		$output = sprintf( '<span class="badge %s">%s</span>', sanitize_title_with_dashes( $item['payment_status'] ), $item['payment_status'] );
+		return $output;
+	}
+
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 			case 'date_in':
 			case 'date_out':
-				return format_date( $item[$column_name], 'M j, Y' );
+				return format_date( $item[$column_name], 'D M j, Y' );
 			case 'date_booked':
-				return format_date( $item[$column_name], 'M j, Y H:i' );
+				return format_date( $item[$column_name], 'D M j, Y H:i' );
 			case 'amount':
 			case 'amount_paid':
-				return format_price( $item[$column_name], false );
+				return sprintf('<span class="amount">%s</span>', nf( $item[$column_name] ));
 			default:
 				return $item[$column_name];
 		}

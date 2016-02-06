@@ -1,7 +1,7 @@
 <?php extract( $data ) ?>
 <div class="wrap">
   <h1>New Booking <a href="<?php echo admin_url('/admin.php?page=manage-bookings'); ?>" class="page-title-action">Back to Listing</a></h1>
-  <div class="gap-30"></div>
+  <div class="gap-20"></div>
   <?php site_notices(); print_javascript_notices(); ?>
   <?php if ( $booking_ID > 0 ): ?>
   <h1>Booking #: <?php echo $booking_no; ?></h1>

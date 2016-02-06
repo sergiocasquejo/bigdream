@@ -192,7 +192,7 @@ if (! class_exists('Booking') ) {
 						break;
 					case 'export-bookings':
 
-						$results = get_filtered_bookings();
+						$results = get_bookings_for_export();
 
 						// When executed in a browser, this script will prompt for download 
 						// of 'test.xls' which can then be opened by Excel or OpenOffice.
@@ -205,6 +205,7 @@ if (! class_exists('Booking') ) {
 
 						$exporter->initialize(); // starts streaming data to web browser
 
+						$exporter->addRow(array('BOOKING NO', 'ROOM', 'ROOM CODE', 'ROOM PRICE', 'CHECK IN', 'CHECK OUT', 'NO OF NIGHTS', 'TOTAL AMOUNT', 'AMOUNT PAID', 'NO OF ADULT', 'NO OF CHILD', 'BOOKED BY', 'BIRTHDATE', 'EMAIL ADDRESS', 'PHONE', 'COUNTRY', 'ADDRESS 1', 'ADDRESS 2', 'PROVINCE', 'CITY', 'ZIPCODE', 'NATIONALITY', 'BOOKING STATUS', 'PAYMENT STATUS', 'DATE BOOKED'));
 						foreach ( $results as $i => $r ) {
 							// pass addRow() an array and it converts it to Excel XML format and sends 
 							// it to the browser
@@ -388,8 +389,11 @@ if (! class_exists('Booking') ) {
 			} else {
 
 				global $booking_list_table;
+				$data['rooms'] = get_available_rooms();
+				$data['booking_list_table'] = $booking_list_table;
+				$data['payment_statuses'] = payment_statuses();
 
-				include_view ( 'bookings.html.php', $booking_list_table );
+				include_view ( 'bookings.html.php', $data );
 			}
 		}
 

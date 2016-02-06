@@ -18,7 +18,7 @@ function print_me( $data ) {
  */
 
 if( !function_exists( 'nf' ) ) {
-  function nf( $number , $decimals = 0 , $dec_point = "." , $thousands_sep = "," ) {
+  function nf( $number , $decimals = 2 , $dec_point = "." , $thousands_sep = "," ) {
     return number_format( $number, $decimals, $dec_point, $thousands_sep );
   }
 }

@@ -181,13 +181,14 @@ span.badge {
     background-color: #D0D0D0;
     font-size: 12px;
 }
-
+span.badge.paid,
 span.badge.arrived,
 span.badge.vacant-clean {
     background-color: #0A8415;
     color: #FFF;
 }
 
+span.badge.unpaid,
 span.badge.checkout,
 span.badge.occupied {
 	background-color: #B70707;
@@ -199,7 +200,7 @@ span.badge.vacant-dirty{
 	background-color: #D6A707;
 	color: #FFF;
 }
-
+span.badge.partial,
 span.badge.new{
 	background-color: #F75C05;
 	color: #FFF;
@@ -216,4 +217,16 @@ span.badge.out-of-service {
 
 body {
     background-color: #F1F1F1 !important;
+}
+
+
+span.amount {
+	text-transform: uppercase;
+    font-weight: bold;
+}
+
+p.search-box {
+    float: right;
+    margin: 0;
+    margin-left: 10px;
 }

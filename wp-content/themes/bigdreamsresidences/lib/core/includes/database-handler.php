@@ -67,7 +67,47 @@ function get_filtered_bookings() {
 		$sql .= " AND ( p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%' ) ";
 	}
 
-	if ( $status = browser_request( 'status' ) != '' ) {
+	
+
+	if ( ($status = browser_request( 'status' )) != '' ) {
+		$sql .= " AND (b.booking_status = '". $status ."' ) ";
+	}
+	
+	if ( ($status = browser_request( 'filter_payment_status' )) != '' ) {
+		$sql .= " AND (b.payment_status = '". $status ."' ) ";
+	}
+
+	
+
+	if ( ($room_ID = browser_request( 'filter_room_ID' )) != '' ) {
+		$sql .= " AND (b.room_ID = '". $room_ID ."' ) ";
+	}
+
+
+	if ( ($checkin = browser_request( 'filter_date_in' )) != '' && ($checkout = browser_request( 'filter_date_out' )) != '' ) {
+		$sql .= " AND (date_in >= '". format_db_date( $checkin, 'Y-m-d' ) ."' AND  date_out <= '". format_db_date( $checkout, 'Y-m-d' ) ."'  ) ";
+	}
+
+
+
+
+	$results = $wpdb->get_results( $sql, ARRAY_A );
+
+	return $results;
+
+}
+
+
+function get_bookings_for_export() {
+	global $wpdb;
+		
+	$sql = "SELECT booking_no,  p.post_title, room_code, room_price, b.date_in, b.date_out, b.no_of_night, amount, amount_paid, b.no_of_adult, b.no_of_child,  CONCAT(b.salutation, '. ', b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name, b.birth_date, b.email_address, b.primary_phone, b.country, b.address_1, b.address_2, b.province, b.city, b.zipcode, b.nationality, b.booking_status, b.payment_status, b.date_booked  FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_ID WHERE 1 = 1";
+
+	if ( $s = browser_post( 's' ) != '' ) {
+		$sql .= " AND ( p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%' ) ";
+	}
+
+	if ( ($status = browser_get( 'status' )) != '' ) {
 		$sql .= " AND (b.booking_status = '". $status ."' ) ";
 	}
 
@@ -96,14 +136,14 @@ function get_booking_calendar() {
 	$sql = "
 		SELECT 
 			b.booking_ID as id,
-			CONCAT(p.post_title, ' by:  ', b.first_name,' ', b.middle_name, ' ', b.last_name) as title,
+			CONCAT(b.room_code, ' by:  ', b.first_name,' ', b.middle_name, ' ', b.last_name) as title,
 			b.date_in as start, 
 			b.date_out as end, 
 			CASE b.booking_status
-				WHEN 'Complete' THEN '#45920B'
-				WHEN 'Not Paid' THEN '#FF8100'
-				WHEN 'Unconfirmed' THEN '#888888'
-				WHEN 'Cancelled' THEN '#FF0000'
+				WHEN 'NEW' THEN '#F75C05'
+				WHEN 'CONFIRMED' THEN '#D6A707'
+				WHEN 'ARRIVED' THEN '#0A8415'
+				WHEN 'CHECKOUT' THEN '#B70707'
 			END
 			 as color
 		FROM 
@@ -271,6 +311,7 @@ function get_monthly_sales( $output = 'ARRAY_A' ) {
 
 	$sql = "SELECT MONTH(date_booked) as month, (SUM( amount) / (SELECT SUM( amount) FROM ".$wpdb->prefix."bookings WHERE year(CURDATE() ) = YEAR(date_booked) )) * 100 as amount, (SUM( amount_paid) / (SELECT SUM( amount) FROM ".$wpdb->prefix."bookings WHERE YEAR(CURDATE() ) = YEAR(date_booked) )) * 100 as amount_paid FROM ".$wpdb->prefix."bookings WHERE YEAR(date_booked) = YEAR(CURDATE() ) GROUP BY MONTH(date_booked) ORDER BY MONTH(date_booked) ASC";
 
+	
 	$sales = $wpdb->get_results( $sql, $output );
 
 	return $sales;
