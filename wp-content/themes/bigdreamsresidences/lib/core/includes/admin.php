@@ -203,3 +203,12 @@ add_action( 'init', 'admin_custom_init' );
 
 
 
+add_filter('post_row_actions','room_action_row', 10, 2);
+
+function room_action_row($actions, $post){
+    //check for your post type
+    if ($post->post_type =="room"){
+        $actions['in_google'] = '<a href='.admin_url('admin.php?page=manage-bookings&filter_room_ID='. $post->ID).'">View Bookings</a>';
+    }
+    return $actions;
+}
