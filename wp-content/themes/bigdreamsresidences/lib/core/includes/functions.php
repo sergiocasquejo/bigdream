@@ -580,11 +580,17 @@ function send_success_booking_notification( $booking_ID ) {
 function get_monthly_chart_sales() {
 
   $arr = array();
+
+  for ( $i = 0; $i < 12; $i++ ) {
+     $arr['amount'][$i] = 0;
+     $arr['amount_paid'][$i] = 0;
+  }
+
   $sales = get_monthly_sales();
 
   foreach( $sales as $i => $s ) {
-    $arr['amount'][] = round( $s['amount'], 2 );
-    $arr['amount_paid'][] = round( $s['amount_paid'], 2 );
+    $arr['amount'][$s['month'] - 1] = round( $s['amount'], 2 );
+    $arr['amount_paid'][$s['month'] - 1] = round( $s['amount_paid'], 2 );
   }
 
   return $arr;
