@@ -23,15 +23,17 @@ use Roots\Sage\Wrapper;
       if (is_home() || is_front_page()) {
         echo do_shortcode('[banner-slider]');
       } ?>
-
+    
     <div class="main_bg">
       <?php 
+        
         //Banner
         get_template_part('templates/mini-banner');
 
         include Wrapper\template_path(); ?>
     </div>
     <?php
+
       do_action('get_footer');
       get_template_part('templates/footer');
       wp_footer();

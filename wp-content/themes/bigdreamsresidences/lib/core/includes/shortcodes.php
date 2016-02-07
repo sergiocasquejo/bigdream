@@ -103,6 +103,44 @@ function online_reservation_form_shortcode_handler( $atts, $content = null, $tag
 
 add_shortcode( 'reservation-form', 'online_reservation_form_shortcode_handler' );
 
+function accommodations_shortcode_handler( $atts, $content = null ) {
+	$output = '';
+
+	$q = get_terms( 'room-cat', array( 'hide_empty' => false ) );
+
+	$output .= '<div class="section-featured-room">';
+		$output .= '<h2 class="room-featured_title">ACCOMMODATIONS</h2>';
+		$output .= '<div class="room-content">';
+			$output .= '<div class="row">';
+
+				foreach( $q as $i => $p) {
+					$image = category_featured_image( $p->term_id, 'gallery-thumbnail' );
+
+					$output .= '<div class="col-sm-6 col-md-4 col-lg-4">';
+						$output .= '<div class="room-item">';
+							$output .= '<a href="'. get_term_link( $p ) .'">';
+							$output .= '<div class="img" style="background:#F1F1F1 url(\''. $image  .'\') no-repeat top right;">';
+							$output .= '</div>';
+							$output .= '</a>';
+							$output .= '<div class="text">';
+							$output .= '<h2><a href="'. get_term_link( $p ) .'">'. $p->name .'</a></h2>';
+							$output .= '<p class="desc">'. $p->description .'</p>';
+							$output .= '<p class="price">'. format_price( get_field( 'category_price', 'room-cat_'. $p->term_id ), false ) .' /days</p>';
+							$output .= '<a href="'. get_term_link( $p ) .'" class="bdr-btn bdr-btn-default pull-right">View Rooms</a>';
+							$output .= '</div>';
+						$output .= '</div>';
+					$output .= '</div>';
+				}
+				$output .= '<div class="clear"></div>';
+			$output .= '</div>';
+		$output .= '</div>';
+	$output .= '</div>';
+	return $output;
+}
+
+add_shortcode( 'accommodations', 'accommodations_shortcode_handler' );
+
+
 
 function featured_room_shortcode_handler( $atts, $content = null ) {
 	$output = '';
@@ -113,7 +151,7 @@ function featured_room_shortcode_handler( $atts, $content = null ) {
 		) );
 
 	$output .= '<div class="section-featured-room">';
-		$output .= '<h2 class="room-featured_title">Rooms</h2>';
+		$output .= '<h2 class="room-featured_title">ACCOMMODATIONS</h2>';
 		$output .= '<div class="room-content">';
 			$output .= '<div class="row">';
 

@@ -55,6 +55,17 @@ function featured_image( $post_id, $size = 'thumbnail', $placeholder = '' ) {
   return $featured_image;
 }
 
+function category_featured_image( $term_id, $size = 'gallery-thumbnail', $placeholder = '' ) {
+  $featured_image = $placeholder; 
+
+  if ( ( $image = get_field( 'featured_image', 'room-cat_'. $term_id ) ) != '' ) {
+    $featured_image = isset( $image['sizes'][$size] ) ? $image['sizes'][$size] : $image['url'];
+  }
+
+  return $featured_image;
+}
+
+
 function array_data( $arr, $key, $default = '' ) {
   return isset( $arr[$key] ) ? $arr[$key] : $default;
 }

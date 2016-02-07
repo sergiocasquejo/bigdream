@@ -48,12 +48,30 @@
     }
 	.room-item {
 		margin-bottom:20px;
+		.img {
+			min-height: 235px;
+    		background-size: cover !important;
+		}
 		.text {
 		    margin-top: 15px;
 		    h2 {
 		    	font-size:18px;
 		    }
+		    .price {
+			    display: inline-block;
+			    vertical-align: middle;
+			    margin-bottom: 0;
+			    font-size: 14px;
 
+			    .amount {
+			    	font-size: 24px;
+    				font-weight: bold;
+			    }
+			}
+
+			.bdr-btn {
+			    margin-left: 20px;
+			}
 			ul {
 			    margin-top: 10px;
 			    font-size: 14px;
@@ -168,6 +186,12 @@
 		    margin-bottom: 10px;
 		}
 
+		.row {
+			label {
+				margin-top:0;
+			}
+		}
+
 		.bdr-btn {
 			display:block;
 			width: 100%;
@@ -278,6 +302,7 @@
 				    padding-left: 0;
 				    margin-bottom: 0;
 				    margin-top: 15px;
+				    list-style:none;
 
 				    li {
 					    position: relative;
