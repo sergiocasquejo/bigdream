@@ -239,10 +239,6 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 		                    		$output .= '<h2><a href="'. get_the_permalink( $room_ID ) .'">'. get_the_title( $room_ID ) .'</a></h2>';
 		                    	$output .= '</div>';
 			                    $output .= '<ul>';
-			                    	$output .= '<li>';
-		                       			$output .= '<span>Room #</span>';
-		                       			$output .= '<span>'. room_code( $room_ID ) .'</span>';
-		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Room Price</span>';
 		                       			$output .= '<span>'. nf( $room_price ) .'</span>';
@@ -264,8 +260,8 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 			                       		$output .= '<span>'. get_field( 'view', $room_ID ) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
-			                       		$output .= '<span>Sub Total</span>';
-			                       		$output .= '<span>'. nf( $room_price ) .' x ' . $nights . ' = '. nf( booking_data( 'amount' ) ) .'</span>';
+		                       			$output .= '<span>Total Room '. booking_data( 'no_of_room' ).'</span>';
+		                       			$output .= '<span>'. nf( $room_price * booking_data( 'no_of_room' ) ).'</span>';
 		                       		$output .= '</li>';
 		                        $output .= '</ul>';
 		                    $output .= '</div>';
@@ -484,7 +480,7 @@ function success_booking_details() {
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Check-Out</span>';
-		                       			$output .= '<span>'. format_date( $d['date_out']) .'</span>';
+		                       			$output .= '<span>'. format_date( $d['date_out'] ) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 			                       		$output .= '<span>Total Nights</span>';
@@ -503,10 +499,6 @@ function success_booking_details() {
 			                    		$output .= '<h2><a>'. get_the_title( $d['room_ID']) .'</a></h2>';
 			                    	$output .= '</div>';
 			                    	$output .= '<ul>';
-			                    	$output .= '<li>';
-		                       			$output .= '<span>Room #</span>';
-		                       			$output .= '<span>'. get_field( 'room_code', $d['room_ID']) .'</span>';
-		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Room Price</span>';
 		                       			$output .= '<span>'. nf( $room_price) .'</span>';
@@ -528,8 +520,8 @@ function success_booking_details() {
 			                       		$output .= '<span>'. get_field( 'view', $d['room_ID']) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
-			                       		$output .= '<span>Sub Total</span>';
-			                       		$output .= '<span>'. nf( $room_price) .' x ' . $nights . ' = '. nf( $d['amount']) .'</span>';
+		                       			$output .= '<span>Total Room '. booking_data( 'no_of_room' ).'</span>';
+		                       			$output .= '<span>'. nf( $room_price * booking_data( 'no_of_room' ) ).'</span>';
 		                       		$output .= '</li>';
 		                       		
 		                        $output .= '</ul>';

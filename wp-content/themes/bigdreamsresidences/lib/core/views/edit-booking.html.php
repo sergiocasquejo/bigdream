@@ -16,10 +16,10 @@
   <form method="post">
     <div class="row">
       <div class="col-md-6 form-group">
-        <label class="form-label" for="first_name">Room #</label>
+        <label class="form-label" for="first_name">Room</label>
         <select name="room_ID" class="form-control" required <?php disabled( $editable, false ); ?>>
           <?php foreach ($available_rooms as $i => $r): ?>
-            <option value="<?php echo $r->ID; ?>" <?php selected($r->ID, $room_ID); ?>><?php echo room_code( $r->ID ); ?></option>
+            <option value="<?php echo $r->ID; ?>" <?php selected($r->ID, $room_ID); ?>><?php echo get_the_title( $r->ID ); ?></option>
           <?php endforeach; ?>
         </select>
       </div>
@@ -107,6 +107,10 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-md-3 form-group">
+        <label class="form-label" for="date_in">No of Room</label>
+        <input type="text" name="no_of_adult" class="form-control" value="<?php echo $no_of_room; ?>" required/>
+      </div>
       <div class="col-md-3 form-group">
         <label class="form-label" for="date_in">No of Adult</label>
         <input type="text" name="no_of_adult" class="form-control" value="<?php echo $no_of_adult; ?>" required/>

@@ -80,7 +80,7 @@ function admin_custom_init() {
 		'public'             => true,
 		'publicly_queryable' => true,
 		'show_ui'            => true,
-		'show_in_menu'       => false,
+		'show_in_menu'       => true,
 		'query_var'          => true,
 		'rewrite'            => array( 'slug' => 'room' ),
 		'capability_type' => 'room',

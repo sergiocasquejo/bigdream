@@ -27,27 +27,41 @@
                                 </p>
                             </div>
                             <div class="room-detail_form">
-                                <label>Arrive</label>
                                 <div class="form-group">
+                                    <label>Arrive</label>
                                     <input type="text" name="date_in" id="date_in" class="date form-control" placeholder="Arrive Date" value="<?php echo booking_data( 'date_in' ); ?>" required>
                                 </div>
-                                <label>Depature</label>
                                 <div class="form-group">
+                                    <label>Depature</label>
                                     <input type="text" name="date_out" id="date_out" class="date form-control" placeholder="Departure Date" value="<?php echo booking_data( 'date_out' ); ?>"  required>
                                 </div>
-                                <label>Adult</label>
-                                <select name="no_of_adult" class="form-group">
-                                    <?php for( $i = 1; $i <= 10; $i++ ): ?>
-                                    <option value="<?php echo $i; ?>" <?php selected( $i, booking_data( 'no_of_adult' ) ); ?>><?php echo $i; ?></option>
-                                    <?php endfor; ?>
-                                </select>
-                                <label>Chirld</label>
-                                <select name="no_of_child" class="form-group">
-                                    <option value="0"></option>
-                                    <?php for( $i = 1; $i <= 10; $i++ ): ?>
-                                    <option value="<?php echo $i; ?>" <?php selected( $i, booking_data( 'no_of_child' ) ); ?>><?php echo $i; ?></option>
-                                    <?php endfor; ?>
-                                </select>
+                                <div class="form-group">
+                                    <label>No of Room</label>
+                                    <select name="no_of_room" class="form-group">
+                                        <?php for( $i = 1; $i <= 10; $i++ ): ?>
+                                        <option value="<?php echo $i; ?>" <?php selected( $i, booking_data( 'no_of_room' ) ); ?>><?php echo $i; ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>Adult</label>
+                                        <select name="no_of_adult" class="form-group">
+                                            <?php for( $i = 1; $i <= 10; $i++ ): ?>
+                                            <option value="<?php echo $i; ?>" <?php selected( $i, booking_data( 'no_of_adult' ) ); ?>><?php echo $i; ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Child</label>
+                                        <select name="no_of_child" class="form-group">
+                                            <option value="0"></option>
+                                            <?php for( $i = 1; $i <= 10; $i++ ): ?>
+                                            <option value="<?php echo $i; ?>" <?php selected( $i, booking_data( 'no_of_child' ) ); ?>><?php echo $i; ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </div>
+                                </div>
                                 <input type="hidden" name="room_ID" value="<?php the_ID(); ?>" />
                                 <?php if (is_bookable( get_the_ID() )): ?>
                                     <input type="hidden" name="action" value="book_room" />
@@ -68,7 +82,7 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs room-detail_tab-header" role="tablist">
                         <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
-                        <li role="presentation"><a href="#package" aria-controls="package" role="tab" data-toggle="tab">Package</a></li>
+                        <li role="presentation"><a href="#aminities" aria-controls="aminities" role="tab" data-toggle="tab">Aminities</a></li>
                         <li role="presentation"><a href="#prices" aria-controls="prices" role="tab" data-toggle="tab">Rates</a></li>
                         <li role="presentation"><a href="#calendar" aria-controls="calendar" role="tab" data-toggle="tab">Calendar</a></li>
                     </ul>
@@ -78,7 +92,6 @@
                     <div class="room-detail_tab-content tab-content">
                         <div role="tabpanel" class="tab-pane active" id="overview">
                             <div class="room-detail_overview">
-                                <h5 class="text-uppercase">Room #: <?php the_field( 'room_code' ); ?></h5>
                                 <p><?php the_content(); ?></p>
 
                                 <div class="row">
@@ -105,7 +118,7 @@
 
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="package">
+                        <div role="tabpanel" class="tab-pane" id="aminities">
                             <div class="room-detail_amenities">
                                 <p><?php the_content(); ?></p>
                                 <?php if ( have_rows( 'packages' ) ): ?>

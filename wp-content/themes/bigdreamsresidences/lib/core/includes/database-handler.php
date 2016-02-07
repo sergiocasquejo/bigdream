@@ -13,7 +13,6 @@ if ( ! function_exists( 'save_booking' ) ) {
 		$data = get_array_values_by_keys( $args, 
 				array(
 					'room_ID',
-					'room_code',
 					'room_price',
 					'amount',
 					'amount_paid',
@@ -36,6 +35,7 @@ if ( ! function_exists( 'save_booking' ) ) {
 					'no_of_adult',
 					'no_of_child',
 					'no_of_night',
+					'no_of_room',
 					'booking_status',
 					'payment_status',
 					'notes',
@@ -101,7 +101,7 @@ function get_filtered_bookings() {
 function get_bookings_for_export() {
 	global $wpdb;
 		
-	$sql = "SELECT booking_no,  p.post_title, room_code, room_price, b.date_in, b.date_out, b.no_of_night, amount, amount_paid, b.no_of_adult, b.no_of_child,  CONCAT(b.salutation, '. ', b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name, b.birth_date, b.email_address, b.primary_phone, b.country, b.address_1, b.address_2, b.province, b.city, b.zipcode, b.nationality, b.booking_status, b.payment_status, b.date_booked  FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_ID WHERE 1 = 1";
+	$sql = "SELECT booking_no,  p.post_title, room_price, b.date_in, b.date_out, b.no_of_night, b.no_of_room, amount, amount_paid, b.no_of_adult, b.no_of_child,  CONCAT(b.salutation, '. ', b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name, b.birth_date, b.email_address, b.primary_phone, b.country, b.address_1, b.address_2, b.province, b.city, b.zipcode, b.nationality, b.booking_status, b.payment_status, b.date_booked  FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_ID WHERE 1 = 1";
 
 	if ( $s = browser_post( 's' ) != '' ) {
 		$sql .= " AND ( p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%' ) ";

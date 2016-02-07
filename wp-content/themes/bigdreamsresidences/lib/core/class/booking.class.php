@@ -125,6 +125,7 @@ if (! class_exists('Booking') ) {
 								'date_in' => $data['date_in'],
 								'date_out' => $data['date_out'],
 								'no_of_adult' => $data['no_of_adult'],
+								'no_of_room' => $data['no_of_room'],
 								'type' => 'BOOKING',
 								'no_of_child' => array_data( $data, 'no_of_child', 0 )
 							) 
@@ -158,8 +159,9 @@ if (! class_exists('Booking') ) {
 							'room_ID' 		=> $data['room_ID'],
 							'room_code' 	=> room_code( $data['room_ID'] ),
 							'no_of_night' 	=> $nights,
+							'no_of_room' => $data['no_of_room'],
 							'room_price' 	=> $room_price,
-							'amount' 		=> $room_price * $nights, 
+							'amount' 		=> $room_price * $data['no_of_room'] * $nights, 
 							'booking_ID' 	=> 0,
 							'amount_paid' 	=> 0,
 							'payment_status' => PAYMENT_DEFAULT_STATUS,
@@ -205,7 +207,7 @@ if (! class_exists('Booking') ) {
 
 						$exporter->initialize(); // starts streaming data to web browser
 
-						$exporter->addRow(array('BOOKING NO', 'ROOM', 'ROOM CODE', 'ROOM PRICE', 'CHECK IN', 'CHECK OUT', 'NO OF NIGHTS', 'TOTAL AMOUNT', 'AMOUNT PAID', 'NO OF ADULT', 'NO OF CHILD', 'BOOKED BY', 'BIRTHDATE', 'EMAIL ADDRESS', 'PHONE', 'COUNTRY', 'ADDRESS 1', 'ADDRESS 2', 'PROVINCE', 'CITY', 'ZIPCODE', 'NATIONALITY', 'BOOKING STATUS', 'PAYMENT STATUS', 'DATE BOOKED'));
+						$exporter->addRow(array('BOOKING NO', 'ROOM', 'ROOM PRICE', 'CHECK IN', 'CHECK OUT', 'NO OF NIGHTS', 'NO OF ROOMS', 'TOTAL AMOUNT', 'AMOUNT PAID', 'NO OF ADULT', 'NO OF CHILD', 'BOOKED BY', 'BIRTHDATE', 'EMAIL ADDRESS', 'PHONE', 'COUNTRY', 'ADDRESS 1', 'ADDRESS 2', 'PROVINCE', 'CITY', 'ZIPCODE', 'NATIONALITY', 'BOOKING STATUS', 'PAYMENT STATUS', 'DATE BOOKED'));
 						foreach ( $results as $i => $r ) {
 							// pass addRow() an array and it converts it to Excel XML format and sends 
 							// it to the browser
@@ -231,7 +233,6 @@ if (! class_exists('Booking') ) {
 			$post = array_merge(array(
 					'booking_ID' => 0,
 					'room_ID' => 0,
-					'room_code' => 0,
 					'room_price' => 0,
 					'amount' => 0,
 					'amount_paid' => 0,
@@ -254,6 +255,7 @@ if (! class_exists('Booking') ) {
 					'no_of_adult' => 1,
 					'no_of_child' => 0,
 					'no_of_night' => 0,
+					'no_of_room' => 1,
 					'booking_status' => BOOKING_DEFAULT_STATUS,
 					'payment_status' => PAYMENT_DEFAULT_STATUS,
 					'notes' => '',
@@ -268,7 +270,7 @@ if (! class_exists('Booking') ) {
 
 				$post['no_of_night'] = count_nights( $post['date_in'], $post['date_out'] );
 				$post['room_price'] = get_room_price( $post['room_ID'], $post['date_in'], $post['date_out'] );
-				$post['amount'] = $post['room_price'] * $post['no_of_night'];
+				$post['amount'] = $post['room_price'] * $post['no_of_room'] * $post['no_of_night'];
 				$post['date_booked'] = array_data( $info, 'date_booked' , date( 'Y-m-d H:i:s' ) );
 				$post['type'] = 'RESERVATION';
 				$post['room_code'] = room_code( $post['room_ID'] );
@@ -300,6 +302,8 @@ if (! class_exists('Booking') ) {
 			global $post_type;
 
 			if ( ( isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'booking-system', 'manage-bookings', 'edit-booking' ) ) ) ||  'room' == $post_type ) {
+
+				if ( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) return;
 
 			   	wp_enqueue_style( 'admin-style', assets( 'style/admin.css' ) );	
 			   	wp_enqueue_style( 'jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
@@ -346,7 +350,7 @@ if (! class_exists('Booking') ) {
 			global $menu;
 			
 			add_menu_page( 'Booking System', 'Booking System', 'manage_bookings', 'booking-system', array( &$this, 'admin_dashboard' ), 'dashicons-calendar-alt', BDR_MENU_POSITION );
-			add_submenu_page( 'booking-system', 'Rooms', 'Rooms', 'manage_bookings', 'edit.php?post_type=room', false );
+			//add_submenu_page( 'booking-system', 'Rooms', 'Rooms', 'manage_bookings', 'edit.php?post_type=room', false );
 			$hook = add_submenu_page( 'booking-system', 'Bookings', 'Bookings', 'manage_bookings', 'manage-bookings', array( &$this, 'bookings' ) );
 			add_submenu_page( 'edit-booking', 'Edit Booking', 'Edit Booking', 'manage_bookings', 'edit-booking', array( &$this, 'add_edit_booking' ) );
 

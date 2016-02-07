@@ -82,7 +82,7 @@
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
 									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">View: <?php echo $d['view']; ?></span></li>
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Sub Total: <?php echo nf($d['room_price']) . ' x '. $d['no_of_night'] . ' = ' . nf($d['amount']); ?></span></li>
+									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">No of Room <?php echo $d['room']; ?> : <?php echo nf( $d['no_of_night'] * $d['room_price'] ); ?></span></li>
 								
 							</ul>
 						</div>

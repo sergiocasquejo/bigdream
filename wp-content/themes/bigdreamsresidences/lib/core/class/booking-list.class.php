@@ -30,11 +30,16 @@ class Booking_List_Table extends WP_List_Table {
 			$columns['cb'] = '<input type="checkbox" />';
 		}
 		$columns['booking_no'] = 'Booking #';
-		$columns['room_code'] = 'Room #';
+		$columns['room_title'] = 'Room Title';
+		$columns['room_price'] = 'Room Price';
+		$columns['no_of_night'] = 'Night';
+		$columns['no_of_room'] = 'Room';
 		$columns['amount'] = 'Amount';
 		$columns['amount_paid'] = 'Amount Paid';
 		$columns['date_in'] = 'Date In';
 		$columns['date_out'] = 'Date Out';
+		$columns['no_of_adult'] = 'No of Adult';
+		$columns['no_of_child'] = 'No of Child';
 		$columns['booking_status'] = 'Booking Status';
 		$columns['payment_status'] = 'Payment Status';
 		$columns['guest_name'] = 'Booked By';
@@ -45,7 +50,10 @@ class Booking_List_Table extends WP_List_Table {
 
 	public function get_sortable_columns() {
 		$sortable_columns = array(
-			'room_code'  	=> array( 'room_code',false ),
+			'no_of_night'  	=> array( 'no_of_night',false ),
+			'no_of_room'  	=> array( 'no_of_room',false ),
+			'no_of_adult'  	=> array( 'no_of_adult',false ),
+			'no_of_child'  	=> array( 'no_of_child',false ),
 			'guest_name' 	=> array( 'guest_name',false ),
 			'amount'   		=> array( 'amount',false ),
 			'amount_paid'   => array( 'amount',false ),
@@ -70,8 +78,8 @@ class Booking_List_Table extends WP_List_Table {
 
     }
 
-	public function column_room_code( $item ) {
-		$room_code = sprintf( '<a href="#">%s</a>', room_code( $item['room_ID'] ) );
+	public function column_room_title( $item ) {
+		$room_code = sprintf( '<a href="#">%s</a>', $item['room_title'] );
 		$actions  = array(
 			'edit' => sprintf( '<a href="?page=%s&bid=%s">Edit</a>','edit-booking', $item['booking_ID'] ),
 			'view' => sprintf( '<a href="#" class="view-booking-details" data-id="%d">View</a>', $item['booking_ID'] )
@@ -101,6 +109,7 @@ class Booking_List_Table extends WP_List_Table {
 				return format_date( $item[$column_name], 'D M j, Y' );
 			case 'date_booked':
 				return format_date( $item[$column_name], 'D M j, Y H:i' );
+			case 'room_price':
 			case 'amount':
 			case 'amount_paid':
 				return sprintf('<span class="amount">%s</span>', nf( $item[$column_name] ));

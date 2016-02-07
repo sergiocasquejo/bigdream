@@ -28,7 +28,7 @@ function login_filter( $url, $path, $orig_scheme )
 	return preg_replace( $old, $new, $url, 1);
 }
 
-#add_filter('site_url',  'login_filter', 10, 3);
+add_filter('site_url',  'login_filter', 10, 3);
 
 
 // Change WordPress Login Logo URL
