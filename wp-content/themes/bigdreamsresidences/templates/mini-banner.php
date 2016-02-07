@@ -1,5 +1,5 @@
 <?php if ( ! is_front_page() && ! is_home() ): ?>
-	<section class="room-banner bdr-parallax" style="background:#eee; ?>;">
+	<section class="room-banner bdr-parallax" style="background:rgb(39, 38, 38); ?>;">
 		<div class="bdr-overlay"></div>
 		<div class="sub-banner">
 			<div class="container">
