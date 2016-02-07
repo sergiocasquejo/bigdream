@@ -106,7 +106,7 @@ add_shortcode( 'reservation-form', 'online_reservation_form_shortcode_handler' )
 function accommodations_shortcode_handler( $atts, $content = null ) {
 	$output = '';
 
-	$q = get_terms( 'room-cat', array( 'hide_empty' => false ) );
+	$q = get_terms( 'room_type-cat', array( 'hide_empty' => false ) );
 
 	$output .= '<div class="section-featured-room">';
 		$output .= '<h2 class="room-featured_title">ACCOMMODATIONS</h2>';
@@ -146,7 +146,7 @@ function featured_room_shortcode_handler( $atts, $content = null ) {
 	$output = '';
 
 	$q = get_posts(array(
-		'post_type' => 'room',
+		'post_type' => 'room_type',
 		'showposts' => 4
 		) );
 
@@ -191,7 +191,7 @@ function room_listings_shortcode_handler( $atts, $content = null ) {
 	$output = '';
 
 	$q = get_posts(array(
-		'post_type' => 'room',
+		'post_type' => 'room_type',
 		'showposts' => -1
 		) );
 

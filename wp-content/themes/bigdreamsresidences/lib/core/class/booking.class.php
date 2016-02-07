@@ -15,8 +15,12 @@ if (! class_exists('Booking') ) {
 
 			 // Get booking details
 		    add_action( 'wp_ajax_booking-details', array( &$this, 'details' ) );
-		    add_action( 'wp_ajax_nopriv_booking-details', array( &$this, 'details' ) );
+		    //add_action( 'wp_ajax_nopriv_booking-details', array( &$this, 'details' ) );
 
+		    add_action( 'wp_ajax_edit-rooms-and-guest-info', array( &$this, 'render_rooms_and_guest_info' ) );
+		    //add_action( 'wp_ajax_edit-rooms-and-guest-info', array( &$this, 'render_rooms_and_guest_info' ) );
+
+		    add_action( 'wp_ajax_save-rooms_and_guest_info', array( &$this, 'save_rooms_and_guest_info' ) );
 		    add_action( 'init', array( &$this, 'custom_init' ) );
 		}
 
@@ -292,7 +296,7 @@ if (! class_exists('Booking') ) {
 			$post['booking_statuses'] = booking_statuses();
 			$post['payment_statuses'] = payment_statuses();
 			$post['salutations'] = salutations();
-
+			$post['rooms_and_guest'] = get_rooms_and_guest_info( browser_request( 'bid', 0 ) );
 			include_view( 'edit-booking.html.php', $post );  
 		}
 
@@ -413,6 +417,36 @@ if (! class_exists('Booking') ) {
 				exit;
 			}
 			
+		}
+
+
+		public function render_rooms_and_guest_info() {
+			if ( defined('DOING_AJAX') && DOING_AJAX ) {
+
+				$data = array();
+
+				$data['rooms'] = get_rooms();
+				$data['booking_ID'] = browser_get( 'bid' );
+				//$details = get_booking_by_id( browser_get( 'bid' ) );
+
+				//$details['featured_image'] = featured_image( $details['room_ID'], 'large' );
+
+				include_view( 'rooms_and_guest_info.html.php', $data );
+				exit;
+			}
+		}
+
+		public function save_rooms_and_guest_info() {
+			if ( defined('DOING_AJAX') && DOING_AJAX && $_POST ) {
+
+				$data = $_POST;
+				if ( do_save_rooms_and_guest_info( $data ) ) {
+					echo 'success';
+				} else {
+					echo 'error';
+				}
+				exit;
+			}
 		}
 
 		

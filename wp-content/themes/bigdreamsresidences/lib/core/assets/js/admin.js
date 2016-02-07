@@ -10,6 +10,13 @@
 		});
 	}
 
+	function editRoomsAndGuestInfo(id) {
+		$.get(BDR.AjaxUrl + '?action=edit-rooms-and-guest-info&brid=' + parseInt(id), function(response) {
+			$('#bdrModalDialog').html(response);
+			tb_show("Select Room", '#TB_inline?width=600&height=550&inlineId=bdrModalDialog');
+		});
+	}
+
 	$(function() {
 		$('body')
 		.on('click', '.view-booking-details', function(e) {
@@ -20,6 +27,25 @@
 
 			getBookingDetails(id);
 				
+			return false;
+		})
+		.on('click', '#EditRoom', function(e) {
+			e.preventDefault();
+
+			editRoomsAndGuestInfo(0);
+
+			return false;
+		});
+
+		$('body').on('submit', '#roomsAndGuestInfoForm', function(e) {
+			e.preventDefault();
+			var bookingID = $("#booking_ID").val();
+			$.post(BDR.AjaxUrl, $(this).serialize() + '&booking_ID='+ bookingID +'&action=save-rooms_and_guest_info', function(response) {
+				if ( response == 'success' ) {
+					window.location.reload( true );
+				}
+			});
+
 			return false;
 		});
 

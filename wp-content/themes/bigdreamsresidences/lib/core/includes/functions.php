@@ -55,10 +55,15 @@ function featured_image( $post_id, $size = 'thumbnail', $placeholder = '' ) {
   return $featured_image;
 }
 
+
+function get_room_type( $post_id ) {
+  return get_field( 'room_type', $post_id);
+}
+
 function category_featured_image( $term_id, $size = 'gallery-thumbnail', $placeholder = '' ) {
   $featured_image = $placeholder; 
 
-  if ( ( $image = get_field( 'featured_image', 'room-cat_'. $term_id ) ) != '' ) {
+  if ( ( $image = get_field( 'featured_image', 'room_type-cat_'. $term_id ) ) != '' ) {
     $featured_image = isset( $image['sizes'][$size] ) ? $image['sizes'][$size] : $image['url'];
   }
 
@@ -84,7 +89,10 @@ function browser_post( $key, $default = '' ) {
 }
 
 
-function include_view( $file, $data = false ) {
+function include_view( $file, $data = array() ) {
+
+  extract( $data );
+  
   include BDR_SYSTEM_DIR . '/views/'. $file;
 }
 

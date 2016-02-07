@@ -6,10 +6,6 @@
 		<strong><?php echo $data['room']; ?></strong>
 	</p>
 	<p class="form-group">
-		<label class="form-label" for="first_name">Room #</label>
-		<strong><?php echo $data['room_code']; ?></strong>
-	</p>
-	<p class="form-group">
 		<label class="form-label" for="amount">Room Price</label>
 		<strong><?php echo format_price($data['room_price']); ?></strong>
 	</p>
@@ -68,6 +64,10 @@
 	<p class="form-group">
 		<label class="form-label">Date Out</label>
 		<strong><?php echo format_date($data['date_out']); ?></strong>
+	</p>
+	<p class="form-group">
+		<label class="form-label">No of Room</label>
+		<strong><?php echo $data['no_of_room']; ?></strong>
 	</p>
 	<p class="form-group">
 		<label class="form-label">No of Night</label>

@@ -11,11 +11,47 @@
  */
 
 
-function admin_set_custom_edit_room_columns( $columns ) {
+function admin_set_custom_edit_room_type_columns( $columns ) {
 	unset( $columns['author'] );
     unset( $columns['date'] );
     $columns['room_price'] = __( 'Room Price', BDR_TEXT_DOMAIN );
    // $columns['room_status'] = __( 'Room Status', BDR_TEXT_DOMAIN );
+
+
+    return $columns;
+}
+add_filter( 'manage_room_type_posts_columns', 'admin_set_custom_edit_room_type_columns' );
+
+/**
+ * admin_custom_room_column()
+ * 
+ * Display custom column data
+ * 
+ * @param none
+ * @return none
+ */
+
+function admin_custom_room_type_column( $column, $post_id ) {
+    switch ( $column ) {
+
+	    case 'room_status' :
+	    	$status = get_field( 'room_status', $post_id);
+			echo sprintf( '<span class="badge %s">%s</span>', sanitize_title_with_dashes( $status ), $status );
+	        break;
+	    case 'room_price':
+	    	echo nf(get_field( 'price', $post_id));
+	    	break;
+	}
+}
+add_action( 'manage_room_type_posts_custom_column' , 'admin_custom_room_type_column', 10, 2 );
+
+
+
+function admin_set_custom_edit_room_columns( $columns ) {
+	unset( $columns['author'] );
+    unset( $columns['date'] );
+   	$columns['room_type'] = __( 'Room Type', BDR_TEXT_DOMAIN );
+   	$columns['room_status'] = __( 'Room Status', BDR_TEXT_DOMAIN );
 
 
     return $columns;
@@ -38,13 +74,15 @@ function admin_custom_room_column( $column, $post_id ) {
 	    	$status = get_field( 'room_status', $post_id);
 			echo sprintf( '<span class="badge %s">%s</span>', sanitize_title_with_dashes( $status ), $status );
 	        break;
+	    case 'room_type' :
+			echo get_room_type( $post_id)->post_title;
+	        break;
 	    case 'room_price':
 	    	echo nf(get_field( 'price', $post_id));
 	    	break;
 	}
 }
 add_action( 'manage_room_posts_custom_column' , 'admin_custom_room_column', 10, 2 );
-
 /**
  * admin_custom_init()
  * 
@@ -56,22 +94,69 @@ add_action( 'manage_room_posts_custom_column' , 'admin_custom_room_column', 10, 
 
 function admin_custom_init() {
 
+	$labels = array(
+		'name'               => _x( 'Rooms', 'post type general name', 'your-plugin-textdomain' ),
+		'singular_name'      => _x( 'Room', 'post type singular name', 'your-plugin-textdomain' ),
+		'menu_name'          => _x( 'Rooms', 'admin menu', 'your-plugin-textdomain' ),
+		'name_admin_bar'     => _x( 'Room', 'add new on admin bar', 'your-plugin-textdomain' ),
+		'add_new'            => _x( 'Add New', 'Room', 'your-plugin-textdomain' ),
+		'add_new_item'       => __( 'Add New Room', 'your-plugin-textdomain' ),
+		'new_item'           => __( 'New Room', 'your-plugin-textdomain' ),
+		'edit_item'          => __( 'Edit Room', 'your-plugin-textdomain' ),
+		'view_item'          => __( 'View Room', 'your-plugin-textdomain' ),
+		'all_items'          => __( 'All Rooms', 'your-plugin-textdomain' ),
+		'search_items'       => __( 'Search Rooms', 'your-plugin-textdomain' ),
+		'parent_item_colon'  => __( 'Parent Rooms:', 'your-plugin-textdomain' ),
+		'not_found'          => __( 'No Rooms found.', 'your-plugin-textdomain' ),
+		'not_found_in_trash' => __( 'No Rooms found in Trash.', 'your-plugin-textdomain' )
+	);
+
+	$args = array(
+		'labels'             => $labels,
+        'description'        => __( 'Description.', 'your-plugin-textdomain' ),
+		'public'             => false,
+		'publicly_queryable' => true,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+		'query_var'          => false,
+		'rewrite'            => array( 'slug' => 'room' ),
+		'capability_type' => 'room_type',
+		'capabilities' => array(
+			'publish_posts' => 'publish_rooms',
+			'edit_posts' => 'edit_rooms',
+			'edit_others_posts' => 'edit_others_rooms',
+			'read_private_posts' => 'read_private_rooms',
+			'edit_post' => 'edit_room',
+			'delete_posts' => 'delete_rooms',
+			'delete_post' => 'delete_room',
+			'read_post' => 'read_room',
+		),
+		'has_archive'        => false,
+		'hierarchical'       => false,
+		'menu_position'      => null,
+		'menu_icon'			=> 'dashicons-store',
+		'supports'           => array( 'title' ) //, 'editor', 'author', 'thumbnail', 'excerpt', 'comments' 
+	);
+
+	register_post_type( 'room', $args );
+
+
 	// Register custom room post type
 	$labels = array(
-		'name'               => _x( 'Rooms', 'post type general name', BDR_TEXT_DOMAIN ),
-		'singular_name'      => _x( 'Room', 'post type singular name', BDR_TEXT_DOMAIN ),
-		'menu_name'          => _x( 'Rooms', 'admin menu', BDR_TEXT_DOMAIN ),
-		'name_admin_bar'     => _x( 'Room', 'add new on admin bar', BDR_TEXT_DOMAIN ),
+		'name'               => _x( 'Room Types', 'post type general name', BDR_TEXT_DOMAIN ),
+		'singular_name'      => _x( 'Room Type', 'post type singular name', BDR_TEXT_DOMAIN ),
+		'menu_name'          => _x( 'Room Types', 'admin menu', BDR_TEXT_DOMAIN ),
+		'name_admin_bar'     => _x( 'Room Type', 'add new on admin bar', BDR_TEXT_DOMAIN ),
 		'add_new'            => _x( 'Add New', 'room', BDR_TEXT_DOMAIN ),
-		'add_new_item'       => __( 'Add New Room', BDR_TEXT_DOMAIN ),
-		'new_item'           => __( 'New Room', BDR_TEXT_DOMAIN ),
-		'edit_item'          => __( 'Edit Room', BDR_TEXT_DOMAIN ),
-		'view_item'          => __( 'View Room', BDR_TEXT_DOMAIN ),
-		'all_items'          => __( 'All Rooms', BDR_TEXT_DOMAIN ),
-		'search_items'       => __( 'Search Rooms', BDR_TEXT_DOMAIN ),
-		'parent_item_colon'  => __( 'Parent Rooms:', BDR_TEXT_DOMAIN ),
-		'not_found'          => __( 'No rooms found.', BDR_TEXT_DOMAIN ),
-		'not_found_in_trash' => __( 'No rooms found in Trash.', BDR_TEXT_DOMAIN )
+		'add_new_item'       => __( 'Add New Room Type', BDR_TEXT_DOMAIN ),
+		'new_item'           => __( 'New Room Type', BDR_TEXT_DOMAIN ),
+		'edit_item'          => __( 'Edit Room Type', BDR_TEXT_DOMAIN ),
+		'view_item'          => __( 'View Room Type', BDR_TEXT_DOMAIN ),
+		'all_items'          => __( 'All Room Types', BDR_TEXT_DOMAIN ),
+		'search_items'       => __( 'Search Room Types', BDR_TEXT_DOMAIN ),
+		'parent_item_colon'  => __( 'Parent Room Types:', BDR_TEXT_DOMAIN ),
+		'not_found'          => __( 'No room types found.', BDR_TEXT_DOMAIN ),
+		'not_found_in_trash' => __( 'No room types found in Trash.', BDR_TEXT_DOMAIN )
 	);
 
 	$args = array(
@@ -83,16 +168,16 @@ function admin_custom_init() {
 		'show_in_menu'       => true,
 		'query_var'          => true,
 		'rewrite'            => array( 'slug' => 'room' ),
-		'capability_type' => 'room',
+		'capability_type' => 'room_type',
 		'capabilities' => array(
-			'publish_posts' => 'publish_rooms',
-			'edit_posts' => 'edit_rooms',
-			'edit_others_posts' => 'edit_others_rooms',
-			'read_private_posts' => 'read_private_rooms',
-			'edit_post' => 'edit_room',
-			'delete_posts' => 'delete_rooms',
-			'delete_post' => 'delete_room',
-			'read_post' => 'read_room',
+			'publish_posts' => 'publish_room_types',
+			'edit_posts' => 'edit_room_types',
+			'edit_others_posts' => 'edit_others_room_types',
+			'read_private_posts' => 'read_private_room_types',
+			'edit_post' => 'edit_room_type',
+			'delete_posts' => 'delete_room_types',
+			'delete_post' => 'delete_room_type',
+			'read_post' => 'read_room_type',
 		),
 		'has_archive'        => true,
 		'hierarchical'       => false,
@@ -101,20 +186,20 @@ function admin_custom_init() {
 		'supports'           => array( 'title', 'editor', 'author', 'thumbnail' )
 	);
 
-	register_post_type( 'room', $args );
+	register_post_type( 'room_type', $args );
 
 	// Add new taxonomy, make it hierarchical (like categories)
 	$labels = array(
-		'name'              => _x( 'Room Categories', 'taxonomy general name' ),
-		'singular_name'     => _x( 'Category', 'taxonomy singular name' ),
-		'search_items'      => __( 'Search Categories' ),
-		'all_items'         => __( 'All Categories' ),
-		'parent_item'       => __( 'Parent Category' ),
-		'parent_item_colon' => __( 'Parent Category:' ),
-		'edit_item'         => __( 'Edit Category' ),
-		'update_item'       => __( 'Update Category' ),
-		'add_new_item'      => __( 'Add New Category' ),
-		'new_item_name'     => __( 'New Category Name' ),
+		'name'              => _x( 'Room Type Categories', 'taxonomy general name' ),
+		'singular_name'     => _x( 'Room Type', 'taxonomy singular name' ),
+		'search_items'      => __( 'Search Room Types' ),
+		'all_items'         => __( 'All Room Types' ),
+		'parent_item'       => __( 'Parent Room Type' ),
+		'parent_item_colon' => __( 'Parent Room Type:' ),
+		'edit_item'         => __( 'Edit Room Type' ),
+		'update_item'       => __( 'Update Room Type' ),
+		'add_new_item'      => __( 'Add New Room Type' ),
+		'new_item_name'     => __( 'New Room Type Name' ),
 		'menu_name'         => __( 'Categories' ),
 	);
 
@@ -127,7 +212,7 @@ function admin_custom_init() {
 		'rewrite'           => array( 'slug' => 'room-cat' ),
 	);
 
-	register_taxonomy( 'room-cat', array( 'room' ), $args );
+	register_taxonomy( 'room_type-cat', array( 'room_type' ), $args );
 
 
 	$labels = array(
@@ -199,27 +284,27 @@ function admin_custom_init() {
 
 	// Add custom role
 	$administrator = get_role( 'administrator' );
-	$administrator->add_cap( 'publish_rooms' );
-	$administrator->add_cap( 'edit_rooms' );
-	$administrator->add_cap( 'edit_others_rooms' );
-	$administrator->add_cap( 'read_private_rooms' );
-	$administrator->add_cap( 'edit_room' );
-	$administrator->add_cap( 'delete_room' );
-	$administrator->add_cap( 'read_room' );
+	$administrator->add_cap( 'publish_room_types' );
+	$administrator->add_cap( 'edit_room_types' );
+	$administrator->add_cap( 'edit_others_room_types' );
+	$administrator->add_cap( 'read_private_room_types' );
+	$administrator->add_cap( 'edit_room_type' );
+	$administrator->add_cap( 'delete_room_type' );
+	$administrator->add_cap( 'read_room_type' );
 	$administrator->add_cap( 'manage_bookings' );
 
 	// Add custom capabilitity to booking manager
     add_role( 'booking_manager', 'Booking Manager', array(
         'read' => true,
         'edit_posts' => false,
-        'edit_rooms' => true,
-        'edit_others_rooms' => true,
-        'publish_rooms' => true,
-        'edit_rooms' => true,
-        'edit_others_rooms' => true,
-        'read_private_rooms' => true,
-        'edit_room' => true,
-        'read_room' 	=> true,
+        'edit_room_types' => true,
+        'edit_others_room_types' => true,
+        'publish_room_types' => true,
+        'edit_room_types' => true,
+        'edit_others_room_types' => true,
+        'read_private_room_types' => true,
+        'edit_room_type' => true,
+        'read_room_type' 	=> true,
         'upload_files' => true,
         'manage_bookings' => true
         ) );

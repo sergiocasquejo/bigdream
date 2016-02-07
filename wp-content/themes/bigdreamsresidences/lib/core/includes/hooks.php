@@ -64,3 +64,33 @@ function list_set_option( $status, $option, $value ) {
 }
 
 add_filter( 'set-screen-option', 'list_set_option', 10, 3 );
+
+
+function acf_load_color_field_choices( $field ) {
+    
+    // reset choices
+    $field['choices'] = array();
+    
+    
+    // get the textarea value from options page without any formatting
+    $choices = room_statuses();
+
+    
+    // loop through array and add to field 'choices'
+    if( is_array($choices) ) {
+        
+        foreach( $choices as $choice ) {
+            
+            $field['choices'][ $choice ] = $choice;
+            
+        }
+        
+    }
+    
+
+    // return the field
+    return $field;
+    
+}
+
+add_filter('acf/load_field/name=room_status', 'acf_load_color_field_choices');

@@ -1,4 +1,3 @@
-<?php extract( $data ); ?>
 <div class="wrap">
 	<h1>Bookings 
 		<a href="<?php echo admin_url('/admin.php?page=edit-booking'); ?>" class="page-title-action">Add Manually</a>
