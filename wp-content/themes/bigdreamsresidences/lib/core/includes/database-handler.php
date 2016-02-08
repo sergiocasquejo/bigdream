@@ -1,13 +1,73 @@
 <?php
+function get_rooms_by_type( $room_type_ID ) {
+	wp_reset_query();
+	$rooms = get_posts(array(
+			'showposts' => -1,
+			'post_type' => 'room',
+			'meta_query' => array(
+				'key' => 'room_type',
+				'value' => $room_type_ID,
+				'compare' => '=',
+			)
+			
+		)
+	);
 
-function get_rooms_and_guest_info( $booking_ID ) {
+	return $rooms;
+}
+
+function get_no_of_room_by_booking_ID( $booking_ID ) {
+	global $wpdb;
+	$sql = "SELECT no_of_room FROM ". $wpdb->prefix . "bookings WHERE booking_ID = %d";
+
+	$result = $wpdb->get_var( $wpdb->prepare( $sql, $booking_ID ) );
+	return $result;
+}
+
+
+
+function delete_rooms_and_guest_info( $booking_room_ID ) {
 	global $wpdb;
 
-	$sql = "SELECT a.*, b.post_title as room_title FROM ". $wpdb->prefix . "bookings_rooms a JOIN ". $wpdb->prefix . "posts b ON a.room_ID = b.ID WHERE a.booking_ID = %d";
+	$sql = "DELETE FROM ". $wpdb->prefix . "bookings_rooms WHERE booking_room_ID = %d";
 
-	$result = $wpdb->get_results( $wpdb->prepare( $sql, $booking_ID ), ARRAY_A);
+	$result = $wpdb->query( $wpdb->prepare( $sql, $booking_room_ID ), ARRAY_A);
 
 	return $result;
+}
+
+
+
+function get_booking_rooms( $booking_room_ID ) {
+	global $wpdb;
+
+	$sql = "SELECT * FROM ". $wpdb->prefix . "bookings_rooms WHERE booking_room_ID = %d";
+
+	$result = $wpdb->get_row( $wpdb->prepare( $sql, $booking_room_ID ), ARRAY_A);
+
+	return $result;
+}
+
+
+function get_rooms_and_guest_info( $booking_ID, $brid = false ) {
+	global $wpdb;
+
+	$sql = "SELECT a.*, b.post_title as room_title FROM ". $wpdb->prefix . "bookings_rooms a JOIN ". $wpdb->prefix . "posts b ON a.room_ID = b.ID WHERE a.booking_ID = %d AND a.booking_room_ID != %d";
+
+	$result = $wpdb->get_results( $wpdb->prepare( $sql, $booking_ID, $brid ), ARRAY_A);
+
+	return $result;
+}
+
+
+function is_rooms_exists_on_booking( $room_ID, $booking_ID, $booking_room_ID = false ) {
+	global $wpdb;
+
+	$sql = "SELECT count(*) FROM ". $wpdb->prefix . "bookings_rooms  WHERE booking_ID = %d AND room_ID = %d AND booking_room_ID != %d";
+
+	$result = $wpdb->get_var( $wpdb->prepare( $sql, $booking_ID, $room_ID, $booking_room_ID ) );
+
+	return $result > 0;
 }
 
 function do_save_rooms_and_guest_info( $args ) {
@@ -240,7 +300,7 @@ function get_count_newly_booked() {
 
 
 /**
- * get_available_rooms()
+ * get_available_room_types()
  * 
  * Get available rooms
  * 
@@ -248,14 +308,14 @@ function get_count_newly_booked() {
  * @param Array $rooms
  */
 
-if ( ! function_exists( 'get_available_rooms' ) ) {
-	function get_available_rooms() {
+if ( ! function_exists( 'get_available_room_types' ) ) {
+	function get_available_room_types() {
 		global $wpdb;
 
 		$results = get_posts( array(
 			'numberposts'	=> -1,
 			// 'fields' => 'ID',
-			'post_type'		=> 'room_type-cat',
+			'post_type'		=> 'room_type',
 			//'meta_key'		=> 'room_status',
 			//'meta_value'	=> 'VACANT CLEAN'
 		) );
@@ -352,8 +412,8 @@ function get_monthly_sales( $output = 'ARRAY_A' ) {
 }
 
 
-function get_rooms() {
-	$rooms = get_posts('post_type=room&showposts=-1');
+function get_rooms( $exclude = array() ) {
+	$rooms = get_posts( array( 'post_type' => 'room', 'showposts' => -1, 'exclude' => $exclude ) );
 
 	return $rooms;
 }

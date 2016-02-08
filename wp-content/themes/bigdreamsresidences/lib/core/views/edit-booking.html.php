@@ -7,17 +7,19 @@
       <?php if ( $booking_ID > 0 ): ?>
       <h1>Booking #: <?php echo $booking_no; ?></h1>
       <?php endif; ?>
-
-      <ul>
-        <li>Room Price: <span class="total_nights"><?php echo format_price( $room_price ); ?></span></li>
-        <li>Total Nights: <span class="total_nights"><?php echo ' x ' . $no_of_night; ?></span></li>
-        <li>Total Amount: <?php echo format_price( $amount ); ?></li>
-      </ul>
+      <div id="priceCalculation">
+        <ul>
+          <li>Room Price: <span class="room_price"><?php echo format_price( $room_price ); ?></span></li>
+          <li>Total Room: <span class="total_rooms"><?php echo ' x ' . $no_of_room; ?></span></li>
+          <li>Total Nights: <span class="total_nights"><?php echo ' x ' . $no_of_night; ?></span></li>
+          <li>Total Amount: <span class="total_amount"><?php echo format_price( $amount ); ?></span></li>
+        </ul>
+      </div>
       <form method="post">
         <div class="row">
           <div class="col-md-6 form-group">
             <label class="form-label" for="first_name">Room</label>
-            <select name="room_ID" class="form-control" required <?php disabled( $editable, false ); ?>>
+            <select name="room_ID" class="form-control editable" required <?php disabled( $editable, false ); ?>>
               <?php foreach ($available_rooms as $i => $r): ?>
                 <option value="<?php echo $r->ID; ?>" <?php selected($r->ID, $room_ID); ?>><?php echo get_the_title( $r->ID ); ?></option>
               <?php endforeach; ?>
@@ -81,43 +83,45 @@
         <div class="row">
           <div class="col-md-3 form-group">
             <label class="form-label" for="country">Country</label>
-            <input type="text" name="country" class="form-control" value="<?php echo $country; ?>" />
+            <input type="text" name="country" class="form-control" value="<?php echo $country; ?>" required/>
           </div>
           <div class="col-md-3 form-group">
             <label class="form-label" for="province">Province</label>
-            <input type="text" name="province" class="form-control" value="<?php echo $province; ?>" />
+            <input type="text" name="province" class="form-control" value="<?php echo $province; ?>" required/>
           </div>
           <div class="col-md-3 form-group">
             <label class="form-label" for="province">City</label>
-            <input type="text" name="city" class="form-control" value="<?php echo $city; ?>" />
+            <input type="text" name="city" class="form-control" value="<?php echo $city; ?>" required/>
           </div>
           <div class="col-md-3 form-group">
             <label class="form-label" for="province">Zip Code</label>
-            <input type="text" name="zipcode" class="form-control" value="<?php echo $zipcode; ?>" />
+            <input type="text" name="zipcode" class="form-control" value="<?php echo $zipcode; ?>" required/>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 form-group">
             <label class="form-label" for="date_in">Date In</label>
-            <input type="text" name="date_in" id="date_in" class="form-control" value="<?php echo $date_in; ?>" required <?php disabled( $editable, false ); ?>/>
+            <input type="text" name="date_in" id="date_in" class="form-control editable" value="<?php echo $date_in; ?>" required <?php disabled( $editable, false ); ?>/>
           </div>
           <div class="col-md-6 form-group">
             <label class="form-label" for="date_out">Date Out</label>
-              <input type="text" name="date_out" id="date_out" class="form-control" value="<?php echo $date_out; ?>" required <?php disabled( $editable, false ); ?>/>
+              <input type="text" name="date_out" id="date_out" class="form-control editable" value="<?php echo $date_out; ?>" required <?php disabled( $editable, false ); ?>/>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3 form-group">
-            <label class="form-label" for="date_in">No of Room</label>
-            <input type="text" name="no_of_adult" class="form-control" value="<?php echo $no_of_room; ?>" required/>
+            <label class="form-label" for="no_of_room">No of Room</label>
+            <select name="no_of_room" class="form-control editable" required <?php disabled( $editable, false ); ?>>
+              <option value="1">1</option>
+            </select>
           </div>
           <div class="col-md-3 form-group">
             <label class="form-label" for="date_in">No of Adult</label>
-            <input type="text" name="no_of_adult" class="form-control" value="<?php echo $no_of_adult; ?>" required/>
+            <input type="text" name="no_of_adult" class="form-control editable" value="<?php echo $no_of_adult; ?>" required <?php disabled( $editable, false ); ?>/>
           </div>
           <div class="col-md-3 form-group">
             <label class="form-label" for="date_out">No of Child</label>
-            <input type="text" name="no_of_child" class="form-control" value="<?php echo $no_of_child; ?>" required/>
+            <input type="text" name="no_of_child" class="form-control editable" value="<?php echo $no_of_child; ?>" required <?php disabled( $editable, false ); ?>/>
           </div>
           <div class="col-md-3 form-group">
             <label class="form-label" for="booking_status">Booking Status</label>
@@ -143,44 +147,20 @@
           </div>
         </div>
         <div class="gap-30"></div>
+        <input type="hidden" name="action" value="save_booking" />
         <input type="hidden" name="booking_ID" id="booking_ID" value="<?php echo $booking_ID; ?>" />
         <?php wp_nonce_field( 'save_booking_action', 'save_booking_field' ); ?>
         <input type="submit" value="Save" class="button button-primary" />
       </form>
     </div>
     <div class="col-md-6">
-      <h1>Rooms <button class="button button-default" id="EditRoom"><span class="dashicons dashicons-plus"></span> Add Room</button></h1>
-      <table class="wp-list-table widefat fixed striped posts">
-          <thead>
-            <tr>
-              <th width="80px;">Room</th>
-              <th>Type</th>
-              <th>Guest</th>
-              <th>Phone</th>
-              <th>Adults</th>
-              <th>Children</th>
-              <th width="80px;"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ( $rooms_and_guest as $i => $r ): ?>
-            <tr>
-              <td><?php echo $r['room_title']; ?></td>
-              <td><?php echo get_room_type ( $r['room_ID'] )->post_title; ?></td>
-              <td><?php echo $r['guest']; ?></td>
-              <td><?php echo $r['phone']; ?></td>
-              <td><?php echo $r['no_of_adult']; ?></td>
-              <td><?php echo $r['no_of_child']; ?></td>
-              <td>
-                <div class="actions">
-                  <a href="#" title="Edit"><span class="dashicons dashicons-edit"></span></a>
-                  <a href="#" title="Trash"><span class="dashicons dashicons-trash"></span></a>
-                </div>
-              </td>
-            </tr>
-            <?php endforeach; ?>
-          </tbody>
-      </table>
+      <h1>
+        Rooms 
+        <button class="button button-default" id="EditRoom" <?php disabled( $no_of_room <= count($rooms_and_guest) || $booking_ID <= 0, true ); ?>><span class="dashicons dashicons-plus"></span> Add Room</button>
+      </h1>
+      <div id="roomsAndGuestInfoWrapper">
+        <?php include "rooms_and_guest_info.html.php"; ?>
+      </div>
     </div>
   </div>
 

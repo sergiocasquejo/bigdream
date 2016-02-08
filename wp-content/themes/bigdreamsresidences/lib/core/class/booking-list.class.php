@@ -30,16 +30,16 @@ class Booking_List_Table extends WP_List_Table {
 			$columns['cb'] = '<input type="checkbox" />';
 		}
 		$columns['booking_no'] = 'Booking #';
-		$columns['room_title'] = 'Room Title';
+		$columns['room_title'] = 'Room Type';
 		$columns['room_price'] = 'Room Price';
 		$columns['no_of_night'] = 'Night';
 		$columns['no_of_room'] = 'Room';
-		$columns['amount'] = 'Amount';
-		$columns['amount_paid'] = 'Amount Paid';
+		$columns['amount'] = 'Total';
+		$columns['amount_paid'] = 'Paid';
 		$columns['date_in'] = 'Date In';
 		$columns['date_out'] = 'Date Out';
-		$columns['no_of_adult'] = 'No of Adult';
-		$columns['no_of_child'] = 'No of Child';
+		$columns['no_of_adult'] = 'Adult';
+		$columns['no_of_child'] = 'Child';
 		$columns['booking_status'] = 'Booking Status';
 		$columns['payment_status'] = 'Payment Status';
 		$columns['guest_name'] = 'Booked By';

@@ -166,7 +166,7 @@ function add_this_notices( $type, $message ) {
  */
  
 function has_notices() {
-  return count( get_notices() ) != 0;
+  return count( get_notices() ) > 0;
 }
 
 /**
@@ -288,10 +288,15 @@ function get_booking_session() {
 
 
 add_action('wp_footer', 'print_javascript_notices');
-function print_javascript_notices() {
+function print_javascript_notices( $echo = true ) {
+  $errors = '';
   if (isset($_SESSION['javascript_error_notice'])) {
-    echo $_SESSION['javascript_error_notice'];
+    $errors = $_SESSION['javascript_error_notice'];
     unset($_SESSION['javascript_error_notice']);
+
+    if ( ! $echo ) return $errors;
+
+    echo $errors;
   }
 }
 

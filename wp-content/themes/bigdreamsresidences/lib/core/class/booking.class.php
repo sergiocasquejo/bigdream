@@ -17,12 +17,21 @@ if (! class_exists('Booking') ) {
 		    add_action( 'wp_ajax_booking-details', array( &$this, 'details' ) );
 		    //add_action( 'wp_ajax_nopriv_booking-details', array( &$this, 'details' ) );
 
-		    add_action( 'wp_ajax_edit-rooms-and-guest-info', array( &$this, 'render_rooms_and_guest_info' ) );
+		    add_action( 'wp_ajax_edit-rooms-and-guest-info', array( &$this, 'render_edit_rooms_and_guest_info' ) );
 		    //add_action( 'wp_ajax_edit-rooms-and-guest-info', array( &$this, 'render_rooms_and_guest_info' ) );
+
+		    add_action( 'wp_ajax_delete-room_and_guest_info', array( &$this, 'delete_rooms_and_guest_info' ) );
+
+		    add_action( 'wp_ajax_get-rooms_and_guest_info', array( &$this, 'render_rooms_and_guest_info' ) );
+		    add_action( 'wp_ajax_calculate-total-amount', array( &$this, 'calculate_total_amount' ) );
+
+		    add_action( 'wp_ajax_count-available-rooms', array( &$this, 'count_available_rooms' ) );
 
 		    add_action( 'wp_ajax_save-rooms_and_guest_info', array( &$this, 'save_rooms_and_guest_info' ) );
 		    add_action( 'init', array( &$this, 'custom_init' ) );
 		}
+
+
 
 
 		function validate_booking_data($data) {
@@ -81,7 +90,8 @@ if (! class_exists('Booking') ) {
 
 
 				if ( save_booking( $data ) !== false ) {
-					if ( $data['booking_ID'] < 1 ) {
+					$inserted_ID = $data['booking_ID'];
+					if ( $inserted_ID < 1 ) {
 						$inserted_ID = get_inserted_ID();
 						send_success_booking_notification( $inserted_ID );
 
@@ -94,7 +104,7 @@ if (! class_exists('Booking') ) {
 					}
 
 					add_this_notices( 'updated', 'Successully Saved.' );
-					return true;
+					return $inserted_ID;
 
 				} else {
 					add_this_notices( 'error', 'Error while Saving.' );
@@ -196,6 +206,26 @@ if (! class_exists('Booking') ) {
 							redirect_by_page_path( 'success' );
 						}
 						break;
+					case 'save_booking':
+
+						
+						if ( isset( $_POST['save_booking_field'] ) && wp_verify_nonce( $_POST['save_booking_field'], 'save_booking_action' ) ) {
+							$info = get_booking_by_id( browser_request( 'bid', 0 ) );
+							$post = array_merge( (array)$info, $_POST );
+
+							$post['no_of_night'] = count_nights( $post['date_in'], $post['date_out'] );
+							$post['room_price'] = get_room_price( $post['room_ID'], $post['date_in'], $post['date_out'] );
+							$post['amount'] = $post['room_price'] * $post['no_of_room'] * $post['no_of_night'];
+							$post['date_booked'] = array_data( $info, 'date_booked' , date( 'Y-m-d H:i:s' ) );
+							$post['type'] = 'RESERVATION';
+							$post['room_code'] = room_code( $post['room_ID'] );
+
+							if ( ( $bid = $this->process( $post ) ) != false ) {
+								exit( wp_redirect( 'admin.php?page=edit-booking&bid='.$bid ) );
+							}
+
+						}
+						break;
 					case 'export-bookings':
 
 						$results = get_bookings_for_export();
@@ -211,7 +241,7 @@ if (! class_exists('Booking') ) {
 
 						$exporter->initialize(); // starts streaming data to web browser
 
-						$exporter->addRow(array('BOOKING NO', 'ROOM', 'ROOM PRICE', 'CHECK IN', 'CHECK OUT', 'NO OF NIGHTS', 'NO OF ROOMS', 'TOTAL AMOUNT', 'AMOUNT PAID', 'NO OF ADULT', 'NO OF CHILD', 'BOOKED BY', 'BIRTHDATE', 'EMAIL ADDRESS', 'PHONE', 'COUNTRY', 'ADDRESS 1', 'ADDRESS 2', 'PROVINCE', 'CITY', 'ZIPCODE', 'NATIONALITY', 'BOOKING STATUS', 'PAYMENT STATUS', 'DATE BOOKED'));
+						$exporter->addRow(array('BOOKING NO', 'ROOM TYPE', 'ROOM PRICE', 'CHECK IN', 'CHECK OUT', 'NO OF NIGHTS', 'NO OF ROOMS', 'TOTAL AMOUNT', 'AMOUNT PAID', 'NO OF ADULT', 'NO OF CHILD', 'BOOKED BY', 'BIRTHDATE', 'EMAIL ADDRESS', 'PHONE', 'COUNTRY', 'ADDRESS 1', 'ADDRESS 2', 'PROVINCE', 'CITY', 'ZIPCODE', 'NATIONALITY', 'BOOKING STATUS', 'PAYMENT STATUS', 'DATE BOOKED'));
 						foreach ( $results as $i => $r ) {
 							// pass addRow() an array and it converts it to Excel XML format and sends 
 							// it to the browser
@@ -264,39 +294,16 @@ if (! class_exists('Booking') ) {
 					'payment_status' => PAYMENT_DEFAULT_STATUS,
 					'notes' => '',
 					'type' => 'RESERVATION',
-					'date_booked' => date('Y-m-d H:i:s')
-				), (array) $info);
+					'date_booked' => date('Y-m-d H:i:s'),
+					'editable' => $info['booking_status'] != 'CHECKOUT',
+					'available_rooms' => get_available_room_types(),
+					'booking_statuses' => booking_statuses(),
+					'payment_statuses' => payment_statuses(),
+					'salutations' => salutations(),
+					'rooms_and_guest' => get_rooms_and_guest_info( browser_request( 'bid', 0 ) )
 
-			
-			if ( isset( $_POST['save_booking_field'] ) && wp_verify_nonce( $_POST['save_booking_field'], 'save_booking_action' ) ) {
+				), (array) $info, (array) $_POST);
 
-				$post = array_merge( $post, $_POST );
-
-				$post['no_of_night'] = count_nights( $post['date_in'], $post['date_out'] );
-				$post['room_price'] = get_room_price( $post['room_ID'], $post['date_in'], $post['date_out'] );
-				$post['amount'] = $post['room_price'] * $post['no_of_room'] * $post['no_of_night'];
-				$post['date_booked'] = array_data( $info, 'date_booked' , date( 'Y-m-d H:i:s' ) );
-				$post['type'] = 'RESERVATION';
-				$post['room_code'] = room_code( $post['room_ID'] );
-
-				// Check if booking is exists
-				// if ( count( $b = get_booking_by_id( $post['booking_ID'] ) ) > 0 ) {
-				// 	$post = array_merge( $post, get_array_values_by_keys( $b, array( 'room_ID', 'room_code', 'room_price', 'no_of_night', 'amount', 'type', 'date_booked' ) ) );
-				// }
-
-				if ( $this->process( $post ) ) {
-					redirect_js_script( 'admin.php?page=manage-bookings&view=list' );
-				}
-
-			}
-
-			
-			$post['editable'] = in_array( $post['booking_status'], array( 'NEW', 'CONFIRMED' ) );
-			$post['available_rooms'] = get_available_rooms();
-			$post['booking_statuses'] = booking_statuses();
-			$post['payment_statuses'] = payment_statuses();
-			$post['salutations'] = salutations();
-			$post['rooms_and_guest'] = get_rooms_and_guest_info( browser_request( 'bid', 0 ) );
 			include_view( 'edit-booking.html.php', $post );  
 		}
 
@@ -397,7 +404,7 @@ if (! class_exists('Booking') ) {
 			} else {
 
 				global $booking_list_table;
-				$data['rooms'] = get_available_rooms();
+				$data['rooms'] = get_available_room_types();
 				$data['booking_list_table'] = $booking_list_table;
 				$data['payment_statuses'] = payment_statuses();
 
@@ -422,16 +429,40 @@ if (! class_exists('Booking') ) {
 
 		public function render_rooms_and_guest_info() {
 			if ( defined('DOING_AJAX') && DOING_AJAX ) {
-
 				$data = array();
 
-				$data['rooms'] = get_rooms();
-				$data['booking_ID'] = browser_get( 'bid' );
-				//$details = get_booking_by_id( browser_get( 'bid' ) );
-
-				//$details['featured_image'] = featured_image( $details['room_ID'], 'large' );
+				$data['rooms_and_guest'] = get_rooms_and_guest_info( browser_request( 'booking_ID', 0 ) );
 
 				include_view( 'rooms_and_guest_info.html.php', $data );
+				exit;
+			}	
+		}
+
+		public function render_edit_rooms_and_guest_info() {
+			if ( defined('DOING_AJAX') && DOING_AJAX ) {
+
+				$data = array();
+				$excludes = array();
+
+
+				$brid = browser_get( 'brid' );
+				$data = get_array_values_by_keys( 
+						get_booking_rooms( $brid ), 
+						array( 'booking_room_ID', 'booking_ID', 'room_ID', 'guest', 'phone', 'no_of_adult', 'no_of_child' ) 
+					);
+
+
+				$data['booking_ID'] = browser_get( 'booking_ID' );
+
+				$existing_rooms = get_rooms_and_guest_info( $data['booking_ID'], $brid );
+
+				foreach ( $existing_rooms as $i => $r ) {
+					$excludes[] = $r['room_ID'];
+				}
+				
+				$data['rooms'] = get_rooms( $excludes );
+
+				include_view( 'edit_rooms_and_guest_info.html.php', $data );
 				exit;
 			}
 		}
@@ -440,16 +471,93 @@ if (! class_exists('Booking') ) {
 			if ( defined('DOING_AJAX') && DOING_AJAX && $_POST ) {
 
 				$data = $_POST;
-				if ( do_save_rooms_and_guest_info( $data ) ) {
-					echo 'success';
+				if ( is_rooms_exists_on_booking( $data['room_ID'], $data['booking_ID'], $data['booking_room_ID'] ) ) {
+					wp_send_json_error( array( 'message' => 'Room already exists' ) );
 				} else {
-					echo 'error';
+
+					require_class( 'gump.class.php' );
+
+				    $gump = new GUMP();
+				    
+				    $data = $gump->sanitize( $data );
+
+				    $gump->validation_rules( array(
+						'guest' => 'required|min_len,1|max_len,100',
+					    'room_ID' => 'required|numeric',
+					    'no_of_adult' => 'required|numeric',
+					    'no_of_child' => 'numeric',
+				    ) );
+
+				    if ( $gump->run( $data ) !== false ) {
+				    	if ( do_save_rooms_and_guest_info( $data ) ) {
+							wp_send_json_success( array( 'message' => 'Successfully saved.' ) );
+						} else {
+							wp_send_json_error( array( 'message' => 'Error while saving.' ) );
+						}
+				    } else {
+
+				    	javacript_notices( $gump->get_key_and_value_errors( true ) );
+				    	wp_send_json_error( array( 'js' => print_javascript_notices( false ) ) );
+				    }
+
+				    
+
+
+					
 				}
 				exit;
 			}
 		}
 
-		
+		public function delete_rooms_and_guest_info() {
+			if ( defined('DOING_AJAX') && DOING_AJAX && $_POST ) {
+
+				$data = $_POST;
+
+				if ( delete_rooms_and_guest_info( $data['booking_room_ID'] ) ) {
+					wp_send_json_success( array( 'message' => 'Successfully deleted.' ) );
+				} else {
+					wp_send_json_error( array( 'message' => 'Error while saving.' ) );
+				}
+			}
+		}
+
+		public function calculate_total_amount() {
+			if ( defined('DOING_AJAX') && DOING_AJAX ) {
+
+				$data = $_GET;
+
+				$no_of_night = count_nights( $data['date_in'], $data['date_out'] );
+				$room_ID = $data['room_ID'];
+
+				$room_price = get_room_price( $room_ID, $data['date_in'], $data['date_out'] );
+
+				$total = $room_price * $data['no_of_room'] * $no_of_night;
+
+				$output = '';
+				$output .= '<ul>';
+					$output .= '<li>Room Price: <span class="room_price">'. format_price( $room_price, false ) .'</span></li>';
+          			$output .= '<li>Total Room: <span class="total_rooms"> x ' . $data['no_of_room'] .'</span></li>';
+          			$output .= '<li>Total Nights: <span class="total_nights"> x ' . $no_of_night .'</span></li>';
+          			$output .= '<li>Total Amount: <span class="total_amount">'. format_price( $total, false ) .'</span></li>';
+        		$output .= '</ul>';
+
+				wp_send_json_success( array( 'html' => $output) );
+			}
+		}
+
+		public function count_available_rooms() {
+			if ( defined('DOING_AJAX') && DOING_AJAX ) {
+
+				$room_type_ID = browser_get('room_type_ID', 0);
+
+				$rooms = get_rooms_by_type( $room_type_ID );
+				print_me($rooms);
+
+				wp_send_json_success( array( 'total_rooms' => count( $rooms ) ) );
+			}
+		}
+
 	}
 }
 

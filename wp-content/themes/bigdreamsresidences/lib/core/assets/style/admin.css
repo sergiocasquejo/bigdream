@@ -234,3 +234,7 @@ p.search-box {
 span.dashicons {
     vertical-align: middle;
 }
+
+.column-booking_status {
+    width: 10%;
+}

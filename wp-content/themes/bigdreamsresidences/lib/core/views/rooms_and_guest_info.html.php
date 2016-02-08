@@ -1,29 +1,31 @@
-<div class="rooms-and-guest-info">
-  <form id="roomsAndGuestInfoForm">
-    <div class="form-group">
-      <label for="room">Room</label>
-      <select name="room_ID" class="form-control">
-        <?php foreach( $rooms as $i => $r ): ?>
-        <option value="<?php echo $r->ID; ?>"><?php echo $r->post_title; ?></option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="guest">Guest</label>
-      <input type="text" name="guest" class="form-control" /> 
-    </div>
-    <div class="form-group">
-      <label for="phone">Phone</label>
-      <input type="text" name="phone" class="form-control" /> 
-    </div>
-    <div class="form-group">
-      <label for="no_of_adult">Adults</label>
-      <input type="text" name="no_of_adult" class="form-control" /> 
-    </div>
-    <div class="form-group">
-      <label for="no_of_child">Children</label>
-      <input type="text" name="no_of_child" class="form-control" /> 
-    </div>
-    <button type="submit" class="button button-primary">Save</button>
-  </form>
-</div>
+<table class="wp-list-table widefat fixed striped posts">
+    <thead>
+      <tr>
+        <th width="80px;">Room</th>
+        <th>Type</th>
+        <th>Guest</th>
+        <th>Phone</th>
+        <th>Adults</th>
+        <th>Children</th>
+        <th width="80px;"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ( $rooms_and_guest as $i => $r ): ?>
+      <tr>
+        <td><?php echo $r['room_title']; ?></td>
+        <td><?php echo get_room_type ( $r['room_ID'] )->post_title; ?></td>
+        <td><?php echo $r['guest']; ?></td>
+        <td><?php echo $r['phone']; ?></td>
+        <td><?php echo $r['no_of_adult']; ?></td>
+        <td><?php echo $r['no_of_child']; ?></td>
+        <td>
+          <div class="actions">
+            <a href="#" title="Edit" class="edit-rooms-and-guest" data-brid="<?php echo $r['booking_room_ID']; ?>"><span class="dashicons dashicons-edit"></span></a>
+            <a href="#" title="Trash" class="delete-rooms-and-guest" data-brid="<?php echo $r['booking_room_ID']; ?>"><span class="dashicons dashicons-trash"></span></a>
+          </div>
+        </td>
+      </tr>
+      <?php endforeach; ?>
+    </tbody>
+</table>
