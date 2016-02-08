@@ -19,15 +19,23 @@
         <div class="row">
           <div class="col-md-6 form-group">
             <label class="form-label" for="first_name">Room</label>
-            <select name="room_ID" class="form-control editable" required <?php disabled( $editable, false ); ?>>
+            <select name="room_type_ID" class="form-control editable" required <?php disabled( $editable, false ); ?>>
               <?php foreach ($available_rooms as $i => $r): ?>
-                <option value="<?php echo $r->ID; ?>" <?php selected($r->ID, $room_ID); ?>><?php echo get_the_title( $r->ID ); ?></option>
+                <option value="<?php echo $r->ID; ?>" <?php selected($r->ID, $room_type_ID); ?>><?php echo get_the_title( $r->ID ); ?></option>
               <?php endforeach; ?>
             </select>
           </div>
-          <div class="col-md-6 form-group">
+          <div class="col-md-3 form-group">
             <label class="form-label" for="amount_paid">Amount Paid</label>
             <input type="number" name="amount_paid" class="form-control" value="<?php echo $amount_paid; ?>" />
+          </div>
+          <div class="col-md-3 form-group">
+            <label class="form-label" for="booking_status">Payment Status</label>
+            <select name="payment_status" class="form-control" required>
+              <?php foreach ($payment_statuses as $s): ?>
+              <option value="<?php echo $s; ?>" <?php selected($s, $payment_status); ?>><?php echo $s; ?></option>
+              <?php endforeach; ?>
+            </select>
           </div>
         </div>
         <div class="row">
@@ -101,11 +109,11 @@
         <div class="row">
           <div class="col-md-6 form-group">
             <label class="form-label" for="date_in">Date In</label>
-            <input type="text" name="date_in" id="date_in" class="form-control editable" value="<?php echo $date_in; ?>" required <?php disabled( $editable, false ); ?>/>
+            <input type="text" name="date_in" class="form-control date_in editable" value="<?php echo $date_in; ?>" required <?php disabled( $editable, false ); ?>/>
           </div>
           <div class="col-md-6 form-group">
             <label class="form-label" for="date_out">Date Out</label>
-              <input type="text" name="date_out" id="date_out" class="form-control editable" value="<?php echo $date_out; ?>" required <?php disabled( $editable, false ); ?>/>
+              <input type="text" name="date_out" class="form-control date_out editable" value="<?php echo $date_out; ?>" required <?php disabled( $editable, false ); ?>/>
           </div>
         </div>
         <div class="row">
@@ -128,14 +136,6 @@
             <select name="booking_status" class="form-control" required>
               <?php foreach ($booking_statuses as $s): ?>
               <option value="<?php echo $s; ?>" <?php selected($s, $booking_status); ?>><?php echo $s; ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-          <div class="col-md-3 form-group">
-            <label class="form-label" for="booking_status">Payment Status</label>
-            <select name="payment_status" class="form-control" required>
-              <?php foreach ($payment_statuses as $s): ?>
-              <option value="<?php echo $s; ?>" <?php selected($s, $payment_status); ?>><?php echo $s; ?></option>
               <?php endforeach; ?>
             </select>
           </div>

@@ -47,7 +47,7 @@ if (! class_exists('Booking') ) {
 				'last_name' => 'required|min_len,1|max_len,100',
 				'middle_name' => 'required|min_len,1|max_len,100',
 				'birth_date' => 'required|date',
-			    'room_ID' => 'required|numeric',
+			    'room_type_ID' => 'required|numeric',
 			    'amount' => 'required|numeric',
 			    'email_address' => 'required|valid_email',
 			    'primary_phone' => 'required',
@@ -71,7 +71,7 @@ if (! class_exists('Booking') ) {
 			$data['date_in'] = format_db_date( $data['date_in'] );
 			$data['date_out'] = format_db_date( $data['date_out'] );
 
-			if ( is_date_and_room_not_available( $data['room_ID'], $data['date_in'], $data['date_out'], $data['booking_ID']) ) {
+			if ( is_date_and_room_not_available( $data['room_type_ID'], $data['date_in'], $data['date_out'], $data['booking_ID']) ) {
 				add_this_notices( 'error', 'Selected room is not available on that date. Please check calendar to see availability.' );
 
 				return false;
@@ -151,27 +151,27 @@ if (! class_exists('Booking') ) {
 					case 'book_room':
 
 						$data = $_POST;
-						if ( ! is_bookable( $data['room_ID'] ) ) {
+
+						if ( array_data( $data, 'room_type_ID', '' ) == '' || ! is_bookable( $data['room_type_ID'] ) ) {
 
 							add_this_notices( 'error', 'Selected room is Out of Order.' );
 							return;
 						}
 
-						if ( is_date_and_room_not_available( $data['room_ID'], format_db_date( $data['date_in'] ),  format_db_date( $data['date_out'] ) ) ) {
+						if ( is_date_and_room_not_available( $data['room_type_ID'], format_db_date( $data['date_in'] ),  format_db_date( $data['date_out'] ) ) ) {
 							add_this_notices( 'error', 'Selected room is not available on that date. Please check calendar to see availability.' );
 							return;
 						}
 
 						$nights = count_nights( $data['date_in'], $data['date_out'] );
-						$room_price = get_room_price( $data['room_ID'], $data['date_in'], $data['date_out'] );
+						$room_price = get_room_price( $data['room_type_ID'], $data['date_in'], $data['date_out'] );
 
 						push_to_booking_session( array(
 							'date_in' 		=> $data['date_in'],
 							'date_out' 		=> $data['date_out'],
 							'no_of_adult' 	=> $data['no_of_adult'],
 							'no_of_child' 	=> array_data( $data, 'no_of_child', 0 ),
-							'room_ID' 		=> $data['room_ID'],
-							'room_code' 	=> room_code( $data['room_ID'] ),
+							'room_type_ID' 		=> $data['room_type_ID'],
 							'no_of_night' 	=> $nights,
 							'no_of_room' => $data['no_of_room'],
 							'room_price' 	=> $room_price,
@@ -196,7 +196,7 @@ if (! class_exists('Booking') ) {
 
 						$data = get_booking_session();
 
-						if ( ! is_bookable( $data['room_ID'] ) ) {
+						if ( ! is_bookable( $data['room_type_ID'] ) ) {
 							add_this_notices( 'error', 'Selected room is Out of Order.' );
 							return;
 						}
@@ -214,11 +214,11 @@ if (! class_exists('Booking') ) {
 							$post = array_merge( (array)$info, $_POST );
 
 							$post['no_of_night'] = count_nights( $post['date_in'], $post['date_out'] );
-							$post['room_price'] = get_room_price( $post['room_ID'], $post['date_in'], $post['date_out'] );
+							$post['room_price'] = get_room_price( $post['room_type_ID'], $post['date_in'], $post['date_out'] );
 							$post['amount'] = $post['room_price'] * $post['no_of_room'] * $post['no_of_night'];
 							$post['date_booked'] = array_data( $info, 'date_booked' , date( 'Y-m-d H:i:s' ) );
 							$post['type'] = 'RESERVATION';
-							$post['room_code'] = room_code( $post['room_ID'] );
+							$post['room_code'] = room_code( $post['room_type_ID'] );
 
 							if ( ( $bid = $this->process( $post ) ) != false ) {
 								exit( wp_redirect( 'admin.php?page=edit-booking&bid='.$bid ) );
@@ -266,7 +266,7 @@ if (! class_exists('Booking') ) {
 			$date_out = date( 'Y-m-d', time() + 86400 );
 			$post = array_merge(array(
 					'booking_ID' => 0,
-					'room_ID' => 0,
+					'room_type_ID' => 0,
 					'room_price' => 0,
 					'amount' => 0,
 					'amount_paid' => 0,
@@ -303,6 +303,7 @@ if (! class_exists('Booking') ) {
 					'rooms_and_guest' => get_rooms_and_guest_info( browser_request( 'bid', 0 ) )
 
 				), (array) $info, (array) $_POST);
+
 
 			include_view( 'edit-booking.html.php', $post );  
 		}
@@ -361,8 +362,8 @@ if (! class_exists('Booking') ) {
 			global $menu;
 			
 			add_menu_page( 'Booking System', 'Booking System', 'manage_bookings', 'booking-system', array( &$this, 'admin_dashboard' ), 'dashicons-calendar-alt', BDR_MENU_POSITION );
-			//add_submenu_page( 'booking-system', 'Rooms', 'Rooms', 'manage_bookings', 'edit.php?post_type=room', false );
-			$hook = add_submenu_page( 'booking-system', 'Bookings', 'Bookings', 'manage_bookings', 'manage-bookings', array( &$this, 'bookings' ) );
+			add_submenu_page( 'booking-system', 'Guest Calendar', 'Guest Calendar', 'manage_bookings', 'guest-calendar', array( &$this, 'render_guest_calendar' ), false );
+			$hook = add_submenu_page( 'booking-system', 'Bookings', 'Bookings', 'manage_bookings', 'manage-bookings', array( &$this, 'render_bookings' ) );
 			add_submenu_page( 'edit-booking', 'Edit Booking', 'Edit Booking', 'manage_bookings', 'edit-booking', array( &$this, 'add_edit_booking' ) );
 
 			// Add badge notification to menu
@@ -396,12 +397,12 @@ if (! class_exists('Booking') ) {
 		
 
 
-		public function bookings() {
+		public function render_bookings() {
 
-			if ( browser_get( 'view' ) == 'calendar' ) {
-				include_view ( 'bookings-calendar-view.html.php' );
+			// if ( browser_get( 'view' ) == 'calendar' ) {
+			// 	include_view ( 'bookings-calendar-view.html.php' );
 
-			} else {
+			// } else {
 
 				global $booking_list_table;
 				$data['rooms'] = get_available_room_types();
@@ -409,7 +410,7 @@ if (! class_exists('Booking') ) {
 				$data['payment_statuses'] = payment_statuses();
 
 				include_view ( 'bookings.html.php', $data );
-			}
+			//}
 		}
 
 		public function details() {
@@ -418,7 +419,7 @@ if (! class_exists('Booking') ) {
 
 				$details = get_booking_by_id( browser_get( 'bid' ) );
 
-				$details['featured_image'] = featured_image( $details['room_ID'], 'large' );
+				$details['featured_image'] = featured_image( $details['room_type_ID'], 'large' );
 
 				include_view( 'booking-details.html.php', $details );
 				exit;
@@ -448,7 +449,7 @@ if (! class_exists('Booking') ) {
 				$brid = browser_get( 'brid' );
 				$data = get_array_values_by_keys( 
 						get_booking_rooms( $brid ), 
-						array( 'booking_room_ID', 'booking_ID', 'room_ID', 'guest', 'phone', 'no_of_adult', 'no_of_child' ) 
+						array( 'booking_room_ID', 'booking_ID', 'room_ID', 'guest', 'phone', 'no_of_adult', 'no_of_child', 'date_in', 'date_out' ) 
 					);
 
 
@@ -459,8 +460,10 @@ if (! class_exists('Booking') ) {
 				foreach ( $existing_rooms as $i => $r ) {
 					$excludes[] = $r['room_ID'];
 				}
-				
-				$data['rooms'] = get_rooms( $excludes );
+
+				$data['room_type_ID'] = browser_get( 'room_type_ID' );
+
+				$data['rooms'] = get_rooms_by_type( $data['room_type_ID'], $excludes );
 
 				include_view( 'edit_rooms_and_guest_info.html.php', $data );
 				exit;
@@ -479,13 +482,17 @@ if (! class_exists('Booking') ) {
 
 				    $gump = new GUMP();
 				    
+				    $data['room_type_ID'] = get_room_type( $data['room_ID'] )->ID;
 				    $data = $gump->sanitize( $data );
 
 				    $gump->validation_rules( array(
 						'guest' => 'required|min_len,1|max_len,100',
 					    'room_ID' => 'required|numeric',
+					    'room_type_ID' => 'required|numeric',
 					    'no_of_adult' => 'required|numeric',
 					    'no_of_child' => 'numeric',
+					    'date_in' => 'required|date',
+			    		'date_out' => 'required|date',
 				    ) );
 
 				    if ( $gump->run( $data ) !== false ) {
@@ -528,9 +535,9 @@ if (! class_exists('Booking') ) {
 				$data = $_GET;
 
 				$no_of_night = count_nights( $data['date_in'], $data['date_out'] );
-				$room_ID = $data['room_ID'];
+				$room_type_ID = $data['room_type_ID'];
 
-				$room_price = get_room_price( $room_ID, $data['date_in'], $data['date_out'] );
+				$room_price = get_room_price( $room_type_ID, $data['date_in'], $data['date_out'] );
 
 				$total = $room_price * $data['no_of_room'] * $no_of_night;
 
@@ -552,10 +559,15 @@ if (! class_exists('Booking') ) {
 				$room_type_ID = browser_get('room_type_ID', 0);
 
 				$rooms = get_rooms_by_type( $room_type_ID );
-				print_me($rooms);
+				// print_me($rooms);
 
 				wp_send_json_success( array( 'total_rooms' => count( $rooms ) ) );
 			}
+		}
+
+
+		public function render_guest_calendar() {
+			echo 'test';
 		}
 
 	}

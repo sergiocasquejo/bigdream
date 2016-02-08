@@ -1,14 +1,32 @@
 <?php
-function get_rooms_by_type( $room_type_ID ) {
-	wp_reset_query();
+
+function get_guest_calendar_by_room_and_datein($room_type_ID, $from ) {
+  global $wpdb;
+  
+  $sql = $wpdb->prepare( "SELECT * FROM ".$wpdb->prefix."guest_calendar WHERE room_type_ID = %d AND '%s' >= date_in AND  '%s' < date_out", $room_type_ID, $from, $from );
+
+  return $wpdb->get_results( $sql );
+}
+
+
+
+function get_guest_calendar_by_type_and_date( $room_type_ID, $date_in, $date_out ) {
+	global $wpdb;
+	$sql = "SELECT * FROM ". $wpdb->prefix . "guest_calendar WHERE room_type_ID = %d AND '%s' >= date_in AND  '%s' < date_out ";
+
+	$sql = $wpdb->prepare( $sql, $room_type_ID, $date_in, $date_out );
+
+	print_me($sql);
+	return $wpdb->get_results( $sql );
+}
+
+function get_rooms_by_type( $room_type_ID, $exclude = array() ) {
 	$rooms = get_posts(array(
 			'showposts' => -1,
+			'exclude' => $exclude,
 			'post_type' => 'room',
-			'meta_query' => array(
-				'key' => 'room_type',
-				'value' => $room_type_ID,
-				'compare' => '=',
-			)
+				'meta_key' => 'room_type',
+				'meta_value' => $room_type_ID,
 			
 		)
 	);
@@ -29,7 +47,7 @@ function get_no_of_room_by_booking_ID( $booking_ID ) {
 function delete_rooms_and_guest_info( $booking_room_ID ) {
 	global $wpdb;
 
-	$sql = "DELETE FROM ". $wpdb->prefix . "bookings_rooms WHERE booking_room_ID = %d";
+	$sql = "DELETE FROM ". $wpdb->prefix . "guest_calendar WHERE booking_room_ID = %d";
 
 	$result = $wpdb->query( $wpdb->prepare( $sql, $booking_room_ID ), ARRAY_A);
 
@@ -41,7 +59,7 @@ function delete_rooms_and_guest_info( $booking_room_ID ) {
 function get_booking_rooms( $booking_room_ID ) {
 	global $wpdb;
 
-	$sql = "SELECT * FROM ". $wpdb->prefix . "bookings_rooms WHERE booking_room_ID = %d";
+	$sql = "SELECT * FROM ". $wpdb->prefix . "guest_calendar WHERE booking_room_ID = %d";
 
 	$result = $wpdb->get_row( $wpdb->prepare( $sql, $booking_room_ID ), ARRAY_A);
 
@@ -52,10 +70,9 @@ function get_booking_rooms( $booking_room_ID ) {
 function get_rooms_and_guest_info( $booking_ID, $brid = false ) {
 	global $wpdb;
 
-	$sql = "SELECT a.*, b.post_title as room_title FROM ". $wpdb->prefix . "bookings_rooms a JOIN ". $wpdb->prefix . "posts b ON a.room_ID = b.ID WHERE a.booking_ID = %d AND a.booking_room_ID != %d";
+	$sql = "SELECT a.*, b.post_title as room_title FROM ". $wpdb->prefix . "guest_calendar a JOIN ". $wpdb->prefix . "posts b ON a.room_ID = b.ID WHERE a.booking_ID = %d AND a.booking_room_ID != %d";
 
 	$result = $wpdb->get_results( $wpdb->prepare( $sql, $booking_ID, $brid ), ARRAY_A);
-
 	return $result;
 }
 
@@ -63,7 +80,7 @@ function get_rooms_and_guest_info( $booking_ID, $brid = false ) {
 function is_rooms_exists_on_booking( $room_ID, $booking_ID, $booking_room_ID = false ) {
 	global $wpdb;
 
-	$sql = "SELECT count(*) FROM ". $wpdb->prefix . "bookings_rooms  WHERE booking_ID = %d AND room_ID = %d AND booking_room_ID != %d";
+	$sql = "SELECT count(*) FROM ". $wpdb->prefix . "guest_calendar  WHERE booking_ID = %d AND room_ID = %d AND booking_room_ID != %d";
 
 	$result = $wpdb->get_var( $wpdb->prepare( $sql, $booking_ID, $room_ID, $booking_room_ID ) );
 
@@ -77,18 +94,21 @@ function do_save_rooms_and_guest_info( $args ) {
 				array(
 					'booking_ID',
 					'room_ID',
+					'room_type_ID',
 					'guest',
 					'phone',
 					'no_of_adult',
 					'no_of_child',
+					'date_in',
+					'date_out',
 				) 
 			);
 
 
 		if ( array_data( $args, 'booking_room_ID', 0 ) > 0 ) {
-			$result = $wpdb->update( $wpdb->prefix . 'bookings_rooms', $data, array( 'booking_room_ID' => $args['booking_room_ID']) );
+			$result = $wpdb->update( $wpdb->prefix . 'guest_calendar', $data, array( 'booking_room_ID' => $args['booking_room_ID']) );
 		} else {
-			$result = $wpdb->insert( $wpdb->prefix . 'bookings_rooms', $data );
+			$result = $wpdb->insert( $wpdb->prefix . 'guest_calendar', $data );
 		}
 		return $result;
 }
@@ -106,7 +126,7 @@ if ( ! function_exists( 'save_booking' ) ) {
 
 		$data = get_array_values_by_keys( $args, 
 				array(
-					'room_ID',
+					'room_type_ID',
 					'room_price',
 					'amount',
 					'amount_paid',
@@ -155,7 +175,7 @@ if ( ! function_exists( 'save_booking' ) ) {
 function get_filtered_bookings() {
 	global $wpdb;
 		
-	$sql = "SELECT p.post_title as room_title,  b.*, CONCAT(b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_ID WHERE 1 = 1";
+	$sql = "SELECT p.post_title as room_title,  b.*, CONCAT(b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_type_ID WHERE 1 = 1";
 
 	if ( $s = browser_post( 's' ) != '' ) {
 		$sql .= " AND ( p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%' ) ";
@@ -173,8 +193,8 @@ function get_filtered_bookings() {
 
 	
 
-	if ( ($room_ID = browser_request( 'filter_room_ID' )) != '' ) {
-		$sql .= " AND (b.room_ID = '". $room_ID ."' ) ";
+	if ( ($room_type_ID = browser_request( 'filter_room_ID' )) != '' ) {
+		$sql .= " AND (b.room_type_ID = '". $room_type_ID ."' ) ";
 	}
 
 
@@ -195,7 +215,7 @@ function get_filtered_bookings() {
 function get_bookings_for_export() {
 	global $wpdb;
 		
-	$sql = "SELECT booking_no,  p.post_title, room_price, b.date_in, b.date_out, b.no_of_night, b.no_of_room, amount, amount_paid, b.no_of_adult, b.no_of_child,  CONCAT(b.salutation, '. ', b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name, b.birth_date, b.email_address, b.primary_phone, b.country, b.address_1, b.address_2, b.province, b.city, b.zipcode, b.nationality, b.booking_status, b.payment_status, b.date_booked  FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_ID WHERE 1 = 1";
+	$sql = "SELECT booking_no,  p.post_title, room_price, b.date_in, b.date_out, b.no_of_night, b.no_of_room, amount, amount_paid, b.no_of_adult, b.no_of_child,  CONCAT(b.salutation, '. ', b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name, b.birth_date, b.email_address, b.primary_phone, b.country, b.address_1, b.address_2, b.province, b.city, b.zipcode, b.nationality, b.booking_status, b.payment_status, b.date_booked  FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_type_ID WHERE 1 = 1";
 
 	if ( $s = browser_post( 's' ) != '' ) {
 		$sql .= " AND ( p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%' ) ";
@@ -230,7 +250,7 @@ function get_booking_calendar() {
 	$sql = "
 		SELECT 
 			b.booking_ID as id,
-			CONCAT(b.room_code, ' by:  ', b.first_name,' ', b.middle_name, ' ', b.last_name) as title,
+			CONCAT(p.post_title, ' by:  ', b.first_name,' ', b.middle_name, ' ', b.last_name) as title,
 			b.date_in as start, 
 			b.date_out as end, 
 			CASE b.booking_status
@@ -243,7 +263,7 @@ function get_booking_calendar() {
 		FROM 
 			". $wpdb->prefix . "bookings b  
 		JOIN ". $wpdb->prefix ."posts p 
-			ON p.ID = b.room_ID";
+			ON p.ID = b.room_type_ID";
 
 	return $wpdb->get_results( $sql, ARRAY_A );
 }
@@ -270,7 +290,7 @@ function get_booking_by_id( $id) {
 		FROM 
 			". $wpdb->prefix . "bookings b  
 		JOIN ". $wpdb->prefix ."posts p 
-			ON p.ID = b.room_ID 
+			ON p.ID = b.room_type_ID 
 		WHERE booking_ID = %d";
 
 
@@ -353,17 +373,17 @@ function get_inserted_ID() {
 function is_selected_date_and_room_not_available( $roomID, $from, $booking_ID = 0 ) {
   global $wpdb;
   
-  $sql = $wpdb->prepare( "SELECT count(*) FROM ".$wpdb->prefix."bookings WHERE room_ID = %d AND '%s' >= date_in AND  '%s' < date_out AND booking_ID != %d", $roomID, $from, $from, $booking_ID );
+  $sql = $wpdb->prepare( "SELECT count(*) FROM ".$wpdb->prefix."guest_calendar WHERE room_type_ID = %d AND '%s' >= date_in AND  '%s' < date_out AND booking_ID != %d", $roomID, $from, $from, $booking_ID );
   
   return $wpdb->get_var( $sql );
 }
 
 
 
-function get_room_unavailable_schedule( $room_ID, $output = 'ARRAY_A' ) {
+function get_room_unavailable_schedule( $room_type_ID, $output = 'ARRAY_A' ) {
 	global $wpdb;
 
-	$results = $wpdb->get_results( "SELECT DATE_FORMAT(date_in, '%m/%d/%Y' ) AS date_in, DATE_FORMAT(date_out, '%m/%d/%Y' ) AS date_out FROM ".$wpdb->prefix."bookings WHERE room_ID = $room_ID AND date_out >= CURDATE()", $output);
+	$results = $wpdb->get_results( "SELECT DATE_FORMAT(date_in, '%m/%d/%Y' ) AS date_in, DATE_FORMAT(date_out, '%m/%d/%Y' ) AS date_out FROM ".$wpdb->prefix."guest_calendar WHERE room_type_ID = $room_type_ID AND date_out >= CURDATE()", $output);
 
 	return $results;
 }

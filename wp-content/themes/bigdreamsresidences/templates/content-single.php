@@ -1,4 +1,5 @@
-<?php while ( have_posts() ) : the_post(); ?>
+<?php while ( have_posts() ) : the_post(); 
+$rooms_available = get_total_available_rooms( get_the_ID(), booking_data( 'date_in' ), booking_data( 'date_out' ) );?>
 <div class="section-room bg-white">
     <div class="container">
         <div class="room-detail">
@@ -37,8 +38,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>No of Room</label>
-                                    <select name="no_of_room" class="form-group">
-                                        <?php for( $i = 1; $i <= 10; $i++ ): ?>
+                                    <select name="no_of_room" class="form-group" <?php disabled($rooms_available == 0, true); ?>>
+                                        <?php for( $i = 1; $i <= $rooms_available; $i++ ): ?>
                                         <option value="<?php echo $i; ?>" <?php selected( $i, booking_data( 'no_of_room' ) ); ?>><?php echo $i; ?></option>
                                         <?php endfor; ?>
                                     </select>
@@ -62,12 +63,12 @@
                                         </select>
                                     </div>
                                 </div>
-                                <input type="hidden" name="room_ID" value="<?php the_ID(); ?>" />
-                                <?php if (is_bookable( get_the_ID() )): ?>
-                                    <input type="hidden" name="action" value="book_room" />
-                                    <button type="submit" class="bdr-btn bdr-btn-fill-black">Book Now</button>
+                                <input type="hidden" name="room_type_ID" value="<?php the_ID(); ?>" />
+                                <input type="hidden" name="action" value="book_room" />
+                                <?php if( $rooms_available > 0 ): ?>
+                                <button type="submit" class="bdr-btn bdr-btn-fill-black">Book Now</button>
                                 <?php else: ?>
-                                    <span class="bdr-btn bdr-btn-fill-red">This room is out of order.</span>
+                                <button type="submit" class="bdr-btn bdr-btn-fill-red" disabled>No more rooms available.</button>
                                 <?php endif; ?>
                             </div>
                         </form>

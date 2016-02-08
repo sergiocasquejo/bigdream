@@ -114,11 +114,11 @@ function admin_custom_init() {
 	$args = array(
 		'labels'             => $labels,
         'description'        => __( 'Description.', 'your-plugin-textdomain' ),
-		'public'             => false,
+		'public'             => true,
 		'publicly_queryable' => true,
 		'show_ui'            => true,
 		'show_in_menu'       => true,
-		'query_var'          => false,
+		'query_var'          => true,
 		'rewrite'            => array( 'slug' => 'room' ),
 		'capability_type' => 'room_type',
 		'capabilities' => array(
@@ -131,7 +131,7 @@ function admin_custom_init() {
 			'delete_post' => 'delete_room',
 			'read_post' => 'read_room',
 		),
-		'has_archive'        => false,
+		'has_archive'        => true,
 		'hierarchical'       => false,
 		'menu_position'      => null,
 		'menu_icon'			=> 'dashicons-store',

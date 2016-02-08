@@ -3,6 +3,29 @@
 	var W = $(window),
 		D = $(document);
 
+	function dateInAndOut( el ) {
+		$( ".date_in", el ).datepicker({
+	      minDate: new Date(),
+	      defaultDate: "+1w",
+	      dateFormat: 'yy-mm-dd',
+	      changeMonth: false,
+	      numberOfMonths: 1,
+	      onClose: function( selectedDate ) {
+	        $( ".date_out", el ).datepicker( "option", "minDate", selectedDate );
+	      }
+	    });
+
+	    $( ".date_out", el ).datepicker({
+	      defaultDate: "+1w",
+	      dateFormat: 'yy-mm-dd',
+	      changeMonth: false,
+	      numberOfMonths: 1,
+	      onClose: function( selectedDate ) {
+	        $( ".date_in", el ).datepicker( "option", "maxDate", selectedDate );
+	      }
+	    });
+	}
+
 	function getBookingDetails(id) {
 		$.get(BDR.AjaxUrl + '?action=booking-details&bid=' + id, function(response) {
 			$('#bdrModalDialog').html(response);
@@ -11,7 +34,7 @@
 	}
 
 	function calculateTotalAmount() {
-		var id = $(":input[name=room_ID] option:selected").val(),
+		var id = $(":input[name=room_type_ID] option:selected").val(),
 			check_in = $(":input[name=date_in]").val(),
 			check_out = $(":input[name=date_out]").val(),
 			no_of_room = $(":input[name=no_of_room] option:selected").val();
@@ -20,31 +43,37 @@
 
 		$.get(BDR.AjaxUrl, {
 			action: 'calculate-total-amount', 
-			room_ID: id, 
+			room_type_ID: id, 
 			date_in : check_in, 
 			date_out: check_out,
 			no_of_room: no_of_room
 		},
 		function(response) {
-			
-			$('#priceCalculation').html( response.data.html );
+			if (response.success) {
+				$('#priceCalculation').html( response.data.html );
+			}
 		});
 	}
 
 	function getRoomsAndGuestInfo() {
 		var bid = $('#booking_ID').val();
 
-		$.get(BDR.AjaxUrl + '?action=get-rooms_and_guest_info&booking_ID=' + parseInt(bid), function(response) {
+		$.get(BDR.AjaxUrl + '?action=get-rooms_and_guest_info&booking_ID=' + parseInt(bid) , function(response) {
 			$('#roomsAndGuestInfoWrapper').html(response);
 			$('input[name="no_of_room"]').trigger('keyup');
 		});
 	}
 
 	function editRoomsAndGuestInfo(id) {
-		var bid = $('#booking_ID').val();
-		$.get(BDR.AjaxUrl + '?action=edit-rooms-and-guest-info&brid=' + parseInt(id) +'&booking_ID=' + parseInt(bid), function(response) {
-			$('#bdrModalDialog').html(response);
+		var bid = $('#booking_ID').val(),
+			room_type_ID = $('select[name=room_type_ID] option:selected').val();
+		$.get(BDR.AjaxUrl + '?action=edit-rooms-and-guest-info&brid=' + parseInt(id) +'&booking_ID=' + parseInt(bid)+'&room_type_ID=' + parseInt(room_type_ID), function(response) {
+			var $modal = $(response);
+			
+			$('#bdrModalDialog').html($modal);
 			tb_show("Select Room", '#TB_inline?width=600&height=550&inlineId=bdrModalDialog');
+			
+			dateInAndOut( $modal );
 		});
 	}
 
@@ -75,6 +104,7 @@
 				if ( response.success == true ) {
 					getRoomsAndGuestInfo();
 					$('#TB_closeWindowButton').trigger('click');
+					$(':input[name="no_of_room"]').trigger('change');
 					
 				} else {
 					$('#roomsAndGuestInfoForm .error_field').remove();
@@ -115,7 +145,7 @@
 				$('#EditRoom').attr('disabled', true);
 			}
 		})
-		.on('keyup change', ':input[name=no_of_room], input[name=date_in], input[name=date_out], select[name=room_ID]', function() {
+		.on('keyup change', ':input[name=no_of_room], input[name=date_in], input[name=date_out], select[name=room_type_ID]', function() {
 			calculateTotalAmount();
 		})
 
@@ -127,12 +157,17 @@
 			}
 		})
 
-		.on('change', ':input[name="room_ID"]', function() {
+		.on('change', ':input[name="room_type_ID"]', function() {
 			var id = $(this).val();
 			$.get(BDR.AjaxUrl, {action: 'count-available-rooms', room_type_ID: id }, function(response) {
-				console.log(response);
+
 				if (response.success) {
 					$('select[name=no_of_room]').empty();
+
+					if ( response.data.total_rooms <= 0 ) {
+						alert('No rooms available');
+						return;
+					}
 					for(var i = 1; i <= response.data.total_rooms; i++) {
 						$('select[name=no_of_room]').append($('<option />').val(i).text(i));
 					}
@@ -141,7 +176,7 @@
 		});
 
 
-		$('select[name=room_ID]').trigger('change');
+		$('select[name=room_type_ID]').trigger('change');
 
 
 		$('#bookingCalendarView').fullCalendar({
@@ -159,24 +194,7 @@
 		    }
 		});
 
-		$( "#date_in" ).datepicker({
-	      minDate: new Date(),
-	      defaultDate: "+1w",
-	      changeMonth: false,
-	      numberOfMonths: 1,
-	      onClose: function( selectedDate ) {
-	        $( "#date_out" ).datepicker( "option", "minDate", selectedDate );
-	      }
-	    });
-
-	    $( "#date_out" ).datepicker({
-	      defaultDate: "+1w",
-	      changeMonth: false,
-	      numberOfMonths: 1,
-	      onClose: function( selectedDate ) {
-	        $( "#date_in" ).datepicker( "option", "maxDate", selectedDate );
-	      }
-	    });
+		dateInAndOut();
 
 	    $(".bdr-calendar").datepicker({
 	      changeMonth: true,

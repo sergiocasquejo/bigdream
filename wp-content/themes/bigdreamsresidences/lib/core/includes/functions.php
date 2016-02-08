@@ -1,4 +1,20 @@
 <?php
+function get_total_available_rooms( $room_type_ID, $from, $to ) {
+  $exclude = array();
+
+  $range = get_dates_from_date_range( $from, $to );
+  foreach ( $range as $i => $k ) {
+    if ( $guests = get_guest_calendar_by_room_and_datein( $room_type_ID, format_db_date( $k ) ) ) {
+      foreach ( $guests as $g ) {
+        $exclude[] = $g->room_ID;
+      }
+    }
+  }
+
+
+
+  return count( get_rooms_by_type( $room_type_ID, $exclude ) ); //->found_posts;
+}
 
 function print_me( $data ) {
     echo '<pre>';
@@ -552,9 +568,9 @@ function get_dates_from_date_range( $from, $to, $format = 'Y-m-d' ) {
   return $dates;
 }
 
-function unavailable_dates( $room_ID ) {
-  $dates = get_room_unavailable_schedule( $room_ID );
-                         
+function unavailable_dates( $room_type_ID ) {
+  $dates = get_room_unavailable_schedule( $room_type_ID );
+
   $arr = array();
   for( $i = 0; $i < count( $dates ); $i++ ) {
       $arr = array_merge( $arr, get_dates_from_date_range( $dates[$i]['date_in'], $dates[$i]['date_out'], 'm/d/Y' ) );

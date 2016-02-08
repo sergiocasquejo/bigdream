@@ -237,7 +237,7 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 		redirect_js_script( get_bloginfo( 'url' ) );
 	}
 
-	$room_ID = booking_data( 'room_ID' );
+	$room_type_ID = booking_data( 'room_type_ID' );
 
 	$countries = countries();
 	$nights = count_nights( booking_data( 'date_in' ), booking_data( 'date_out' ) );
@@ -274,7 +274,7 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 	                    	$output .= '<h2 class="reservation-heading">Selected Room</h2>';
 	                    	$output .= '<div class="reservation-room-seleted_item">';
 		                    	$output .= '<div class="reservation-room-seleted_name has-package">';
-		                    		$output .= '<h2><a href="'. get_the_permalink( $room_ID ) .'">'. get_the_title( $room_ID ) .'</a></h2>';
+		                    		$output .= '<h2><a href="'. get_the_permalink( $room_type_ID ) .'">'. get_the_title( $room_type_ID ) .'</a></h2>';
 		                    	$output .= '</div>';
 			                    $output .= '<ul>';
 		                       		$output .= '<li>';
@@ -283,19 +283,19 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Max</span>';
-		                       			$output .= '<span>'. get_field( 'max_person', $room_ID ) .' Person(s)</span>';
+		                       			$output .= '<span>'. get_field( 'max_person', $room_type_ID ) .' Person(s)</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Size</span>';
-		                       			$output .= '<span>'. get_field( 'room_size', $room_ID ) .'</span>';
+		                       			$output .= '<span>'. get_field( 'room_size', $room_type_ID ) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 			                       		$output .= '<span>Bed</span>';
-			                       		$output .= '<span>'. get_field( 'bed', $room_ID ) .'</span>';
+			                       		$output .= '<span>'. get_field( 'bed', $room_type_ID ) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 			                       		$output .= '<span>View</span>';
-			                       		$output .= '<span>'. get_field( 'view', $room_ID ) .'</span>';
+			                       		$output .= '<span>'. get_field( 'view', $room_type_ID ) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Total Room '. booking_data( 'no_of_room' ).'</span>';
@@ -534,7 +534,7 @@ function success_booking_details() {
 		                    	$output .= '<h2 class="reservation-heading">Selected Room</h2>';
 		                    	$output .= '<div class="reservation-room-seleted_item">';
 			                    	$output .= '<div class="reservation-room-seleted_name has-package">';
-			                    		$output .= '<h2><a>'. get_the_title( $d['room_ID']) .'</a></h2>';
+			                    		$output .= '<h2><a>'. get_the_title( $d['room_type_ID']) .'</a></h2>';
 			                    	$output .= '</div>';
 			                    	$output .= '<ul>';
 		                       		$output .= '<li>';
@@ -543,19 +543,19 @@ function success_booking_details() {
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Max</span>';
-		                       			$output .= '<span>'. get_field( 'max_person', $d['room_ID']) .' Person(s)</span>';
+		                       			$output .= '<span>'. get_field( 'max_person', $d['room_type_ID']) .' Person(s)</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Size</span>';
-		                       			$output .= '<span>'. get_field( 'room_size', $d['room_ID']) .'</span>';
+		                       			$output .= '<span>'. get_field( 'room_size', $d['room_type_ID']) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 			                       		$output .= '<span>Bed</span>';
-			                       		$output .= '<span>'. get_field( 'bed', $d['room_ID']) .'</span>';
+			                       		$output .= '<span>'. get_field( 'bed', $d['room_type_ID']) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 			                       		$output .= '<span>View</span>';
-			                       		$output .= '<span>'. get_field( 'view', $d['room_ID']) .'</span>';
+			                       		$output .= '<span>'. get_field( 'view', $d['room_type_ID']) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Total Room '. booking_data( 'no_of_room' ).'</span>';
