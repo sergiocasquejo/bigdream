@@ -313,17 +313,17 @@ if (! class_exists('Booking') ) {
 
 			global $post_type;
 
-			if ( ( isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'booking-system', 'manage-bookings', 'edit-booking' ) ) ) ||  'room' == $post_type ) {
+			if ( ( isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'booking-system', 'manage-bookings', 'edit-booking', 'guest-calendar' ) ) ) ||  'room' == $post_type ) {
 
 				if ( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) return;
 
 			   	wp_enqueue_style( 'admin-style', assets( 'style/admin.css' ) );	
 			   	wp_enqueue_style( 'jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
 
-			   	wp_enqueue_style( 'fullcalendar.min-style', assets( 'vendor/fullcalendar.min.css' ) );
-				wp_enqueue_style( 'fullcalendar.print.min-style', assets( 'vendor/fullcalendar.print.css' ), array(), null, 'print' );
-				wp_enqueue_script( 'moment.min-script', assets( 'vendor/moment.min.js' ) );
-				wp_enqueue_script( 'fullcalendar.min-script', assets( 'vendor/fullcalendar.min.js' ), array( 'moment.min-script', 'jquery' ), false, false );
+			   //	wp_enqueue_style( 'fullcalendar.min-style', assets( 'vendor/fullcalendar.min.css' ) );
+				//wp_enqueue_style( 'fullcalendar.print.min-style', assets( 'vendor/fullcalendar.print.css' ), array(), null, 'print' );
+				//wp_enqueue_script( 'moment.min-script', assets( 'vendor/moment.min.js' ) );
+				//wp_enqueue_script( 'fullcalendar.min-script', assets( 'vendor/fullcalendar.min.js' ), array( 'moment.min-script', 'jquery' ), false, false );
 			   	wp_enqueue_script( 'jquery-ui-datepicker' );
 				wp_enqueue_script( 'chart-script', assets( 'vendor/Chart.min.js' ), array( 'jquery' ), true, false );
 				wp_enqueue_script( 'admin-script', assets( 'js/admin.js' ), array( 'chart-script', 'jquery' ), true, true );
@@ -567,7 +567,8 @@ if (! class_exists('Booking') ) {
 
 
 		public function render_guest_calendar() {
-			echo 'test';
+			$data = array();
+			include_view( 'guest_calendar.html.php', $data );
 		}
 
 	}

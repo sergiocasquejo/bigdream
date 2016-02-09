@@ -179,20 +179,20 @@
 		$('select[name=room_type_ID]').trigger('change');
 
 
-		$('#bookingCalendarView').fullCalendar({
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,basicWeek,basicDay'
-			},
-			defaultDate: new Date(),
-			editable: false,
-			eventLimit: true, // allow "more" link when too many events
-			events: BDR.bookings,
-			eventClick: function(calEvent, jsEvent, view) {
-		        getBookingDetails(calEvent.id);
-		    }
-		});
+		// $('#bookingCalendarView').fullCalendar({
+		// 	header: {
+		// 		left: 'prev,next today',
+		// 		center: 'title',
+		// 		right: 'month,basicWeek,basicDay'
+		// 	},
+		// 	defaultDate: new Date(),
+		// 	editable: false,
+		// 	eventLimit: true, // allow "more" link when too many events
+		// 	events: BDR.bookings,
+		// 	eventClick: function(calEvent, jsEvent, view) {
+		//         getBookingDetails(calEvent.id);
+		//     }
+		// });
 
 		dateInAndOut();
 
