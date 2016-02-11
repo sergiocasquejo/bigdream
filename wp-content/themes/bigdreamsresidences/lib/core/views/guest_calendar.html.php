@@ -26,6 +26,7 @@
 					usort($c, function($a, $b) {
 					   return strtotime( $a['from'] ) - strtotime( $b['from'] );
 					});
+					
 				?>
 				<tr>
 					<td><?php echo $k; ?></td>
