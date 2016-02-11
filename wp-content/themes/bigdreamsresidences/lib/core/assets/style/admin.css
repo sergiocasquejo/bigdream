@@ -262,6 +262,7 @@ span.dashicons {
 }
 
 .calendar_row .row_data {
+	height: 40px;
     position: relative;
     margin-left: -1px;
     margin-right: -1px;
@@ -292,7 +293,7 @@ td.calendar_row table th {
 }
 
 .calendar_row .bg-content .text {
-	height:100%;
+	height:40px;
 	padding:5px;
 	background-color:#F75C05;
 	color:#FFF;
@@ -312,4 +313,8 @@ td.calendar_row table th {
 
 td.sun, td.sat {
     background-color: #FBFBFB;
+}
+
+td.room {
+	font-size:12px;
 }

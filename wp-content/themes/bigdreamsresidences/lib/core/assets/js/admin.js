@@ -174,30 +174,19 @@
 				}
 			});
 		})
-		.on('submit', '#filterGuestCalendarForm', function() {
-		  $.get(BDR.AjaxUrl, $(this).serialize(), function(response) {
-		    $('#guestCalendarWrapper').html( response );
-		  });
+		.on('submit', '#filterGuestCalendarForm', function(e) {
+			e.preventDefault();
+			$.get(BDR.AjaxUrl, $(this).serialize(), function(response) {
+				$('#guestCalendarWrapper').html( response );
+			});
+
+		  return false;
 		});
 
 
 		$('select[name=room_type_ID]').trigger('change');
 
 
-		// $('#bookingCalendarView').fullCalendar({
-		// 	header: {
-		// 		left: 'prev,next today',
-		// 		center: 'title',
-		// 		right: 'month,basicWeek,basicDay'
-		// 	},
-		// 	defaultDate: new Date(),
-		// 	editable: false,
-		// 	eventLimit: true, // allow "more" link when too many events
-		// 	events: BDR.bookings,
-		// 	eventClick: function(calEvent, jsEvent, view) {
-		//         getBookingDetails(calEvent.id);
-		//     }
-		// });
 
 		dateInAndOut();
 
@@ -205,6 +194,13 @@
 	      changeMonth: true,
 	      changeYear: true,
 	      yearRange: '1910:' + new Date().getFullYear(),
+	      dateFormat: 'yy-mm-dd',
+	    });
+
+	    $(".calendar").datepicker({
+	      changeMonth: false,
+	      changeYear: false,
+	      dateFormat: 'yy-mm-dd',
 	    });
 	});
 	

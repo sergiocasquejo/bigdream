@@ -1,19 +1,24 @@
 <?php
 
-function get_guest_calendar_by_room_ID($room_ID, $start = date('Y-m-d'), $status = false ) {
+function get_guest_calendar_by_room_ID( $room_ID, $start = false, $end = false, $status = false ) {
   global $wpdb;
   
-  $sql = $wpdb->prepare( "SELECT * FROM ".$wpdb->prefix."guest_calendar a JOIN ".$wpdb->prefix."bookings b WHERE a.room_ID = %d", $room_ID );
+  $sql = $wpdb->prepare( "SELECT a.date_in as 'from', a.date_out as 'to', a.guest, b.booking_status as status FROM ".$wpdb->prefix."guest_calendar a JOIN ".$wpdb->prefix."bookings b ON a.booking_ID = b.booking_ID WHERE a.room_ID = %d", $room_ID );
   
-  if ( $start != false ) {
-    $sql .= $wpdb->prepare( " AND a.date_in >= '%s' ", $start )
+  if ( $start != false  && $end != false ) {
+    $sql .= $wpdb->prepare( " AND a.date_in >= '%s' AND   a.date_in <= '%s' ", $start, $end );
   }
+ 
   
   if ( $status != false ) {
-    $sql .= $wpdb->prepare( " AND b.booking_status = = '%s' ", $status )
+    $sql .= $wpdb->prepare( " AND b.booking_status = '%s' ", $status );
   }
 
-  return $wpdb->get_results( $sql );
+
+  $sql .= " GROUP BY a.booking_room_ID ";
+
+
+  return $wpdb->get_results( $sql, 'ARRAY_A' );
 }
 
 
@@ -40,7 +45,8 @@ function get_guest_calendar_by_type_and_date( $room_type_ID, $date_in, $date_out
 function get_all_rooms() {
 	$rooms = get_posts(array(
 			'showposts' => -1,
-			'post_type' => 'room'
+			'post_type' => 'room',
+			'fields' => 'ids',
 		)
 	);
 
@@ -447,6 +453,21 @@ function get_monthly_sales( $output = 'ARRAY_A' ) {
 
 function get_rooms( $exclude = array() ) {
 	$rooms = get_posts( array( 'post_type' => 'room', 'showposts' => -1, 'exclude' => $exclude ) );
+
+	return $rooms;
+}
+
+
+
+function get_rooms_by_type( $type_ID, $exclude ) {
+	$rooms = get_posts( array( 
+		'post_type' => 'room', 
+		'showposts' => -1, 
+		'exclude' => $exclude,
+		'meta_key' => 'room_type',
+		'meta_value' => $type_ID
+		) 
+	);
 
 	return $rooms;
 }
