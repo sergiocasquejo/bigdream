@@ -126,6 +126,7 @@ function do_save_rooms_and_guest_info( $args ) {
 
 		if ( array_data( $args, 'booking_room_ID', 0 ) > 0 ) {
 			$result = $wpdb->update( $wpdb->prefix . 'guest_calendar', $data, array( 'booking_room_ID' => $args['booking_room_ID']) );
+
 		} else {
 			$result = $wpdb->insert( $wpdb->prefix . 'guest_calendar', $data );
 		}
@@ -392,7 +393,7 @@ function get_inserted_ID() {
 function is_selected_date_and_room_not_available( $roomID, $from, $booking_ID = 0 ) {
   global $wpdb;
   
-  $sql = $wpdb->prepare( "SELECT count(*) FROM ".$wpdb->prefix."guest_calendar WHERE room_type_ID = %d AND '%s' >= date_in AND  '%s' < date_out AND booking_ID != %d", $roomID, $from, $from, $booking_ID );
+  $sql = $wpdb->prepare( "SELECT count(*) FROM ".$wpdb->prefix."guest_calendar a JOIN ". $wpdb->prefix ."bookings b ON a.booking_ID = b.booking_ID WHERE b.booking_status NOT IN ('CONFIRMED', 'ARRIVED') AND a.room_type_ID = %d AND '%s' >= a.date_in AND  '%s' < a.date_out AND a.booking_ID != %d", $roomID, $from, $from, $booking_ID );
   
   return $wpdb->get_var( $sql );
 }

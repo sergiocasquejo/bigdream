@@ -1,9 +1,16 @@
 .notices-box {
     text-align:center;
-    background-color: #B50324;
     color: #FFF;
-    padding: 5px 0;
 
+  .updated {
+      background-color: #06A706;
+      padding: 5px 0;
+  }
+
+  .error {
+      background-color: #B50324;
+      padding: 5px 0;
+  }
 }
 
 

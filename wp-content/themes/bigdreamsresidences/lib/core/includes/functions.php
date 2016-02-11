@@ -237,16 +237,18 @@ if ( !function_exists( 'site_notices' ) ) {
     $output = '';
     if ( has_notices() ) {
       $output .= '<div class="notices-box">';
-        $output .= '<div class="container">';
+        
         $notices = get_notices();
         
         foreach ($notices as $i => $n) {
           $output .= '<div class="'. (!isset($n['type']) ? 'updated' : $n['type']) .'">';
+            $output .= '<div class="container">';
                 $output .= '<p>'. $n['message'] .'</p>';
             $output .= '</div>';
+          $output .= '</div>';
         }
         unset($_SESSION['_notices']);
-        $output .= '</div>';
+        
       $output .= '</div>';
     }
 
@@ -613,12 +615,12 @@ function send_success_booking_notification( $booking_ID ) {
   ob_start();
   
   $d = get_booking_by_id( $booking_ID );
-  $d['room_title'] = get_the_title( $d['room_ID'] );
-  $d['room_code'] = get_field( 'room_code', $d['room_ID'] );
-  $d['max_person'] = get_field( 'max_person', $d['room_ID'] );
-  $d['room_size'] = get_field( 'room_size', $d['room_ID'] );
-  $d['bed'] = get_field( 'bed', $d['room_ID'] );
-  $d['view'] = get_field( 'view', $d['room_ID'] );
+  $d['room_title'] = get_the_title( $d['room_type_ID'] );
+  $d['room_code'] = get_field( 'room_code', $d['room_type_ID'] );
+  $d['max_person'] = get_field( 'max_person', $d['room_type_ID'] );
+  $d['room_size'] = get_field( 'room_size', $d['room_type_ID'] );
+  $d['bed'] = get_field( 'bed', $d['room_type_ID'] );
+  $d['view'] = get_field( 'view', $d['room_type_ID'] );
 
   $logo = get_template_directory_uri() . '/dist/images/logo.png';
   

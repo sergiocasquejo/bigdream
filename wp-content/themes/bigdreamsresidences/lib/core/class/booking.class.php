@@ -496,7 +496,7 @@ if (! class_exists('Booking') ) {
 				    ) );
 
 				    if ( $gump->run( $data ) !== false ) {
-				    	if ( do_save_rooms_and_guest_info( $data ) ) {
+				    	if ( do_save_rooms_and_guest_info( $data ) !== false ) {
 							wp_send_json_success( array( 'message' => 'Successfully saved.' ) );
 						} else {
 							wp_send_json_error( array( 'message' => 'Error while saving.' ) );
