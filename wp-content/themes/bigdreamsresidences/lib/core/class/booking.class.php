@@ -566,8 +566,28 @@ if (! class_exists('Booking') ) {
 		}
 
 
-		public function render_guest_calendar() {
-			$data = array();
+	  public function render_guest_calendar() {
+  		$selected_date = date( '2016-01-01' );
+    	$plus_day = 30;
+    
+    	$start_date = format_date( $selected_date, 'j' );
+    	$end_date = add_days_to_date( $selected_date, $plus_day );
+    	$total_day = count_days_gap( $selected_date, $end_date, $end_date );
+    
+    	
+    	$calendar = array(
+    			'CODE01' => array(
+    					array( 'guest' => 'Juan Doe', 'from' => '2016-01-10', 'to' => '2016-01-12' ),
+    					array( 'guest' => 'John Doe', 'from' => '2016-01-02', 'to' => '2016-01-05' ),
+    					array( 'guest' => 'Jane Doe', 'from' => '2016-01-05', 'to' => '2016-01-07' ),
+    					array( 'guest' => 'Jane Doe', 'from' => '2016-01-29', 'to' => '2016-02-06' ),
+    				),
+    			'CODE02' => array(
+    					array( 'guest' => 'Juan Doe', 'from' => '2016-01-18', 'to' => '2016-01-21' ),
+    					array( 'guest' => 'John Doe', 'from' => '2016-01-01', 'to' => '2016-01-05' ),
+    					array( 'guest' => 'Jane Doe', 'from' => '2016-01-06', 'to' => '2016-01-07' ),
+    				)
+    		);
 			include_view( 'guest_calendar.html.php', $data );
 		}
 
