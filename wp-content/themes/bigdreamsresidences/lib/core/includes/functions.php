@@ -13,8 +13,7 @@ function count_days_gap( $from, $to, $max ) {
 	$to = strtotime( $to );
 	$from = strtotime( $from );
 	$max = strtotime( $max );
-
-	$to = $to > $max ? strtotime( '-1 day', $max ) : $to;
+	$to = $to > $max ? $max : $to;
 
 
 	$datediff = $to - $from;
