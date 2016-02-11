@@ -173,6 +173,11 @@
 					}
 				}
 			});
+		})
+		.on('submit', '#filterGuestCalendarForm', function() {
+		  $.get(BDR.AjaxUrl, $(this).serialize(), function(response) {
+		    $('#guestCalendarWrapper').html( response );
+		  });
 		});
 
 
