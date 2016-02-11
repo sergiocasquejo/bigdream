@@ -1,4 +1,22 @@
 <?php
+
+function add_days_to_date( $date, $days ) {
+	return date( 'Y-m-d', strtotime( '+'. $days .' day', strtotime( $date ) ) );
+}
+
+function count_days_gap( $from, $to, $max ) {
+	$to = strtotime( $to );
+	$from = strtotime( $from );
+	$max = strtotime( $max );
+
+	$to = $to > $max ? strtotime( '-1 day', $max ) : $to;
+
+
+	$datediff = $to - $from;
+	return floor( $datediff / ( 60 * 60 * 24 ) );
+}
+
+
 function get_total_available_rooms( $room_type_ID, $from, $to ) {
   $exclude = array();
 
