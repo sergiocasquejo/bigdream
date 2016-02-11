@@ -291,6 +291,16 @@ function admin_custom_init() {
 	$administrator->add_cap( 'edit_room_type' );
 	$administrator->add_cap( 'delete_room_type' );
 	$administrator->add_cap( 'read_room_type' );
+
+	$administrator->add_cap( 'edit_rooms' );
+	$administrator->add_cap( 'edit_others_rooms' );
+	$administrator->add_cap( 'publish_rooms' );
+	$administrator->add_cap( 'edit_rooms' );
+	$administrator->add_cap( 'edit_others_rooms' );
+	$administrator->add_cap( 'read_private_rooms' );
+	$administrator->add_cap( 'edit_room' );
+	$administrator->add_cap( 'read_room' );
+
 	$administrator->add_cap( 'manage_bookings' );
 
 	// Add custom capabilitity to booking manager
@@ -305,6 +315,14 @@ function admin_custom_init() {
         'read_private_room_types' => true,
         'edit_room_type' => true,
         'read_room_type' 	=> true,
+        'edit_rooms' => true,
+        'edit_others_rooms' => true,
+        'publish_rooms' => true,
+        'edit_rooms' => true,
+        'edit_others_rooms' => true,
+        'read_private_rooms' => true,
+        'edit_room' => true,
+        'read_room' 	=> true,
         'upload_files' => true,
         'manage_bookings' => true
         ) );
