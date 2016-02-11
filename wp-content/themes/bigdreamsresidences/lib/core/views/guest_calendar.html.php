@@ -2,7 +2,7 @@
 	<h1>Guest Calendar</h1>
 	<?php site_notices(); ?>
 	<div class="filter">
-		<form type="post">
+		<form type="post" id="filterGuestCalendarForm">
 			<input type="text" name="start_date" placeholder="Start Date" />
 			<select name="days_to_display">
 				<option value="7">7 Days</option>
