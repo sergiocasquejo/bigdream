@@ -622,7 +622,8 @@ if (! class_exists('Booking') ) {
       
       	$tdHTML .= '<tr>';
       	while (strtotime($date) < strtotime($end_date)) {
-      		$tdHTML .= '<td colspan="2"></td>';
+      
+      		$tdHTML .= '<td colspan="2" class="'. strtolower( format_date( $date, 'D' ) ) .'"></td>';
       		$date = add_days_to_date( $date, 1 );
       	}
       	$tdHTML .= '</tr>';
