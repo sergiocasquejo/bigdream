@@ -4,6 +4,11 @@ function add_days_to_date( $date, $days ) {
 	return date( 'Y-m-d', strtotime( '+'. $days .' day', strtotime( $date ) ) );
 }
 
+
+function minus_days_to_date( $date, $days ) {
+	return date( 'Y-m-d', strtotime( '-'. $days .' day', strtotime( $date ) ) );
+}
+
 function count_days_gap( $from, $to, $max ) {
 	$to = strtotime( $to );
 	$from = strtotime( $from );
