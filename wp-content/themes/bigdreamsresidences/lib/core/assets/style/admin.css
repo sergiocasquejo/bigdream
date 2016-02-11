@@ -240,75 +240,60 @@ span.dashicons {
     width: 10%;
 }
 
-#guestCalendar table tr,
-#guestCalendar table th,
-#guestCalendar table td {
-	border:solid 1px #D0CACA;
-}
-
-#guestCalendar .day th{
-	font-size:11px;
-	padding:5px;
-}
-
-td.table_row {
-    padding: 0;
-    margin: 0;
-}
-
-.table_row .calendar_row {
-    width: 100%;
-    position: relative;
-    height: 35px;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-    left: -1px;
-    right: -1px;
-    top: -1px;
-}
-
-
-.table_row .bg_row table {
-    width: 100%;
-    margin: 0;
+#guestCalendarWrapper table {
+	border-left: 0 hidden transparent;
+    border-right: 0 hidden transparent;
+    border-bottom: 0 hidden transparent;
+    table-layout: fixed;
     height: 100%;
 }
-
-.table_row .bg_row table td {
-    height: 30px;
+#guestCalendarWrapper table tr, 
+#guestCalendarWrapper table th, 
+#guestCalendarWrapper table td {
+	border:solid 1px #F1F1F1;
 }
 
-.table_row .bg_row {
-	height:35px;
+
+#guestCalendarWrapper table thead th {
+    font-size: 11px;
 }
 
-.content_row {
+#guestCalendarWrapper .calendar_row {
+	padding:0;
+}
+
+.calendar_row .row_data {
+    position: relative;
+    margin-left: -1px;
+    margin-right: -1px;
+    overflow: hidden;
+}
+
+td.calendar_row table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td.calendar_row table td,
+td.calendar_row table th {
+	height:30px;
+}
+
+.calendar_row .bg-content {
+	width:100%;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 4;
-    width: 100%;
-    right: 0;
+    height:100%;
 }
 
-.content_row table {
-	width:100%;
+.calendar_row .bg-content td {
+	padding:0;
 }
 
-
-.content_row table tr,
-.content_row table th,
-.content_row table td {
-	border:none !important;
-	border-width: 0 !important;
-	padding: 0;
-}
-
-td.reserved span {
-	display: block;
-	background-color: red;
-    color: #FFF;
-    height: 35px;
-    padding:5px 5px;
+.calendar_row .bg-content .text {
+	height:100%;
+	padding:5px;
+	background-color:#B32727;
+	color:#FFF;
 }
