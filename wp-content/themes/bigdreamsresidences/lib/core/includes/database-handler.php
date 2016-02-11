@@ -1,5 +1,22 @@
 <?php
 
+function get_guest_calendar_by_room_ID($room_ID, $start = date('Y-m-d'), $status = false ) {
+  global $wpdb;
+  
+  $sql = $wpdb->prepare( "SELECT * FROM ".$wpdb->prefix."guest_calendar a JOIN ".$wpdb->prefix."bookings b WHERE a.room_ID = %d", $room_ID );
+  
+  if ( $start != false ) {
+    $sql .= $wpdb->prepare( " AND a.date_in >= '%s' ", $start )
+  }
+  
+  if ( $status != false ) {
+    $sql .= $wpdb->prepare( " AND b.booking_status = = '%s' ", $status )
+  }
+
+  return $wpdb->get_results( $sql );
+}
+
+
 function get_guest_calendar_by_room_and_datein($room_type_ID, $from ) {
   global $wpdb;
   
