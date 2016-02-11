@@ -239,7 +239,6 @@ span.dashicons {
 .column-booking_status {
     width: 10%;
 }
-
 #guestCalendarWrapper table {
 	border-left: 0 hidden transparent;
     border-right: 0 hidden transparent;
@@ -267,6 +266,7 @@ span.dashicons {
     margin-left: -1px;
     margin-right: -1px;
     overflow: hidden;
+    margin-top: -1px;
 }
 
 td.calendar_row table {
@@ -308,4 +308,8 @@ td.calendar_row table th {
 
 .calendar_row .bg-content .text.checkout {
     background-color: #B70707;
+}
+
+td.sun, td.sat {
+    background-color: #FBFBFB;
 }
