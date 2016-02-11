@@ -540,7 +540,6 @@ if (! class_exists('Booking') ) {
 				$room_price = get_room_price( $room_type_ID, $data['date_in'], $data['date_out'] );
 
 				$total = $room_price * $data['no_of_room'] * $no_of_night;
-
 				$output = '';
 				$output .= '<ul>';
 					$output .= '<li>Room Price: <span class="room_price">'. format_price( $room_price, false ) .'</span></li>';
