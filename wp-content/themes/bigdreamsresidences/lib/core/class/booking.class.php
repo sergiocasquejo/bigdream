@@ -567,25 +567,26 @@ if (! class_exists('Booking') ) {
 
 
 	  public function render_guest_calendar() {
-  		$selected_date = date( '2016-01-01' );
+  		$selected_date = date( '2016-01-15' );
     	$plus_day = 30;
     
     	$start_date = format_date( $selected_date, 'j' );
     	$end_date = add_days_to_date( $selected_date, $plus_day );
     	$total_day = count_days_gap( $selected_date, $end_date, $end_date );
-    
-    	
+    	$end_date = minus_days_to_date( $end_date, 1 );
     	$calendar = array(
     			'CODE01' => array(
     					array( 'guest' => 'Juan Doe', 'from' => '2016-01-10', 'to' => '2016-01-12' ),
     					array( 'guest' => 'John Doe', 'from' => '2016-01-02', 'to' => '2016-01-05' ),
     					array( 'guest' => 'Jane Doe', 'from' => '2016-01-05', 'to' => '2016-01-07' ),
     					array( 'guest' => 'Jane Doe', 'from' => '2016-01-29', 'to' => '2016-02-06' ),
+    					array( 'guest' => 'Jane Doe', 'from' => '2016-01-26', 'to' => '2016-01-27' ),
     				),
     			'CODE02' => array(
     					array( 'guest' => 'Juan Doe', 'from' => '2016-01-18', 'to' => '2016-01-21' ),
     					array( 'guest' => 'John Doe', 'from' => '2016-01-01', 'to' => '2016-01-05' ),
     					array( 'guest' => 'Jane Doe', 'from' => '2016-01-06', 'to' => '2016-01-07' ),
+    					array( 'guest' => 'Jane Doe', 'from' => '2016-01-12', 'to' => '2016-01-17' ),
     				)
     		);
 			include_view( 'guest_calendar.html.php', $data );
