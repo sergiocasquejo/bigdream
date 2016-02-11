@@ -26,7 +26,6 @@
 					usort($c, function($a, $b) {
 					   return strtotime( $a['from'] ) - strtotime( $b['from'] );
 					});
-					
 				?>
 				<tr>
 					<td><?php echo $k; ?></td>
@@ -58,7 +57,7 @@
 												$b = add_days_to_date( $b, $f );
 											}
 											$f = count_days_gap( $cal['from'], $cal['to'], $end_date );
-											echo '<td colspan="'. $f .'"><div class="text">'. $cal['guest'] .'</div></td>';
+											echo '<td colspan="'. $f .'"><div class="text '. strtolower($cal['status']) .'">'. $cal['guest'] .'</div></td>';
 											$b = $cal['to'] > $end_date ? $end_date : $cal['to'];
 										}
 										if ( strtotime($end_date) > strtotime($b) && ( $f = count_days_gap( $b, $end_date, $end_date )  ) > 0 ) {
