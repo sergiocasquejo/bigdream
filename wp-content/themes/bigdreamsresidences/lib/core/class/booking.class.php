@@ -136,10 +136,10 @@ if (! class_exists('Booking') ) {
 
 						push_to_booking_session( 
 							array(
-								'date_in' => $data['date_in'],
-								'date_out' => $data['date_out'],
-								'no_of_adult' => $data['no_of_adult'],
-								'no_of_room' => $data['no_of_room'],
+								'date_in' => array_data( $data, 'date_in', date( 'Y-m-d' ) ),
+								'date_out' => array_data( $data, 'date_out', add_days_to_date( date('Y-m-d'), 1 ) ),
+								'no_of_adult' => array_data( $data, 'no_of_adult', 1 ),
+								'no_of_room' => array_data( $data, 'no_of_room', 0 ),
 								'type' => 'BOOKING',
 								'no_of_child' => array_data( $data, 'no_of_child', 0 )
 							) 
