@@ -294,6 +294,18 @@ td.calendar_row table th {
 .calendar_row .bg-content .text {
 	height:100%;
 	padding:5px;
-	background-color:#B32727;
+	background-color:#F75C05;
 	color:#FFF;
+}
+
+.calendar_row .bg-content .text.arrived {
+    background-color: #0A8415;
+}
+
+.calendar_row .bg-content .text.confirmed {
+    background-color: #D6A707;
+}
+
+.calendar_row .bg-content .text.checkout {
+    background-color: #B70707;
 }
