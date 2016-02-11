@@ -26,7 +26,7 @@ if (! class_exists('Booking') ) {
 		    add_action( 'wp_ajax_calculate-total-amount', array( &$this, 'calculate_total_amount' ) );
 
 		    add_action( 'wp_ajax_count-available-rooms', array( &$this, 'count_available_rooms' ) );
-
+        add_action( 'wp_ajax_filter_guest_calendar_date', array(&$this, 'render_ajax_guest_calendar') );
 		    add_action( 'wp_ajax_save-rooms_and_guest_info', array( &$this, 'save_rooms_and_guest_info' ) );
 		    add_action( 'init', array( &$this, 'custom_init' ) );
 		}
@@ -563,7 +563,18 @@ if (! class_exists('Booking') ) {
 				wp_send_json_success( array( 'total_rooms' => count( $rooms ) ) );
 			}
 		}
+    
+    public function render_ajax_guest_calendar () {
+      if ( defined('DOING_AJAX') && DOING_AJAX ) {
+        $selected_date = browser_get('start_date', 7);
+				$days_to_display = browser_get('days_to_display', 7);
 
+				$calendar = array();
+
+				$output = $this->get_guest_calendar_table( $selected_date, $days_to_display, $calendar );
+				exit( $output );
+			}
+    }
 
 	  public function render_guest_calendar() {
   		$selected_date = date( '2016-01-01' );
