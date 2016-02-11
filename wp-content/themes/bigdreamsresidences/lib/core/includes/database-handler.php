@@ -37,14 +37,10 @@ function get_guest_calendar_by_type_and_date( $room_type_ID, $date_in, $date_out
 	return $wpdb->get_results( $sql );
 }
 
-function get_rooms_by_type( $room_type_ID, $exclude = array() ) {
+function get_all_rooms() {
 	$rooms = get_posts(array(
 			'showposts' => -1,
-			'exclude' => $exclude,
-			'post_type' => 'room',
-				'meta_key' => 'room_type',
-				'meta_value' => $room_type_ID,
-			
+			'post_type' => 'room'
 		)
 	);
 
