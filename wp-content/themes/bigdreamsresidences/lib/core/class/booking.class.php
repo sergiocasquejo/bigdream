@@ -566,30 +566,128 @@ if (! class_exists('Booking') ) {
 
 
 	  public function render_guest_calendar() {
-  		$selected_date = date( '2016-01-15' );
-    	$plus_day = 30;
+  		$selected_date = date( '2016-01-01' );
+    	$days_to_display = 20;
     
-    	$start_date = format_date( $selected_date, 'j' );
-    	$end_date = add_days_to_date( $selected_date, $plus_day );
-    	$total_day = count_days_gap( $selected_date, $end_date, $end_date );
-    	$end_date = minus_days_to_date( $end_date, 1 );
     	$calendar = array(
-			'CODE01' => array(
-					array( 'guest' => 'Juan Doe', 'from' => '2016-01-10', 'to' => '2016-01-12', 'status' => 'NEW' ),
-					array( 'guest' => 'John Doe', 'from' => '2016-01-02', 'to' => '2016-01-05', 'status' => 'CONFIRMED' ),
-					array( 'guest' => 'Jane Doe', 'from' => '2016-01-05', 'to' => '2016-01-07', 'status' => 'ARRIVED' ),
-					array( 'guest' => 'Jane Doe', 'from' => '2016-01-29', 'to' => '2016-02-06', 'status' => 'CHECKOUT' ),
-					array( 'guest' => 'Jane Doe', 'from' => '2016-01-26', 'to' => '2016-01-27', 'status' => 'CONFIRMED' ),
-				),
-			'CODE02' => array(
-					array( 'guest' => 'Juan Doe', 'from' => '2016-01-18', 'to' => '2016-01-21', 'status' => 'CONFIRMED' ),
-					array( 'guest' => 'John Doe', 'from' => '2016-01-01', 'to' => '2016-01-05', 'status' => 'CONFIRMED' ),
-					array( 'guest' => 'Jane Doe', 'from' => '2016-01-06', 'to' => '2016-01-07', 'status' => 'CONFIRMED' ),
-					array( 'guest' => 'Jane Doe', 'from' => '2016-01-12', 'to' => '2016-01-17', 'status' => 'CONFIRMED' ),
-				)
-		);
+    			'CODE01' => array(
+    					array( 'guest' => 'Juan Doe', 'from' => '2016-01-10', 'to' => '2016-01-12', 'status' => 'NEW' ),
+    					array( 'guest' => 'John Doe', 'from' => '2016-01-02', 'to' => '2016-01-05', 'status' => 'CONFIRMED' ),
+    					array( 'guest' => 'Jane Doe', 'from' => '2016-01-05', 'to' => '2016-01-07', 'status' => 'ARRIVED' ),
+    					array( 'guest' => 'Jane Doe', 'from' => '2016-01-29', 'to' => '2016-02-06', 'status' => 'CHECKOUT' ),
+    					array( 'guest' => 'Jane Doe', 'from' => '2016-01-26', 'to' => '2016-01-27', 'status' => 'CONFIRMED' ),
+    				),
+    			'CODE02' => array(
+    					array( 'guest' => 'Juan Doe', 'from' => '2016-01-18', 'to' => '2016-01-21', 'status' => 'CONFIRMED' ),
+    					array( 'guest' => 'John Doe', 'from' => '2016-01-01', 'to' => '2016-01-05', 'status' => 'CONFIRMED' ),
+    					array( 'guest' => 'Jane Doe', 'from' => '2016-01-06', 'to' => '2016-01-07', 'status' => 'CONFIRMED' ),
+    					array( 'guest' => 'Jane Doe', 'from' => '2016-01-12', 'to' => '2016-01-17', 'status' => 'CONFIRMED' ),
+    				)
+    		);
+    
+    	
+    	$output = $this->get_guest_calendar_table( $selected_date, $days_to_display, $calendar );
 			include_view( 'guest_calendar.html.php', $data );
 		}
+		
+		public function get_guest_calendar_table( $selected_date, $days_to_display, $calendar ) {
+      	$start_date = format_date( $selected_date, 'j' );
+      	$end_date = add_days_to_date( $selected_date, $days_to_display );
+      	$total_day = count_days_gap( $selected_date, $end_date, $end_date );
+      	$end_date = minus_days_to_date( $end_date, 1 );
+      
+      
+      	$monthHTML = $dateHTML = $dayHTML = $tdHTML = $output = '';
+      
+      	$date = $selected_date;  
+      	while (strtotime($date) <= strtotime($end_date)) {
+      		$monthHTML .= '<th colspan="'. ( $date != $selected_date && $date != $end_date ? '2' : '' ) .'">'. format_date( $date, 'M' ) .'</th>';
+      		$dateHTML .= '<th colspan="'. ( $date != $selected_date && $date != $end_date ? '2' : '' ) .'">'. format_date( $date, 'j' ) .'</th>';
+      		$dayHTML .= '<th colspan="'. ( $date != $selected_date && $date != $end_date ? '2' : '' ) .'">'. format_date( $date, 'D' ) .'</th>';
+      		$date = add_days_to_date( $date, 1 ); 
+      	}
+      
+      	$date = $selected_date;  
+      
+      	$tdHTML .= '<tr>';
+      	while (strtotime($date) < strtotime($end_date)) {
+      		$tdHTML .= '<td colspan="2"></td>';
+      		$date = add_days_to_date( $date, 1 );
+      	}
+      	$tdHTML .= '</tr>';
+      
+      
+      	$output .= '<table class="widefat">';
+      		$output .= '<thead>';
+      			$output .= '<tr>';
+      				$output .= '<th width="10%"></th>';
+      				$output .= $monthHTML;	
+      			$output .= '</tr>';
+      			$output .= '<tr>';
+      				$output .= '<th width="10%"></th>';
+      				$output .= $dateHTML;
+      			$output .= '</tr>';
+      			$output .= '<tr>';
+      				$output .= '<th width="10%"></th>';
+      				$output .= $dayHTML;
+      			$output .= '</tr>';
+      		$output .= '</thead>';
+      		$output .= '<tbody>';
+      
+      		foreach ( $calendar as $k => $c ) {
+      			usort($c, function($a, $b) {
+      			   return strtotime( $a['from'] ) - strtotime( $b['from'] );
+      			});
+      		
+      			$output .= '<tr>';
+      				$output .= '<td>'. $k .'</td>';
+      				$output .= '<td colspan="'. ( $total_day * 2 - 2 ) .'" class="calendar_row">';
+      					$output .= '<div class="row_data">';
+      						$output .= '<div class="bg_row">';
+      							$output .= '<table>';
+      								$output .= '<tbody>';
+      									$output .= $tdHTML;
+      								$output .= '</tbody>';
+      							$output .= '</table>';
+      						$output .= '</div>';
+      						$output .= '<div class="bg-content">';
+      							$output .= '<table>';
+      								$output .= '<tbody>';
+      
+      										$b = $selected_date;
+      
+      										foreach ( $c as $cal ) {
+      											if ( strtotime( $cal['from'] ) > strtotime( $end_date ) 
+      												|| ( strtotime( $cal['from'] ) < strtotime( $selected_date ) && strtotime( $cal['to'] ) < strtotime( $selected_date ) ) ) continue;
+      											
+      
+      											$cal['from'] = strtotime( $cal['from'] ) < strtotime( $selected_date ) ? $selected_date : $cal['from'];
+      
+      											if ( ( $f =  count_days_gap( $b, $cal['from'], $end_date ) ) > 0 ) {
+      												$output .= '<td colspan="'. $f .'"></td>';
+      												$b = add_days_to_date( $b, $f );
+      											}
+      											$f = count_days_gap( $cal['from'], $cal['to'], $end_date );
+      											$output .= '<td colspan="'. $f .'"><div class="text '. strtolower($cal['status']) .'">'. $cal['guest'] .'</div></td>';
+      											$b = $cal['to'] > $end_date ? $end_date : $cal['to'];
+      										}
+      
+      										if ( strtotime($end_date) > strtotime($b) && ( $f = count_days_gap( $b, $end_date, $end_date )  ) > 0 ) {
+      											$output .= '<td colspan="'. $f .'"></td>';
+      										}
+      
+      								$output .= '</tbody>';
+      							$output .= '</table>';
+      						$output .= '</div>';
+      					$output .= '</div>';
+      				$output .= '</td>';
+      			$output .= '</tr>';
+      		}
+      		$output .= '</tbody>';
+      	$output .= '</table>';
+      
+      	return $output;
+      }
 
 	}
 }
