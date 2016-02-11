@@ -579,7 +579,7 @@ if (! class_exists('Booking') ) {
 	  public function render_guest_calendar() {
   		$selected_date = date( '2016-01-01' );
     	$days_to_display = 20;
-    
+    //get_guest_calendar_by_room_ID
     	$calendar = array(
     			'CODE01' => array(
     					array( 'guest' => 'Juan Doe', 'from' => '2016-01-10', 'to' => '2016-01-12', 'status' => 'NEW' ),
