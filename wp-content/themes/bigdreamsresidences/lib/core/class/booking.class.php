@@ -318,13 +318,9 @@ if (! class_exists('Booking') ) {
 				if ( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) return;
 
 			   	wp_enqueue_style( 'admin-style', assets( 'style/admin.css' ) );	
-			   	wp_enqueue_style( 'jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
-
-			   //	wp_enqueue_style( 'fullcalendar.min-style', assets( 'vendor/fullcalendar.min.css' ) );
-				//wp_enqueue_style( 'fullcalendar.print.min-style', assets( 'vendor/fullcalendar.print.css' ), array(), null, 'print' );
-				//wp_enqueue_script( 'moment.min-script', assets( 'vendor/moment.min.js' ) );
-				//wp_enqueue_script( 'fullcalendar.min-script', assets( 'vendor/fullcalendar.min.js' ), array( 'moment.min-script', 'jquery' ), false, false );
+			   	wp_enqueue_style( 'jquery-style', 'https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css' );
 			   	wp_enqueue_script( 'jquery-ui-datepicker' );
+			   	wp_enqueue_script( 'jquery-ui-tooltip' );
 				wp_enqueue_script( 'chart-script', assets( 'vendor/Chart.min.js' ), array( 'jquery' ), true, false );
 				wp_enqueue_script( 'admin-script', assets( 'js/admin.js' ), array( 'chart-script', 'jquery' ), true, true );
 				wp_localize_script( 'admin-script', 'BDR', array(
@@ -687,7 +683,7 @@ if (! class_exists('Booking') ) {
 	      												$b = add_days_to_date( $b, $f );
 	      											}
 	      											$f = count_days_gap( $cal['from'], $cal['to'], $end_date );
-	      											$output .= '<td colspan="'. $f .'"><div class="text '. strtolower($cal['status']) .'" title="'.  $cal['guest']  .'">'. $cal['guest'] .'</div></td>';
+	      											$output .= '<td colspan="'. $f .'"><div class="text bdr-tooltip '. strtolower($cal['status']) .'" title="'.  $cal['guest']  .'">'. $cal['guest'] .'</div></td>';
 	      											$b = $cal['to'] > $end_date ? $end_date : $cal['to'];
 	      										}
 	      
