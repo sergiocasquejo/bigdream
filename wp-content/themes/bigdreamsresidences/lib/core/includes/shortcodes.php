@@ -53,13 +53,13 @@ function online_reservation_form_shortcode_handler( $atts, $content = null, $tag
 						$output .= '<li class="col-md-3">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>check-in-date:</h5>';
-								$output .= '<input class="date form-control" name="date_in" id="date_in" type="text" value="'. booking_data( 'date_in', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false">';
+								$output .= '<input class="date form-control" autocomplete="false" name="date_in" id="date_in" type="text" value="'. booking_data( 'date_in', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false">';
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<li  class="col-md-3">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>check-out-date:</h5>';
-								$output .= '<input class="date form-control" name="date_out" id="date_out" type="text" value="'. booking_data( 'date_out', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false">';
+								$output .= '<input class="date form-control" autocomplete="false" name="date_out" id="date_out" type="text" value="'. booking_data( 'date_out', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false">';
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<li class="col-md-2">';
