@@ -35,6 +35,7 @@
     top: -7px;
 }
 
+
 .gap-30 {
     height:30px;
     display:block;
@@ -318,6 +319,7 @@ td.calendar_row table th {
     padding: 2px 10px;
     background-color:#F75C05;
     color:#FFF;
+    font-size: 10px;
     border-style: solid;
     border-width: 1px;
     border-color: #DA5308;
@@ -352,3 +354,6 @@ td.room {
     background-color: #F3F6FB;
     font-weight: bold;
 }
+
+
+
