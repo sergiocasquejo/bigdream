@@ -687,7 +687,7 @@ if (! class_exists('Booking') ) {
 	      												$b = add_days_to_date( $b, $f );
 	      											}
 	      											$f = count_days_gap( $cal['from'], $cal['to'], $end_date );
-	      											$output .= '<td colspan="'. $f .'"><div class="text '. strtolower($cal['status']) .'">'. $cal['guest'] .'</div></td>';
+	      											$output .= '<td colspan="'. $f .'"><div class="text '. strtolower($cal['status']) .'" title="'.  $cal['guest']  .'">'. $cal['guest'] .'</div></td>';
 	      											$b = $cal['to'] > $end_date ? $end_date : $cal['to'];
 	      										}
 	      
