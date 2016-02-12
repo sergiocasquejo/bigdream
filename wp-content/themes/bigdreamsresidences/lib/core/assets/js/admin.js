@@ -2,7 +2,14 @@
 	'use strict';
 	var W = $(window),
 		D = $(document);
-
+	function renderToolTip() {
+	 $('.bdr-tooltip').tooltip({
+	      show: {
+	        effect: "slideDown",
+	        delay: 250
+	      }
+	    });
+	}
 	function dateInAndOut( el ) {
 		$( ".date_in", el ).datepicker({
 	      minDate: new Date(),
@@ -178,6 +185,7 @@
 			e.preventDefault();
 			$.get(BDR.AjaxUrl, $(this).serialize(), function(response) {
 				$('#guestCalendarWrapper').html( response );
+				renderToolTip();
 			});
 
 		  return false;
@@ -202,6 +210,8 @@
 	      changeYear: false,
 	      dateFormat: 'yy-mm-dd',
 	    });
+	    renderToolTip();
+	   
 	});
 	
 
