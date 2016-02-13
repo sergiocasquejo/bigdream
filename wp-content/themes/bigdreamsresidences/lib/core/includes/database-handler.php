@@ -17,7 +17,7 @@ function get_guest_calendar_by_room_ID( $room_ID, $start = false, $end = false, 
 
   $sql .= " GROUP BY a.booking_room_ID ";
 
-
+  
   return $wpdb->get_results( $sql, 'ARRAY_A' );
 }
 
@@ -27,7 +27,21 @@ function get_guest_calendar_by_room_and_datein($room_type_ID, $from ) {
   
   $sql = $wpdb->prepare( "SELECT * FROM ".$wpdb->prefix."guest_calendar WHERE room_type_ID = %d AND '%s' >= date_in AND  '%s' < date_out", $room_type_ID, $from, $from );
 
+
+  
   return $wpdb->get_results( $sql );
+}
+
+
+function is_room_available( $room_ID, $from, $booking_room_ID ) {
+
+	global $wpdb;
+  
+  	$sql = $wpdb->prepare( "SELECT count(*) FROM ".$wpdb->prefix."guest_calendar WHERE room_ID = %d AND '%s' >= date_in AND  '%s' < date_out AND booking_room_ID != %d", $room_ID, $from, $from, $booking_room_ID );
+
+
+  
+  return (int) $wpdb->get_var( $sql ) <= 0;
 }
 
 
@@ -393,11 +407,19 @@ function get_inserted_ID() {
 function is_selected_date_and_room_not_available( $roomID, $from, $booking_ID = 0 ) {
   global $wpdb;
   
-  $sql = $wpdb->prepare( "SELECT count(*) FROM ".$wpdb->prefix."guest_calendar a JOIN ". $wpdb->prefix ."bookings b ON a.booking_ID = b.booking_ID WHERE b.booking_status NOT IN ('CONFIRMED', 'ARRIVED') AND a.room_type_ID = %d AND '%s' >= a.date_in AND  '%s' < a.date_out AND a.booking_ID != %d", $roomID, $from, $from, $booking_ID );
-  
+  $sql = $wpdb->prepare( "SELECT count(*) FROM ".$wpdb->prefix."guest_calendar a JOIN ". $wpdb->prefix ."bookings b ON a.booking_ID = b.booking_ID WHERE b.booking_status IN ('CONFIRMED', 'ARRIVED') AND a.room_type_ID = %d AND '%s' >= a.date_in AND  '%s' < a.date_out AND a.booking_ID != %d", $roomID, $from, $from, $booking_ID );
+
   return $wpdb->get_var( $sql );
 }
 
+
+function get_booking_status( $booking_ID ) {
+	global $wpdb;
+	$sql = $wpdb->prepare( "SELECT booking_status FROM ". $wpdb->prefix . "bookings WHERE booking_ID = %d", $booking_ID );
+
+	return $wpdb->get_var( $sql );
+
+}
 
 
 function get_room_unavailable_schedule( $room_type_ID, $output = 'ARRAY_A' ) {

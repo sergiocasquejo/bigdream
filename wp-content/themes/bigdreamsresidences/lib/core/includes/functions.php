@@ -32,11 +32,11 @@ function get_total_available_rooms( $room_type_ID, $from, $to ) {
       }
     }
   }
-
-
-
   return count( get_rooms_by_type( $room_type_ID, $exclude ) ); //->found_posts;
 }
+
+
+
 
 function print_me( $data ) {
     echo '<pre>';
@@ -341,14 +341,14 @@ function print_javascript_notices( $echo = true ) {
 }
 
 
-function javacript_notices($errors = array()) {
+function javacript_notices($errors = array(), $parent = false) {
   if (count($errors) > 0) {
     $output = '';
     $output .= '<script>
     jQuery(function($) {';
 
       foreach ($errors as $k => $v) {
-        $output .= '$("<span class=\'error_field\'>'.$v. '</span>").insertAfter($(\':input[name="'. $k .'"]\'));';
+        $output .= '$("<span class=\'error_field\'>'.$v. '</span>").insertAfter($(\':input[name="'. $k .'"]\', \''. $parent  .'\'));';
       }
     $output .= '});
     </script>';
@@ -675,4 +675,13 @@ function is_date_and_room_not_available( $room_ID, $from , $to, $booking_ID = 0 
   }
   
   return false;
+}
+
+
+function media_url( $file, $echo = true ) {
+    
+  $file = wp_upload_dir()['baseurl'] . '/' . $file;
+  if ( ! $echo ) return $file;
+
+  echo $file;
 }

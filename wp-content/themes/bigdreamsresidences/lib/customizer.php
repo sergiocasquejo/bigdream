@@ -31,40 +31,31 @@ function bdr_customize_register($wp_customize) {
 			'sections' => 
 				array(
 					array(
-					'section' => 'bdr_header_section',
-					'title' => 'Logo',
-					'options' => array(
-						array(
-							'slug' => 'bdr_logo',
-							'default' => '',
-							'label' => __('Upload logo for your header', 'BDR_TEXT_DOMAIN'),
-							'sanitize_callback' => 'esc_url_raw',
-							'type' => 'image'
+						'section' => 'bdr_header_section',
+						'title' => 'Logo',
+						'options' => array(
+							array(
+								'slug' => 'bdr_logo',
+								'default' => '',
+								'label' => __('Upload logo for your header', BDR_TEXT_DOMAIN),
+								'sanitize_callback' => 'esc_url_raw',
+								'type' => 'image'
+							)
 						)
-					)
-				)
-				
-			)
-		),
-		array(
-			'panel' => 'bdr_product_options',
-			'panel_title' => __('Product', BDR_TEXT_DOMAIN),
-			'description' => __('Change the Product Settings from here as you want', BDR_TEXT_DOMAIN),
-			'sections' => 
-				array(
+					),
 					array(
-					'section' => 'bdr_product_section',
-					'title' => 'Product Detail Background Image',
-					'options' => array(
-						array(
-							'slug' => 'bdr_product_detail_background_image',
-							'default' => '',
-							'label' => __('Upload background for product detail', 'BDR_TEXT_DOMAIN'),
-							'sanitize_callback' => 'esc_url_raw',
-							'type' => 'image'
+						'section' => 'bdr_header_backgroun_section',
+						'title' => 'Banner',
+						'options' => array(
+							array(
+								'slug' => 'bdr_banner_background',
+								'default' => '',
+								'label' => __('Upload banner for your header', BDR_TEXT_DOMAIN),
+								'sanitize_callback' => 'esc_url_raw',
+								'type' => 'image'
+							)
 						)
 					)
-				)
 				
 			)
 		),
@@ -79,7 +70,7 @@ function bdr_customize_register($wp_customize) {
 					'options' => array(
 						array(
 							'slug' => 'bdr_copyright',
-							'default' => '© 2015 All Rights Reserved. Ashpackaging',
+							'default' => '© 2015 All Rights Reserved. Bigdreamsresidences',
 							'type' => 'text',
 							'label' => __('Copyright Text', BDR_TEXT_DOMAIN),
 						),
@@ -96,22 +87,10 @@ function bdr_customize_register($wp_customize) {
 					'title' => 'Social Media',
 					'options' => array(
 						array(
-							'slug' => 'bdr_social_media_enable_facebook',
-							'default' => 1,
-							'type' => 'checkbox',
-							'label' => __('Enable facebook', BDR_TEXT_DOMAIN),
-						),
-						array(
 							'slug' => 'bdr_social_media_facebook',
 							'default' => '',
 							'type' => 'text',
 							'label' => __('Facebook', BDR_TEXT_DOMAIN),
-						),
-						array(
-							'slug' => 'bdr_social_media_enable_twitter',
-							'default' => 1,
-							'type' => 'checkbox',
-							'label' => __('Enable twitter', BDR_TEXT_DOMAIN),
 						),
 						array(
 							'slug' => 'bdr_social_media_twitter',
@@ -120,22 +99,10 @@ function bdr_customize_register($wp_customize) {
 							'label' => __('Twitter', BDR_TEXT_DOMAIN),
 						),
 						array(
-							'slug' => 'bdr_social_media_enable_google_plus',
-							'default' => 1,
-							'type' => 'checkbox',
-							'label' => __('Enable Google +', BDR_TEXT_DOMAIN),
-						),
-						array(
 							'slug' => 'bdr_social_media_google_plus',
 							'default' => '',
 							'type' => 'text',
 							'label' => __('Google +', BDR_TEXT_DOMAIN),
-						),
-						array(
-							'slug' => 'bdr_social_media_enable_pinterest',
-							'default' => 1,
-							'type' => 'checkbox',
-							'label' => __('Enable Pinterest', BDR_TEXT_DOMAIN),
 						),
 						array(
 							'slug' => 'bdr_social_media_pinterest',
@@ -149,6 +116,12 @@ function bdr_customize_register($wp_customize) {
 					'section' => 'bdr_contact_us_section',
 					'title' => 'Contact Us',
 					'options' => array(
+						array(
+							'slug' => 'bdr_contact_us_text',
+							'default' => '',
+							'type' => 'textarea',
+							'label' => __('Contact Us Text', BDR_TEXT_DOMAIN),
+						),
 						array(
 							'slug' => 'bdr_contact_us_address',
 							'default' => '',
@@ -209,7 +182,7 @@ function bdr_customize_register($wp_customize) {
 				));
 
 				if ($option['type'] == 'image') {
-					$wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, $option['slug'], array(
+					$wp_customize->add_control(new \WP_Customize_Image_Control($wp_customize, $option['slug'], array(
 						'label' => $option['label'],
 						'section' => $section['section'],
 						'setting' => $option['slug']
@@ -228,4 +201,4 @@ function bdr_customize_register($wp_customize) {
 	}
 }
 
-//add_action('customize_register', 'bdr_customize_register');
+add_action('customize_register', __NAMESPACE__ . '\\bdr_customize_register');

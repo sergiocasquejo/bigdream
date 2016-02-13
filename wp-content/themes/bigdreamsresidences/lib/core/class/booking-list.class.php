@@ -79,16 +79,22 @@ class Booking_List_Table extends WP_List_Table {
     }
 
 	public function column_room_title( $item ) {
-		$room_code = sprintf( '<a href="#">%s</a>', $item['room_title'] );
+		$room_title = sprintf( '<a href="#">%s</a>', $item['room_title'] );
+
+  		return $room_title;
+	}
+	public function column_booking_no( $item ) {
+		$booking_no = sprintf( '<span class="badge">%s</span>', $item['booking_no'] );
+
 		$actions  = array(
 			'edit' => sprintf( '<a href="?page=%s&bid=%s">Edit</a>','edit-booking', $item['booking_ID'] ),
 			'view' => sprintf( '<a href="#" class="view-booking-details" data-id="%d">View</a>', $item['booking_ID'] )
 		);
 
-  		return sprintf( '%1$s %2$s', $room_code, $this->row_actions( $actions ) );
-	}
-	public function column_booking_no( $item ) {
-		return sprintf( '<span class="badge">%s</span>', $item['booking_no'] );
+
+		return sprintf( '%1$s %2$s', $booking_no, $this->row_actions( $actions ) );
+
+
 	}
 
 
@@ -201,9 +207,24 @@ class Booking_List_Table extends WP_List_Table {
             case 'delete':
             	// Check if test mode is enabled
             	if ( TEST_MODE ) {
-	            	global $wpdb;
-	            	$sql = "DELETE FROM ". $wpdb->prefix . "bookings WHERE booking_ID IN (". implode( ',', $_POST['bid'] ) .")";
-	            	$wpdb->query( $sql);
+            		$booking_IDs = isset( $_POST['bid'] ) ? $_POST['bid'] : 0;
+
+            		if ( $booking_IDs != 0 ) {
+            			global $wpdb;
+            			try {
+            				$wpdb->query( 'START TRANSACTION' );
+			            	$sql = "DELETE xFROM ". $wpdb->prefix . "bookings WHERE booking_ID IN (". implode( ',', $booking_IDs ) .")";
+			            	$wpdb->query( $sql);
+
+			            	$sql = "DELETE FROM ". $wpdb->prefix . "guest_calendar WHERE booking_ID IN (". implode( ',', $booking_IDs ) .")";
+			            	$wpdb->query( $sql);
+
+			            	$wpdb->query( 'COMMIT' );
+
+		            	} catch (Exception $e) {
+		            		$wpdb->query( 'ROLLBACK' );
+		            	}
+	            	}
             	}
                 break;
             default:

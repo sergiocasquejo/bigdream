@@ -36,7 +36,11 @@
 	}
 	
 	.header_top {
-		display:none;
+
+		& .header_left.pull-left span {
+		    display: block;
+		    line-height: 20px;
+		}
 	}
 
 	.header-sticky {
@@ -76,6 +80,19 @@
 	.header_logo {
 		width:200px;
 	}	
+	.room-item {
+		.bdr-btn {
+			width:100%;
+			display:block;
+		}
+	}
+
+	.room_item-1 {
+		.bdr-btn {
+			display: block;
+    		width: 100%;
+		}
+	}
 }
 
 @media screen and (max-width: 240px ) {

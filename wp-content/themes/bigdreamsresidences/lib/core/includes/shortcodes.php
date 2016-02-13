@@ -437,7 +437,7 @@ function gallery_isotope_shortcode_handler( $atts, $content = '' ) {
 					$terms = wp_get_post_terms( $t->ID, 'galleria-cat', array( 'fields' => 'slugs' ) );
 
 					$image = featured_image( $t->ID, 'gallery-thumbnail' );
-				  	$output .= '<div class="grid-item '. implode( ' ', $terms) .'">'. $image .'</div>';
+				  	$output .= '<div class="grid-item '. implode( ' ', $terms) .'"><img src="'. $image .'" /></div>';
 				}
 				$output .= '</div>';
 			$output .= '</div>';
@@ -460,11 +460,11 @@ function contact_us_shortcode_handler() {
                         <div class="col-md-6 col-lg-5">
 
                             <div class="text">
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.</p>
+                                <p>'. get_theme_mod( 'bdr_contact_us_text' ) .'</p>
                                 <ul>
-                                    <li><i class="fa fa-map-marker"></i> 225 Alang-Alang Mandaue City, Cebu</li>
-                                    <li><i class="fa fa-phone"></i> +63 9 2321 652</li>
-                                    <li><i class="fa fa-envelope-o"></i> info@bigdreamresidences.com</li>
+                                    <li><i class="fa fa-map-marker"></i> '. get_theme_mod( 'bdr_contact_us_address' ) .'</li>
+                                    <li><i class="fa fa-phone"></i> '. get_theme_mod( 'bdr_contact_us_phone' ) .'</li>
+                                    <li><i class="fa fa-envelope-o"></i> '. get_theme_mod( 'bdr_contact_us_email' ) .'</li>
                                 </ul>
                             </div>
 

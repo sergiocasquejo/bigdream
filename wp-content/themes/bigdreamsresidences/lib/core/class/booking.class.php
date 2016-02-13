@@ -443,15 +443,26 @@ if (! class_exists('Booking') ) {
 
 
 				$brid = browser_get( 'brid' );
-				$data = get_array_values_by_keys( 
-						get_booking_rooms( $brid ), 
-						array( 'booking_room_ID', 'booking_ID', 'room_ID', 'guest', 'phone', 'no_of_adult', 'no_of_child', 'date_in', 'date_out' ) 
-					);
+				$booking_ID = browser_get( 'booking_ID' );
 
+				if ( $brid != 0 ) {
+					$data = get_array_values_by_keys( 
+							get_booking_rooms( $brid ), 
+							array( 'booking_room_ID', 'booking_ID', 'room_ID', 'guest', 'phone', 'no_of_adult', 'no_of_child', 'date_in', 'date_out' ) 
+						);
 
-				$data['booking_ID'] = browser_get( 'booking_ID' );
+				} else {
+					$data = get_booking_by_id( $booking_ID );
+					$data['guest'] = $data['name'];
+					$data['phone'] = $data['primary_phone'];
+					$data['booking_room_ID'] = 0;
+					$data['room_ID'] = 0;
 
-				$existing_rooms = get_rooms_and_guest_info( $data['booking_ID'], $brid );
+				}
+
+				$data['booking_ID'] = $booking_ID;
+
+				$existing_rooms = get_rooms_and_guest_info( $booking_ID, $brid );
 
 				foreach ( $existing_rooms as $i => $r ) {
 					$excludes[] = $r['room_ID'];
@@ -460,6 +471,9 @@ if (! class_exists('Booking') ) {
 				$data['room_type_ID'] = browser_get( 'room_type_ID' );
 
 				$data['rooms'] = get_rooms_by_type( $data['room_type_ID'], $excludes );
+
+
+				
 
 				include_view( 'edit_rooms_and_guest_info.html.php', $data );
 				exit;
@@ -492,14 +506,22 @@ if (! class_exists('Booking') ) {
 				    ) );
 
 				    if ( $gump->run( $data ) !== false ) {
-				    	if ( do_save_rooms_and_guest_info( $data ) !== false ) {
+				    	if ( in_array( get_booking_status( $data['booking_ID'] ), array( 'NEW' )  ) ) {
+				    		wp_send_json_error( array( 'message' => 'You can\'t add room while booking is not confirmed.' ) );
+
+				    	} else if ( is_room_available( $data['room_ID'], $data['date_in'], $data['date_out'], $data['booking_room_ID'] ) == 0 ) {
+				    		$error['date_in'] = 'Selected room is not available on that date. Please check calendar to see availability.';
+							javacript_notices( $error, '#roomsAndGuestInfoForm' );
+				    		wp_send_json_error( array( 'js' => print_javascript_notices( false ) ) );
+						} else if ( do_save_rooms_and_guest_info( $data ) !== false ) {
 							wp_send_json_success( array( 'message' => 'Successfully saved.' ) );
 						} else {
 							wp_send_json_error( array( 'message' => 'Error while saving.' ) );
 						}
+						
 				    } else {
 
-				    	javacript_notices( $gump->get_key_and_value_errors( true ) );
+				    	javacript_notices( $gump->get_key_and_value_errors( true ), '#roomsAndGuestInfoForm' );
 				    	wp_send_json_error( array( 'js' => print_javascript_notices( false ) ) );
 				    }
 
@@ -671,7 +693,7 @@ if (! class_exists('Booking') ) {
 	      
 	      										$b = $selected_date;
 	      
-	      										foreach ( $c as $cal ) {
+	      										foreach ( $c as $indx => $cal ) {
 	      											if ( strtotime( $cal['from'] ) > strtotime( $end_date ) 
 	      												|| ( strtotime( $cal['from'] ) < strtotime( $selected_date ) && strtotime( $cal['to'] ) < strtotime( $selected_date ) ) ) continue;
 	      											
@@ -682,8 +704,14 @@ if (! class_exists('Booking') ) {
 	      												$output .= '<td colspan="'. $f .'"></td>';
 	      												$b = add_days_to_date( $b, $f );
 	      											}
+
+
 	      											$f = count_days_gap( $cal['from'], $cal['to'], $end_date );
-	      											$output .= '<td colspan="'. $f .'"><div class="text bdr-tooltip '. strtolower($cal['status']) .'" title="'.  $cal['guest']  .'">'. $cal['guest'] .'</div></td>';
+
+	      											if ( $f != 0 && $indx < count( $c ) ) {
+	      												$output .= '<td colspan="'. $f .'"><div class="text bdr-tooltip '. strtolower($cal['status']) .'" title="'.  $cal['guest'] . ' : ' . format_date( $cal['from'] ) .' to '. format_date( $cal['to'] )  .'">'. $cal['guest'] .'</div></td>';
+	      											}
+	      											
 	      											$b = $cal['to'] > $end_date ? $end_date : $cal['to'];
 	      										}
 	      

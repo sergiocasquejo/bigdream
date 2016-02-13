@@ -103,6 +103,10 @@
 }
 
 
+#TB_ajaxWindowTitle {
+    padding: 8px 29px 0 10px !important;
+}
+
 #TB_title {
     border-bottom: 1px solid #356AA0 !Important;
     height: 55px !important;
@@ -124,7 +128,6 @@
 
 #TB_ajaxContent {
     width: 100% !important;
-    height: auto !important;
 }
 
 #TB_ajaxContent .booking-details {
@@ -167,7 +170,7 @@ div#legend li span {
 
 .form-control {
     background-color: #FFFFFF !important;
-    color: #A4A4A4 !important;
+    color: #777777 !important;
     border: solid 1px #E4E3E4 !important;
     border-radius: 2px !important;
     height: 45px !important;
@@ -203,13 +206,7 @@ span.badge {
     background-color: #D0D0D0;
     font-size: 12px;
 }
-span.badge.paid,
-span.badge.arrived,
-span.badge.vacant-clean,
- {
-    background-color: #0A8415;
-    color: #FFF;
-}
+
 
 span.badge.unpaid,
 span.badge.checkout,
@@ -223,6 +220,16 @@ span.badge.vacant-dirty{
     background-color: #20979D;
     color: #FFF;
 }
+
+span.badge.paid,
+span.badge.arrived,
+span.badge.vacant-clean
+ {
+    background-color: #0A8415;
+    color: #FFF;
+}
+
+
 span.badge.partial,
 span.badge.new{
     background-color: #F75C05;
@@ -258,7 +265,7 @@ span.dashicons {
     vertical-align: middle;
 }
 
-.column-booking_status {
+.column-booking_status, .column-booking_no {
     width: 10%;
 }
 #guestCalendarWrapper table {
@@ -355,5 +362,95 @@ td.room {
     font-weight: bold;
 }
 
+.calendar_row .bg-content td {
+    border-width: 0;
+}
+
+.ui-tooltip .ui-tooltip-content{
+	font-size:12px;
+}
+
+.booking-details-view .reservation-sidebar {
+    border-right: dashed 1px #AFADAD;
+    padding-right: 10px;
+}
+
+.booking-details-view .reservation-date {
+    margin-top: 30px;
+}
+
+.reservation-heading {
+    font-size: 16px;
+    color: #333;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-transform: uppercase;
+    padding: 12px 0;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 1px solid #e4e4e4;
+}
 
 
+.reservation-sidebar ul {
+    list-style: none;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+
+.reservation-sidebar ul li {
+    color: #333;
+    font-size: 12px;
+    overflow: hidden;
+    font-weight: 500;
+    padding: 5px 0;
+}
+
+.reservation-sidebar ul li span:last-child {
+    float: right;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.reservation-room-seleted_name.has-package h4 {
+    font-size: 15px;
+}
+
+.reservation_content {
+    padding-bottom: 20px;
+    margin-top: 40px;
+}
+
+.reservation-billing-detail {
+    margin-left: 10px;
+    max-width: 570px;
+}
+
+.reservation-billing-detail h4 {
+    color: #000;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+    font-weight: 700;
+}
+
+.booking-details-view .success-details ul li span {
+   	text-transform: uppercase;
+    font-size: 12px;
+    width: 185px;
+    display: inline-block;
+}
+
+.reservation-room-seleted_total {
+    border-top: solid 1px #E4E4E4;
+    padding: 15px 0;
+}
+
+.booking-details-view .success-details ul li span:last-child {
+    font-weight: 700;
+}
+
+.reservation-room-seleted_total .amount {
+    float: right;
+}
+.guest-paid .amount {
+    float: right;
+}

@@ -36,7 +36,7 @@
 	function getBookingDetails(id) {
 		$.get(BDR.AjaxUrl + '?action=booking-details&bid=' + id, function(response) {
 			$('#bdrModalDialog').html(response);
-			tb_show("Booking Details", '#TB_inline?width=600&height=550&inlineId=bdrModalDialog');
+			tb_show("Booking Details", '#TB_inline?width=650&height=550&inlineId=bdrModalDialog');
 		});
 	}
 
@@ -67,7 +67,7 @@
 
 		$.get(BDR.AjaxUrl + '?action=get-rooms_and_guest_info&booking_ID=' + parseInt(bid) , function(response) {
 			$('#roomsAndGuestInfoWrapper').html(response);
-			$('input[name="no_of_room"]').trigger('keyup');
+			$(':input[name="no_of_room"]').trigger('change');
 		});
 	}
 
@@ -78,7 +78,7 @@
 			var $modal = $(response);
 			
 			$('#bdrModalDialog').html($modal);
-			tb_show("Select Room", '#TB_inline?width=600&height=550&inlineId=bdrModalDialog');
+			tb_show("Room and Guest Info", '#TB_inline?width=600&height=450&inlineId=bdrModalDialog');
 			
 			dateInAndOut( $modal );
 		});
@@ -111,9 +111,13 @@
 				if ( response.success == true ) {
 					getRoomsAndGuestInfo();
 					$('#TB_closeWindowButton').trigger('click');
-					$(':input[name="no_of_room"]').trigger('change');
+					
 					
 				} else {
+					if ( response.data.message != '' && response.data.message != undefined ) {
+						alert( response.data.message );
+					}
+
 					$('#roomsAndGuestInfoForm .error_field').remove();
 					$('body').append( response.data.js );
 				}

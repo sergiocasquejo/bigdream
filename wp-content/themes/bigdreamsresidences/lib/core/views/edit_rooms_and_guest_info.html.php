@@ -1,4 +1,5 @@
 <div class="rooms-and-guest-info">
+  <div class="gap-30"></div>
   <form id="roomsAndGuestInfoForm">
     <div class="form-group">
       <label for="room">Room</label>
@@ -20,8 +21,8 @@
     </div>
     <div class="row">
       <div class="col-md-6 form-group">
-        <label for="number">Adults</label>
-        <input type="text" name="no_of_adult" class="form-control" value="<?php echo $no_of_adult; ?>" required/> 
+        <label for="no_of_adult">Adults</label>
+        <input type="number" name="no_of_adult" class="form-control" value="<?php echo $no_of_adult; ?>" required/> 
       </div>
       <div class="col-md-6 form-group">
         <label for="no_of_child">Children</label>
@@ -40,5 +41,6 @@
     </div>
     <input type="hidden" name="booking_room_ID" value="<?php echo (int) $booking_room_ID; ?>" />
     <button type="submit" class="button button-primary">Save</button>
+    <div class="gap-30"></div>
   </form>
 </div>

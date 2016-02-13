@@ -7,14 +7,7 @@
       <?php if ( $booking_ID > 0 ): ?>
       <h1>Booking #: <?php echo $booking_no; ?></h1>
       <?php endif; ?>
-      <div id="priceCalculation">
-        <ul>
-          <li>Room Price: <span class="room_price"><?php echo format_price( $room_price ); ?></span></li>
-          <li>Total Room: <span class="total_rooms"><?php echo ' x ' . $no_of_room; ?></span></li>
-          <li>Total Nights: <span class="total_nights"><?php echo ' x ' . $no_of_night; ?></span></li>
-          <li>Total Amount: <span class="total_amount"><?php echo format_price( $amount ); ?></span></li>
-        </ul>
-      </div>
+
       <form method="post">
         <div class="row">
           <div class="col-md-6 form-group">
@@ -155,12 +148,25 @@
     </div>
     <div class="col-md-6">
       <h1>
-        Rooms 
+        Rooms and Guest Info
         <button class="button button-default" id="EditRoom" <?php disabled( $no_of_room <= count($rooms_and_guest) || $booking_ID <= 0, true ); ?>><span class="dashicons dashicons-plus"></span> Add Room</button>
       </h1>
       <div id="roomsAndGuestInfoWrapper">
         <?php include "rooms_and_guest_info.html.php"; ?>
       </div>
+
+      <div class="gap-30"></div>
+      
+
+      <div id="priceCalculation">
+        <ul>
+          <li>Room Price: <span class="room_price"><?php echo format_price( $room_price ); ?></span></li>
+          <li>Total Room: <span class="total_rooms"><?php echo ' x ' . $no_of_room; ?></span></li>
+          <li>Total Nights: <span class="total_nights"><?php echo ' x ' . $no_of_night; ?></span></li>
+          <li>Total Amount: <span class="total_amount"><?php echo format_price( $amount ); ?></span></li>
+        </ul>
+      </div>
+
     </div>
   </div>
 
