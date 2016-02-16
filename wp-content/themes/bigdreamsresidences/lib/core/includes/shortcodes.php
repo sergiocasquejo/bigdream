@@ -108,8 +108,8 @@ function accommodations_shortcode_handler( $atts, $content = null ) {
 
 	$q = get_terms( 'room_type-cat', array( 'hide_empty' => false ) );
 
-	$output .= '<div class="section-featured-room">';
-		$output .= '<h2 class="room-featured_title">ACCOMMODATIONS</h2>';
+	$output .= '<div class="section-featured-room animatedParent" data-sequence="500">';
+		$output .= '<h2 class="room-featured_title animated fadeInDown" data-id="1">ACCOMMODATIONS</h2>';
 		$output .= '<div class="room-content">';
 			$output .= '<div class="row">';
 
@@ -117,7 +117,7 @@ function accommodations_shortcode_handler( $atts, $content = null ) {
 					$image = category_featured_image( $p->term_id, 'gallery-thumbnail' );
 
 					$output .= '<div class="col-sm-6 col-md-4 col-lg-4">';
-						$output .= '<div class="room-item">';
+						$output .= '<div class="room-item animated fadeInLeft" data-id="'. ( $i + 1 ).'">';
 							$output .= '<a href="'. get_term_link( $p ) .'">';
 							$output .= '<div class="img" style="background:#F1F1F1 url(\''. $image  .'\') no-repeat top right;">';
 							$output .= '</div>';
@@ -195,11 +195,11 @@ function room_listings_shortcode_handler( $atts, $content = null ) {
 		'showposts' => -1
 		) );
 
-	$output .= '<div class="room-wrap-1">';
+	$output .= '<div class="room-wrap-1 animatedParent" data-sequence="500">';
         $output .= '<div class="row">';
         	foreach( $q as $i => $t){
             $output .= '<div class="col-md-6">';
-               	$output .= '<div class="room_item-1">';
+               	$output .= '<div class="room_item-1 animated bounceInDown" data-id="'. $i .'">';
                		$output .= '<h2><a href="'.get_permalink( $t->ID ).'">'. $t->post_title .'</a></h2>';
                		$output .= '<div class="img">';
                			$output .= '<a href="'.get_permalink( $t->ID ).'"><img src="'. featured_image( $t->ID, 'gallery-post-thumbnails' ) .'" alt=""></a>';
@@ -243,12 +243,12 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 	$nights = count_nights( booking_data( 'date_in' ), booking_data( 'date_out' ) );
 	$room_price = booking_data( 'room_price' );
 
-	$output .= '<div class="reservation-page">';
+	$output .= '<div class="reservation-page animatedParent"  data-sequence="500">';
 		//$output .= get_booking_steps();
 		$output .= '<div class="row">';
 			$output .='<form method="post">';
 				$output .= '<div class="col-md-4 col-lg-3">';
-					$output .= '<div class="reservation-sidebar">';
+					$output .= '<div class="reservation-sidebar animated fadeInLeft" data-id="1">';
 						$output .= '<div class="reservation-date bg-gray">';
 	                        $output .= '<h2 class="reservation-heading">Dates</h2>';
 	                        $output .= '<ul>';
@@ -312,7 +312,7 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 	                $output .= '</div>';
 	            $output .= '</div>';
 				$output .= '<div class="col-md-8 col-lg-9">';
-					$output .= '<div class="reservation_content">';
+					$output .= '<div class="reservation_content animated fadeInRight" data-id="2">';
 						$output .= '<div class="reservation-billing-detail">';
 							$output .= '<h4>BILLING DETAILS</h4>';
 							$output .= '<div class="row">';
@@ -454,10 +454,10 @@ function contact_us_shortcode_handler() {
 
 	$output = '';
 
-	$output .= '<div class="contact">
+	$output .= '<div class="contact animatedParent"  data-sequence="500">
                     <div class="row">
 
-                        <div class="col-md-6 col-lg-5">
+                        <div class="col-md-6 col-lg-5 animated fadeInLeft" data-id="1">
 
                             <div class="text">
                                 <p>'. get_theme_mod( 'bdr_contact_us_text' ) .'</p>
@@ -470,7 +470,7 @@ function contact_us_shortcode_handler() {
 
                         </div>
 
-                        <div class="col-md-6 col-lg-6 col-lg-offset-1">
+                        <div class="col-md-6 col-lg-6 col-lg-offset-1 animated fadeInRight" data-id="2">
                             <div class="contact-form">';
                                 $output .= do_shortcode( '[contact-form-7 id="76" title="Contact Us"]' );
                             $output .= '</div>

@@ -1,11 +1,11 @@
 <?php while ( have_posts() ) : the_post(); 
 $rooms_available = get_total_available_rooms( get_the_ID(), booking_data( 'date_in' ), booking_data( 'date_out' ) );?>
-<div class="section-room bg-white">
+<div class="section-room bg-white animatedParent" data-sequence="500">
     <div class="container">
         <div class="room-detail">
             <div class="row">
                 <div class="col-lg-9">
-                    <div class="room_detail_gallery">
+                    <div class="room_detail_gallery animated fadeInLeft" data-id="1">
                         <div class="slider">
                             <div class="flexslider">
                                 <ul class="slides">
@@ -19,7 +19,7 @@ $rooms_available = get_total_available_rooms( get_the_ID(), booking_data( 'date_
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="room-detail_book">
+                    <div class="room-detail_book animated fadeInRight" data-id="2">
                         <form method="post">
                             <div class="room-detail_total">
                                 <h6>STARTING ROOM FROM</h6>
@@ -77,7 +77,7 @@ $rooms_available = get_total_available_rooms( get_the_ID(), booking_data( 'date_
                 </div>
             </div>
         </div>
-        <div class="room-detail_tab">
+        <div class="room-detail_tab animated bounceInUp" data-id="3">
             <div class="row">
                 <div class="col-md-3">
                     <!-- Nav tabs -->

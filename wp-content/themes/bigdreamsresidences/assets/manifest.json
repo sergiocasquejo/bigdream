@@ -2,6 +2,7 @@
   "dependencies": {
     "main.css": {
       "files": [
+        "styles/plugins/animations.css",
         "styles/main.scss"
       ],
       "main": true
@@ -17,6 +18,7 @@
         "scripts/vendor/jquery-ui.min.js",
         "scripts/vendor/jquery.flexslider.js",
         "scripts/vendor/isotope.pkgd.min.js",
+        "scripts/vendor/css3-animate-it.js",
         "scripts/main.js"
       ],
       "main": true

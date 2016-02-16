@@ -1,5 +1,5 @@
 <div class="col-md-6">
-   	<div class="room_item-1">
+   	<div class="room_item-1 animated bounceInDown" data-id="<?php  echo $index = $wp_query->current_post + 1; ?>">
    		<h2><a href="<?php the_permalink(); ?>"><?php the_title() ; ?></a></h2>
    		<div class="img">
    			<a href="<?php the_permalink(); ?>"><img src="<?php echo  featured_image( get_the_ID(), 'gallery-post-thumbnails' ) ; ?>" alt=""></a>
