@@ -4,13 +4,7 @@
 		<div class="sub-banner">
 			<div class="container">
 				<div class="text text-center">
-					<h2><?php 
-					if ( is_single() ) {
-						the_title(); 
-						echo '<p>Lorem ipsum dolor sit amit</p>';
-					}
-
-					?></h2>
+					<h2><?php the_title(); ?></h2>
 					
 				</div>
 			</div>

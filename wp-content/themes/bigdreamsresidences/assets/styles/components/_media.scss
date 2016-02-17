@@ -41,6 +41,22 @@
 		    display: block;
 		    line-height: 20px;
 		}
+
+		.header_left  {
+			width: 70%;
+		}
+
+		.header_right {
+		    width: 30%;
+
+		    .social-media-icon li {
+			    margin-right: 0;
+
+			    &.ml-15 {
+				    margin-left: 0;
+				}
+			}
+		}
 	}
 
 	.header-sticky {

@@ -430,7 +430,6 @@ function gallery_isotope_shortcode_handler( $atts, $content = '' ) {
 
 		$q = get_posts(array( 'post_type' => 'galleria', 'showposts' => -1) );
 		$output .= '<div class="gallery-content">';
-			$output .= '<div class="row">';
 				$output .= '<div class="grid gallery-grid">';
 				foreach ( $q as $i => $t) {
 
@@ -440,7 +439,6 @@ function gallery_isotope_shortcode_handler( $atts, $content = '' ) {
 				  	$output .= '<div class="grid-item '. implode( ' ', $terms) .'"><img src="'. $image .'" /></div>';
 				}
 				$output .= '</div>';
-			$output .= '</div>';
 		$output .= '</div>';
 	$output .= '</div>';
 
