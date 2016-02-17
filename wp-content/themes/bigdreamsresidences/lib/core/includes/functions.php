@@ -627,16 +627,19 @@ function send_success_booking_notification( $booking_ID ) {
   include BDR_SYSTEM_DIR . "/emails/success_booking_notification.php";
   $message = ob_get_clean();
 
+  $headers[] = 'Content-Type: text/html; charset=UTF-8';
+  $headers[] = 'From: Big Dreams Residences <info@bigdreamsresidences.com>';
+
   add_filter( 'wp_mail_content_type',create_function( '', 'return "text/html"; ' ) );
   //Send to admin
   $to = get_bloginfo( 'admin_email' );
   $subject = 'New Reservation';
-  wp_mail( $to, $subject, $message );
+  wp_mail( $to, $subject, $message, $headers );
   
   // Send to guest
   $to = $d['email_address'];
   $subject = 'Your Booking Details';
-  wp_mail( $to, $subject, $message );
+  wp_mail( $to, $subject, $message, $headers );
 
 }
 
