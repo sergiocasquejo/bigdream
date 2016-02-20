@@ -1,4 +1,32 @@
 <?php
+function get_query_string_for_export() {
+  $str = '';
+
+  if ( $s = browser_post( 's' ) != '' ) {
+    $str .= '&s='.$s;
+  }
+
+  if ( ($status = browser_request( 'status' )) != '' ) {
+    $str .= '&status='.$status;
+  }
+
+  if ( ($status = browser_request( 'filter_payment_status' )) != '' ) {
+    $str .= '&filter_payment_status='.$status;
+  }
+
+  if ( ($room_type_ID = browser_request( 'filter_room_ID' )) != '' ) {
+    $str .= '&room_type_ID='.$room_type_ID;
+  }
+
+
+  if ( ($checkin = browser_request( 'filter_date_in' )) != '' && ($checkout = browser_request( 'filter_date_out' )) != '' ) {
+    $str .= '&filter_date_in='.$checkin.'&filter_date_out='. $checkout; 
+  }
+
+  return $str;
+
+}
+
 
 function add_days_to_date( $date, $days ) {
 	return date( 'Y-m-d', strtotime( '+'. $days .' day', strtotime( $date ) ) );
@@ -258,7 +286,7 @@ if ( !function_exists( 'site_notices' ) ) {
   }
 
 }
-
+add_action('print_custom_notices', 'site_notices', 10);
 
 /**
  * modal_notices()
@@ -327,33 +355,44 @@ function get_booking_session() {
  
 
 
-add_action('wp_footer', 'print_javascript_notices');
+add_action('print_custom_notices', 'print_javascript_notices', 5);
 function print_javascript_notices( $echo = true ) {
+
+
   $errors = '';
   if (isset($_SESSION['javascript_error_notice'])) {
-    $errors = $_SESSION['javascript_error_notice'];
-    unset($_SESSION['javascript_error_notice']);
 
-    if ( ! $echo ) return $errors;
-
-    echo $errors;
-  }
-}
-
-
-function javacript_notices($errors = array(), $parent = false) {
-  if (count($errors) > 0) {
+    $errors = $_SESSION['javascript_error_notice']['errors'];
+    $parent = $_SESSION['javascript_error_notice']['parent'];
     $output = '';
     $output .= '<script>
     jQuery(function($) {';
-
       foreach ($errors as $k => $v) {
         $output .= '$("<span class=\'error_field\'>'.$v. '</span>").insertAfter($(\':input[name="'. $k .'"]\', \''. $parent  .'\'));';
       }
     $output .= '});
     </script>';
 
-    $_SESSION['javascript_error_notice'] = $output;
+    unset($_SESSION['javascript_error_notice']);
+
+    if ( ! $echo ) return $output;
+
+
+    echo $output;
+  }
+
+
+}
+
+
+function javacript_notices($errors = array(), $parent = false) {
+  if (count($errors) > 0) {
+
+
+    $_SESSION['javascript_error_notice'] = array(
+        'errors' => $errors,
+        'parent' => $parent
+        );
   }
 }
 
@@ -467,7 +506,7 @@ function the_room_price_html($id = false) {
  * @param int $id - Room/Post ID
  * @return String $formatted_price
  */
-function get_room_price_html($id = false) {
+function get_room_price_html( $id = false ) {
   return sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf(get_room_price($id)));
 }
 
@@ -479,7 +518,7 @@ function get_room_price_html($id = false) {
  * @param Decimal $price
  * @return none
  */
-function format_price($price = 0, $echo = true) {
+function format_price( $price = 0, $echo = true ) {
   if ( is_numeric( $price ) ) {
     $price = sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf($price));
 
@@ -616,11 +655,11 @@ function send_success_booking_notification( $booking_ID ) {
   
   $d = get_booking_by_id( $booking_ID );
   $d['room_title'] = get_the_title( $d['room_type_ID'] );
-  $d['room_code'] = get_field( 'room_code', $d['room_type_ID'] );
   $d['max_person'] = get_field( 'max_person', $d['room_type_ID'] );
   $d['room_size'] = get_field( 'room_size', $d['room_type_ID'] );
   $d['bed'] = get_field( 'bed', $d['room_type_ID'] );
   $d['view'] = get_field( 'view', $d['room_type_ID'] );
+
 
   $logo = get_template_directory_uri() . '/dist/images/logo.png';
   

@@ -51,7 +51,7 @@ function admin_set_custom_edit_room_columns( $columns ) {
 	unset( $columns['author'] );
     unset( $columns['date'] );
    	$columns['room_type'] = __( 'Room Type', BDR_TEXT_DOMAIN );
-   	$columns['room_status'] = __( 'Room Status', BDR_TEXT_DOMAIN );
+   //	$columns['room_status'] = __( 'Room Status', BDR_TEXT_DOMAIN );
 
 
     return $columns;

@@ -215,6 +215,32 @@
 	      dateFormat: 'yy-mm-dd',
 	    });
 	    renderToolTip();
+
+
+		$( "#filter_date_in" ).datepicker({
+			minDate: new Date(),
+			defaultDate: "+1w",
+			dateFormat: 'yy-mm-dd',
+			changeMonth: true,
+			changeYear: true,
+			yearRange: '1910:' + new Date().getFullYear(),
+			numberOfMonths: 1,
+			onClose: function( selectedDate ) {
+				$( "#filter_date_out" ).datepicker( "option", "minDate", selectedDate );
+			}
+		});
+
+		$( "#filter_date_out" ).datepicker({
+			defaultDate: "+1w",
+			dateFormat: 'yy-mm-dd',
+			changeMonth: true,
+			changeYear: true,
+			yearRange: '1910:' + new Date().getFullYear(),
+			numberOfMonths: 1,
+			onClose: function( selectedDate ) {
+				$( "#filter_date_in" ).datepicker( "option", "maxDate", selectedDate );
+			}
+		});
 	   
 	});
 	

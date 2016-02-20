@@ -640,3 +640,5 @@ function success_booking_details() {
 	empty_booking();
 	return $output;
 }
+
+

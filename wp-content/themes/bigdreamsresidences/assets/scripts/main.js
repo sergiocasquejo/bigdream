@@ -151,4 +151,42 @@
     })
   });
 
+  var marker,
+        map;
+    function initialize() {
+  
+      var mapOptions = {
+        zoom: 17,
+        center: new google.maps.LatLng(10.329797, 123.942690)
+      };
+
+      map = new google.maps.Map(document.getElementById('location-map'),
+        mapOptions);
+
+      marker = new google.maps.Marker({
+        map:map,
+        position: new google.maps.LatLng(10.329797, 123.942690),
+        icon : BDR.template_dir_uri + '/assets/images/marker.png',
+      });
+       infowindow.open(map, marker);
+    }
+
+
+    var contentString = '<div id="content">'+
+    '<h1>'+ BDR.site_name +'</h1>' +
+    '<p style="margin-top: 7px;">Address: '+ BDR.address +'</p>' +
+    '<p>Phone: '+ BDR.phone +'</p>' +
+    '<p>Email: <a href="mailto:'+ BDR.email +'">'+ BDR.email +'</a></p>' +
+    '<p>Website: <a href="'+ BDR.url +'">'+ BDR.url +'</a></p>' +
+    '</div>';
+
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+
 })(window, document, jQuery); // Fully reference jQuery after this point.

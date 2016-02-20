@@ -213,7 +213,7 @@ class Booking_List_Table extends WP_List_Table {
             			global $wpdb;
             			try {
             				$wpdb->query( 'START TRANSACTION' );
-			            	$sql = "DELETE xFROM ". $wpdb->prefix . "bookings WHERE booking_ID IN (". implode( ',', $booking_IDs ) .")";
+			            	$sql = "DELETE FROM ". $wpdb->prefix . "bookings WHERE booking_ID IN (". implode( ',', $booking_IDs ) .")";
 			            	$wpdb->query( $sql);
 
 			            	$sql = "DELETE FROM ". $wpdb->prefix . "guest_calendar WHERE booking_ID IN (". implode( ',', $booking_IDs ) .")";

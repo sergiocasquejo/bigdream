@@ -1,6 +1,8 @@
 <?php 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+    if(session_id() == '') {session_start();}
+} else  {
+   if (session_status() == PHP_SESSION_NONE) {session_start();}
 }
 define( 'BDR_SYSTEM_DIR', get_template_directory() . '/lib/core' );
 define( 'BDR_SYSTEM_DIR_URI', get_template_directory_uri() . '/lib/core' );

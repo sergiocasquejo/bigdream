@@ -1,6 +1,7 @@
 <div class="wrap">
 	<h1>Guest Calendar</h1>
-	<?php site_notices(); ?>
+	<?php do_action( 'print_custom_notices', true ); ?>
+	
 	<div class="filter-box">
 		<form type="post" id="filterGuestCalendarForm">
 			<input type="text" name="start_date" class="calendar" value="<?php echo $selected_date; ?>" placeholder="Start Date" />
@@ -17,9 +18,16 @@
 			</select>
 			<input type="hidden" name="action" value="filter_guest_calendar_date" />
 			<button type="submit" class="button button-primary">Filter</button>
+			<a href="#" class="button button-secondary">Print Calendar</a>
 		</form>
 	</div>
 	<div class="gap-30"></div>	
+	<p>
+		<span class="badge new">NEW</span>
+		<span class="badge confirmed">CONFIRMED</span>
+		<span class="badge arrived">ARRIVED</span>
+		<span class="badge checkout">CHECKOUT</span>
+	</p>
 	<div id="guestCalendarWrapper">
 		<?php echo $output; ?>
 	</div>

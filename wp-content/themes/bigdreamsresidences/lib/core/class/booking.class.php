@@ -26,7 +26,7 @@ if (! class_exists('Booking') ) {
 		    add_action( 'wp_ajax_calculate-total-amount', array( &$this, 'calculate_total_amount' ) );
 
 		    add_action( 'wp_ajax_count-available-rooms', array( &$this, 'count_available_rooms' ) );
-        add_action( 'wp_ajax_filter_guest_calendar_date', array(&$this, 'render_ajax_guest_calendar') );
+        	add_action( 'wp_ajax_filter_guest_calendar_date', array(&$this, 'render_ajax_guest_calendar') );
 		    add_action( 'wp_ajax_save-rooms_and_guest_info', array( &$this, 'save_rooms_and_guest_info' ) );
 		    add_action( 'init', array( &$this, 'custom_init' ) );
 		}
@@ -93,13 +93,16 @@ if (! class_exists('Booking') ) {
 					$inserted_ID = $data['booking_ID'];
 					if ( $inserted_ID < 1 ) {
 						$inserted_ID = get_inserted_ID();
-						send_success_booking_notification( $inserted_ID );
-
-						
 						// Update booking no
 						generate_and_update_booking_no( $inserted_ID );
 						// replace data in booking session with booking ID
 						push_to_booking_session( array( 'booking_ID' => $inserted_ID ) );
+
+
+						send_success_booking_notification( $inserted_ID );
+
+						
+						
 						
 					}
 
@@ -318,7 +321,7 @@ if (! class_exists('Booking') ) {
 				if ( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) return;
 
 			   	wp_enqueue_style( 'admin-style', assets( 'style/admin.css' ) );	
-			   	wp_enqueue_style( 'jquery-style', 'https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css' );
+			   	wp_enqueue_style( 'jquery-style', assets( 'style/jquery-ui.css' ) );
 			   	wp_enqueue_script( 'jquery-ui-datepicker' );
 			   	wp_enqueue_script( 'jquery-ui-tooltip' );
 				wp_enqueue_script( 'chart-script', assets( 'vendor/Chart.min.js' ), array( 'jquery' ), true, false );
@@ -348,7 +351,7 @@ if (! class_exists('Booking') ) {
 
 			if ($count > 0) {
 				echo '<div class="updated">';
-				echo '<p>' . $count . ' Guest Newly booked. <a href="'. admin_url( 'admin.php?page=big-dream-bookings&view=list&status=NEW' ) .'">Click here.</a></p>';
+				echo '<p>' . $count . ' Guest Newly booked. <a href="'. admin_url( 'admin.php?page=manage-bookings&status=NEW' ) .'">Click here.</a></p>';
 				echo '</div>';
 			}
 		}

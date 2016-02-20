@@ -11,5 +11,5 @@
 		</div>
 	</section>
 	<?php 
-	site_notices(); 
+	 do_action( 'print_custom_notices', true );
 endif; ?>

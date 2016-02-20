@@ -1,7 +1,7 @@
 <div class="wrap">
   <h1>New Booking <a href="<?php echo admin_url('/admin.php?page=manage-bookings'); ?>" class="page-title-action">Back to Listing</a></h1>
   <div class="gap-20"></div>
-  <?php site_notices(); print_javascript_notices(); ?>
+  <?php do_action( 'print_custom_notices', true ); ?>
   <div class="row">
     <div class="col-md-6">
       <?php if ( $booking_ID > 0 ): ?>

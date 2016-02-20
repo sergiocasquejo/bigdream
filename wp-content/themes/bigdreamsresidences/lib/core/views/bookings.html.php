@@ -1,10 +1,10 @@
 <div class="wrap">
 	<h1>Bookings 
-		<a href="<?php echo admin_url('/admin.php?page=edit-booking'); ?>" class="page-title-action">Add Manually</a>
-		<a href="<?php echo admin_url('/admin.php?page=manage-bookings&action=export-bookings'); ?>" class="page-title-action">Export to Excel</a>
+		<a href="<?php echo admin_url('/admin.php?page=edit-booking'); ?>" class="page-title-action button button-secondary">Add Manually</a>
+		<a href="<?php echo admin_url('/admin.php?page=manage-bookings&action=export-bookings' . get_query_string_for_export()); ?>" class="page-title-action button button-primary">Export to Excel</a>
 	</h1>
-	<?php 
-		site_notices(); 
+	<?php  
+	 	do_action( 'print_custom_notices', true );
 		$booking_list_table->prepare_items();
 
 		$booking_list_table->views(); ?>
@@ -18,9 +18,9 @@
 	<form method="post">
 		<p class="search-box">
 			<select name="filter_room_ID">
-				<option value="">Room Code</option>
+				<option value="">Room Type</option>
 				<?php foreach ( $rooms as $room ): ?>
-					<option value="<?php echo $room->ID; ?>" <?php selected( $room->ID, browser_request( 'filter_room_ID' ) ) ;?>><?php echo room_code( $room->ID ); ?></option>
+					<option value="<?php echo $room->ID; ?>" <?php selected( $room->ID, browser_request( 'filter_room_ID' ) ) ;?>><?php echo $room->post_title; ?></option>
 				<?php endforeach; ?>
 			</select>
 			<select name="filter_payment_status">
@@ -29,9 +29,10 @@
 					<option value="<?php echo $s; ?>" <?php selected( $s, browser_request( 'filter_payment_status' ) ) ;?>><?php echo $s; ?></option>
 				<?php endforeach; ?>
 			</select>
-			<input type="text" name="filter_date_in" id="filter_date_in" class="bdr-calendar" value="<?php echo browser_request( 'filter_date_in' ) ;?>" placeholder="Check In"/>
-			<input type="text" name="filter_date_out" id="filter_date_out" class="bdr-calendar" value="<?php echo browser_request( 'filter_date_out' ) ;?>" placeholder="Check Out"/>
+			<input type="text" name="filter_date_in" id="filter_date_in" value="<?php echo browser_request( 'filter_date_in' ) ;?>" placeholder="Check In"/>
+			<input type="text" name="filter_date_out" id="filter_date_out" value="<?php echo browser_request( 'filter_date_out' ) ;?>" placeholder="Check Out"/>
 			<input type="submit" id="filter" class="button" value="Filter">
+			<a href="<?php echo admin_url('/admin.php?page=manage-bookings'); ?>" class="button">Reset</a>
 		</p>
 	  	<input type="hidden" name="page" value="cebu-dream-booking" />
 	</form>

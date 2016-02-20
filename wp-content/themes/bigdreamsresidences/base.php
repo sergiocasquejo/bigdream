@@ -37,6 +37,10 @@ use Roots\Sage\Wrapper;
       do_action('get_footer');
       get_template_part('templates/footer');
       wp_footer();
+      //do_action(  'wp_footer_notices' );
     ?>
+
+  
+
   </body>
 </html>

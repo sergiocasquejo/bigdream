@@ -1,39 +1,33 @@
 <div class="wrap" id="BookingDashboard">
 	<h1>Dashboard</h1>
-    <?php site_notices(); ?>
+    <?php do_action( 'print_custom_notices', true ); ?>
 	<div class="row text-center">
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-2 col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <div class="huge"><?php format_price(get_today_sales()); ?></div>
-                            <div>Today</div>
-                        </div>
+                    <div class="col-xs-12 text-center">
+                        <div class="huge"><?php echo nf( (float) get_today_sales() ); ?></div>
+                        <div>Today</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-2 col-md-6">
             <div class="panel panel-green">
                 <div class="panel-heading">
-                    <div class="row">
-                       <div class="col-xs-12 text-center">
-                            <div class="huge"><?php format_price(get_week_sales()); ?></div>
-                            <div>This Week</div>
-                        </div>
+                   <div class="col-xs-12 text-center">
+                        <div class="huge"><?php echo nf( (float) get_week_sales() ); ?></div>
+                        <div>This Week</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-2 col-md-6">
             <div class="panel panel-yellow">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <div class="huge"><?php format_price(get_month_sales()); ?></div>
-                            <div>This Month</div>
-                        </div>
+                    <div class="col-xs-12 text-center">
+                        <div class="huge"><?php echo nf( (float) get_month_sales() ); ?></div>
+                        <div>This Month</div>
                     </div>
                 </div>
             </div>
@@ -41,20 +35,30 @@
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-red">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <div class="huge"><?php format_price(get_year_sales()); ?></div>
-                            <div>This Year</div>
-                        </div>
+                    <div class="col-xs-12 text-center">
+                        <div class="huge"><?php echo nf( (float) get_year_sales() ); ?></div>
+                        <div>This Year</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-violet">
+                <div class="panel-heading">
+                    <div class="col-xs-12 text-center">
+                        <div class="huge"><?php echo nf( (float) get_year_sales() ); ?></div>
+                        <div>Previous Year</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-	<div class="row" style="width:100%">
-        <div id="legend"></div>
-		<canvas id="canvas"></canvas>
+	<div class="row">
+        <div class="graph-wrapper col-md-12">
+            <div id="legend"></div>
+    		<canvas id="canvas"></canvas>
+        </div>
 	</div>
 	
 </div>

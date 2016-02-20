@@ -6,4 +6,5 @@
       <link href='<?php echo get_template_directory_uri(); ?>/assets/styles/plugins/animations-ie-fix.css' rel='stylesheet'>
 	<![endif]-->
   <?php wp_head(); ?>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;signed_in=true"></script>
 </head>

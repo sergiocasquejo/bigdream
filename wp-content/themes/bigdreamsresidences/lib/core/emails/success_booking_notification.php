@@ -70,17 +70,17 @@
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
 									<span style="float:left;font-size:14px;font-family: 'Hind', sans-serif;text-transform:uppercase;font-weight:bold;"><?php echo $d['room_title']; ?></span></li>
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Room Price: <?php echo nf($d['room_price']); ?></span></li>	
+									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Room Price:</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;"> <?php echo nf($d['room_price']); ?></span></li>	
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Max: <?php echo $d['max_person']; ?> Person(s)</span></li>
+									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Max:</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;"> <?php echo $d['max_person']; ?> Person(s)</span></li>
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Size: <?php echo $d['room_size']; ?></span></li>
+									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Size:</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;"> <?php echo $d['room_size']; ?></span></li>
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Bed: <?php echo $d['bed']; ?></span></li>
+									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">Bed:</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;"> <?php echo $d['bed']; ?></span></li>
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">View: <?php echo $d['view']; ?></span></li>
+									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">View:</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;"> <?php echo $d['view']; ?></span></li>
 								<li style="font-family: 'Hind', sans-serif;display: block;clear: both;padding: 10px 0;">
-									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">No of Room <?php echo $d['no_of_room']; ?> : <?php echo nf( $d['no_of_night'] * $d['room_price'] ); ?></span></li>
+									<span style="float:left;font-size:12px;font-family: 'Hind', sans-serif;">No of Room <?php echo $d['no_of_room']; ?> :</span><span style="float:right;font-size:12px;color:#333;font-weight: 600;font-family: 'Hind', sans-serif;"> <?php echo nf( $d['no_of_night'] * $d['room_price'] ); ?></span></li>
 								
 							</ul>
 						</div>

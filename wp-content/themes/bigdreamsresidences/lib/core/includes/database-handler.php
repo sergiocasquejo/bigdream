@@ -255,9 +255,26 @@ function get_bookings_for_export() {
 		$sql .= " AND ( p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%' ) ";
 	}
 
-	if ( ($status = browser_get( 'status' )) != '' ) {
+
+	if ( ($status = browser_request( 'status' )) != '' ) {
 		$sql .= " AND (b.booking_status = '". $status ."' ) ";
 	}
+	
+	if ( ($status = browser_request( 'filter_payment_status' )) != '' ) {
+		$sql .= " AND (b.payment_status = '". $status ."' ) ";
+	}
+
+	
+
+	if ( ($room_type_ID = browser_request( 'filter_room_ID' )) != '' ) {
+		$sql .= " AND (b.room_type_ID = '". $room_type_ID ."' ) ";
+	}
+
+
+	if ( ($checkin = browser_request( 'filter_date_in' )) != '' && ($checkout = browser_request( 'filter_date_out' )) != '' ) {
+		$sql .= " AND (date_in >= '". format_db_date( $checkin, 'Y-m-d' ) ."' AND  date_out <= '". format_db_date( $checkout, 'Y-m-d' ) ."'  ) ";
+	}
+
 
 	$results = $wpdb->get_results( $sql, ARRAY_A );
 
@@ -433,7 +450,7 @@ function get_room_unavailable_schedule( $room_type_ID, $output = 'ARRAY_A' ) {
 function get_today_sales() {
 	global $wpdb;
 
-	$amount = $wpdb->get_var( "SELECT SUM( amount_paid) FROM ".$wpdb->prefix."bookings WHERE DATE_FORMAT(date_booked, '%Y-%m-%d' ) = CURDATE() AND payment_status IN( 'UNPAID' )" );
+	$amount = $wpdb->get_var( "SELECT SUM( amount_paid) FROM ".$wpdb->prefix."bookings WHERE DATE_FORMAT(date_booked, '%Y-%m-%d' ) = CURDATE() AND payment_status NOT IN( 'UNPAID' )" );
 
 	return $amount;	
 }
@@ -441,7 +458,7 @@ function get_today_sales() {
 function get_week_sales() {
 	global $wpdb;
 
-	$amount = $wpdb->get_var( "SELECT SUM( amount_paid) FROM ".$wpdb->prefix."bookings WHERE WEEK(date_booked) = WEEK(CURDATE() ) AND payment_status IN( 'UNPAID' )" );
+	$amount = $wpdb->get_var( "SELECT SUM( amount_paid) FROM ".$wpdb->prefix."bookings WHERE WEEK(date_booked) = WEEK(CURDATE() ) AND payment_status NOT IN ( 'UNPAID' )" );
 
 	return $amount;	
 }
@@ -449,7 +466,7 @@ function get_week_sales() {
 function get_month_sales() {
 	global $wpdb;
 
-	$amount = $wpdb->get_var( "SELECT SUM( amount_paid) FROM ".$wpdb->prefix."bookings WHERE MONTH(date_booked) = MONTH(CURDATE() ) AND payment_status IN( 'UNPAID' )" );
+	$amount = $wpdb->get_var( "SELECT SUM( amount_paid) FROM ".$wpdb->prefix."bookings WHERE MONTH(date_booked) = MONTH(CURDATE() ) AND payment_status NOT IN ( 'UNPAID' )" );
 
 	return $amount;	
 }
@@ -457,7 +474,7 @@ function get_month_sales() {
 function get_year_sales() {
 	global $wpdb;
 
-	$amount = $wpdb->get_var( "SELECT SUM( amount_paid) FROM ".$wpdb->prefix."bookings WHERE YEAR(date_booked) = YEAR(CURDATE() ) AND payment_status IN( 'UNPAID' )" );
+	$amount = $wpdb->get_var( "SELECT SUM( amount_paid) FROM ".$wpdb->prefix."bookings WHERE YEAR(date_booked) = YEAR(CURDATE() ) AND payment_status NOT IN ( 'UNPAID' )" );
 
 	return $amount;	
 }
