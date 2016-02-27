@@ -163,7 +163,7 @@
           <li>Room Price: <span class="room_price"><?php echo format_price( $room_price ); ?></span></li>
           <li>Total Room: <span class="total_rooms"><?php echo ' x ' . $no_of_room; ?></span></li>
           <li>Total Nights: <span class="total_nights"><?php echo ' x ' . $no_of_night; ?></span></li>
-          <li>Total Amount: <span class="total_amount"><?php echo format_price( $amount ); ?></span></li>
+          <li class="total-amount-box">Total Amount: <span class="total_amount"><?php echo format_price( $amount ); ?></span></li>
         </ul>
       </div>
 

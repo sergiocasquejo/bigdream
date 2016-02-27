@@ -321,13 +321,14 @@ if (! class_exists('Booking') ) {
 				if ( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) return;
 
 			   	wp_enqueue_style( 'admin-style', assets( 'style/admin.css' ) );	
-			   	wp_enqueue_style( 'jquery-style', assets( 'style/jquery-ui.css' ) );
+			   	wp_enqueue_style( 'jquery-style', assets( 'vendor/jquery-ui-1.11.4.custom/jquery-ui.min.css' ) );
 			   	wp_enqueue_script( 'jquery-ui-datepicker' );
 			   	wp_enqueue_script( 'jquery-ui-tooltip' );
 				wp_enqueue_script( 'chart-script', assets( 'vendor/Chart.min.js' ), array( 'jquery' ), true, false );
 				wp_enqueue_script( 'admin-script', assets( 'js/admin.js' ), array( 'chart-script', 'jquery' ), true, true );
 				wp_localize_script( 'admin-script', 'BDR', array(
 					'AjaxUrl' => admin_url( 'admin-ajax.php' ),
+					'assets' => assets( '' ),
 					'bookings' => get_booking_calendar()
 				) );
 			}
@@ -512,7 +513,7 @@ if (! class_exists('Booking') ) {
 				    	if ( in_array( get_booking_status( $data['booking_ID'] ), array( 'NEW' )  ) ) {
 				    		wp_send_json_error( array( 'message' => 'You can\'t add room while booking is not confirmed.' ) );
 
-				    	} else if ( is_room_available( $data['room_ID'], $data['date_in'], $data['date_out'], $data['booking_room_ID'] ) == 0 ) {
+				    	} else if ( is_room_available( $data['room_ID'], $data['date_in'], $data['booking_room_ID'] ) == 0 ) {
 				    		$error['date_in'] = 'Selected room is not available on that date. Please check calendar to see availability.';
 							javacript_notices( $error, '#roomsAndGuestInfoForm' );
 				    		wp_send_json_error( array( 'js' => print_javascript_notices( false ) ) );
@@ -566,7 +567,7 @@ if (! class_exists('Booking') ) {
 					$output .= '<li>Room Price: <span class="room_price">'. format_price( $room_price, false ) .'</span></li>';
           			$output .= '<li>Total Room: <span class="total_rooms"> x ' . $data['no_of_room'] .'</span></li>';
           			$output .= '<li>Total Nights: <span class="total_nights"> x ' . $no_of_night .'</span></li>';
-          			$output .= '<li>Total Amount: <span class="total_amount">'. format_price( $total, false ) .'</span></li>';
+          			$output .= '<li class="total-amount-box">Total Amount: <span class="total_amount">'. format_price( $total, false ) .'</span></li>';
         		$output .= '</ul>';
 
 				wp_send_json_success( array( 'html' => $output) );
@@ -712,7 +713,7 @@ if (! class_exists('Booking') ) {
 	      											$f = count_days_gap( $cal['from'], $cal['to'], $end_date );
 
 	      											if ( $f != 0 && $indx < count( $c ) ) {
-	      												$output .= '<td colspan="'. $f .'"><div class="text bdr-tooltip '. strtolower($cal['status']) .'" title="'.  $cal['guest'] . ' : ' . format_date( $cal['from'] ) .' to '. format_date( $cal['to'] )  .'">'. $cal['guest'] .'</div></td>';
+	      												$output .= '<td class="not-available" colspan="'. $f .'"><div class="text bdr-tooltip '. strtolower($cal['status']) .'" title="'.  $cal['guest'] . ' : ' . format_date( $cal['from'] ) .' to '. format_date( $cal['to'] )  .'">'. $cal['guest'] .'</div></td>';
 	      											}
 	      											
 	      											$b = $cal['to'] > $end_date ? $end_date : $cal['to'];

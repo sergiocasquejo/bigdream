@@ -331,6 +331,7 @@ td.calendar_row table th {
 .calendar_row .bg-content .text {
 	height: 38px;
     padding: 2px 10px;
+    background:#F75C05;
     background-color:#F75C05;
     color:#FFF;
     font-size: 10px;
@@ -344,17 +345,20 @@ td.calendar_row table th {
 }
 
 .calendar_row .bg-content .text.arrived {
+	background: #0A8415;
     background-color: #0A8415;
     border-color: #04630D;
 
 }
 
 .calendar_row .bg-content .text.confirmed {
+	background: #20979D;
     background-color: #20979D;
     border-color: #18868C;
 }
 
 .calendar_row .bg-content .text.checkout {
+	background: #B70707;
     background-color: #B70707;
     border-color: #940707;
 }
@@ -368,6 +372,8 @@ td.room {
     background-color: #F3F6FB;
     font-weight: bold;
 }
+
+
 
 .calendar_row .bg-content td {
     border-width: 0;
@@ -471,4 +477,22 @@ td.room {
     padding: 20px;
     background-color: #FFF;
     margin: 0 auto;
+}
+
+td.room {
+    font-size: 10px;
+}
+
+
+div#priceCalculation {
+    background-color: #214D71;
+    color: #FFF;
+    padding: 1em;
+}
+
+.total-amount-box {
+	text-transform: uppercase;
+    border-top: solid 1px #FDFDFD;
+    padding: 15px 0;
+    margin-top: 15px;
 }

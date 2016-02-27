@@ -2,7 +2,7 @@
 function get_query_string_for_export() {
   $str = '';
 
-  if ( $s = browser_post( 's' ) != '' ) {
+  if ( ( $s = browser_request( 's' ) ) != '' ) {
     $str .= '&s='.$s;
   }
 

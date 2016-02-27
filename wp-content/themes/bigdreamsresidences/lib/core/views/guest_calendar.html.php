@@ -18,7 +18,7 @@
 			</select>
 			<input type="hidden" name="action" value="filter_guest_calendar_date" />
 			<button type="submit" class="button button-primary">Filter</button>
-			<a href="#" class="button button-secondary">Print Calendar</a>
+			<button id="printCalendar" class="button button-secondary">Print Calendar</button>
 		</form>
 	</div>
 	<div class="gap-30"></div>	

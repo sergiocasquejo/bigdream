@@ -40,7 +40,6 @@ function is_room_available( $room_ID, $from, $booking_room_ID ) {
   	$sql = $wpdb->prepare( "SELECT count(*) FROM ".$wpdb->prefix."guest_calendar WHERE room_ID = %d AND '%s' >= date_in AND  '%s' < date_out AND booking_room_ID != %d", $room_ID, $from, $from, $booking_room_ID );
 
 
-  
   return (int) $wpdb->get_var( $sql ) <= 0;
 }
 
@@ -211,8 +210,8 @@ function get_filtered_bookings() {
 		
 	$sql = "SELECT p.post_title as room_title,  b.*, CONCAT(b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_type_ID WHERE 1 = 1";
 
-	if ( $s = browser_post( 's' ) != '' ) {
-		$sql .= " AND ( p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%' ) ";
+	if ( ( $s = browser_request( 's' ) ) != '' ) {
+		$sql .= " AND ( booking_no = '". $s ."' OR p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%' ) ";
 	}
 
 	
@@ -236,9 +235,6 @@ function get_filtered_bookings() {
 		$sql .= " AND (date_in >= '". format_db_date( $checkin, 'Y-m-d' ) ."' AND  date_out <= '". format_db_date( $checkout, 'Y-m-d' ) ."'  ) ";
 	}
 
-
-
-
 	$results = $wpdb->get_results( $sql, ARRAY_A );
 
 	return $results;
@@ -251,8 +247,8 @@ function get_bookings_for_export() {
 		
 	$sql = "SELECT booking_no,  p.post_title, room_price, b.date_in, b.date_out, b.no_of_night, b.no_of_room, amount, amount_paid, b.no_of_adult, b.no_of_child,  CONCAT(b.salutation, '. ', b.first_name,' ', b.middle_name, ' ', b.last_name) as guest_name, b.birth_date, b.email_address, b.primary_phone, b.country, b.address_1, b.address_2, b.province, b.city, b.zipcode, b.nationality, b.booking_status, b.payment_status, b.date_booked  FROM ". $wpdb->prefix . "bookings b  JOIN ". $wpdb->prefix ."posts p  ON p.ID = b.room_type_ID WHERE 1 = 1";
 
-	if ( $s = browser_post( 's' ) != '' ) {
-		$sql .= " AND ( p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%' ) ";
+	if ( ( $s = browser_request( 's' ) ) != '' ) {
+		$sql .= " AND ( booking_no = '". $s ."' OR p.post_title LIKE '%". $s ."%' OR b.first_name LIKE '%". $s ."%' OR b.last_name LIKE '%". $s ."%' ) ";
 	}
 
 

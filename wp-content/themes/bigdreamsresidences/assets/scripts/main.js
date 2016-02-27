@@ -13,21 +13,25 @@
 
   function PrintBooking(content) {
 
-    var str = '<html><head><title></title>' + 
-      '<link href="'+ BDR.template_dir_uri +'/dist/styles/main.css" rel="stylesheet" type="text/css" media="print" />' +
-      '</head><body >' + $(content).html() + '</body></html>';
-
-    var mywindow = window.open('', 'my div', 'height=800,width=700');
-        mywindow.document.write(str);
-
-        mywindow.document.close(); // necessary for IE >= 10
-        mywindow.focus(); // necessary for IE >= 10
-
-        mywindow.print();
-        mywindow.close();
-
+      var WindowObject = window.open('', 'PrintWindow', 'width=750,height=650,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes');
+      WindowObject.document.writeln('<!DOCTYPE html>');
+      WindowObject.document.write('<html><head><title>Print it!</title>');
+      WindowObject.document.write('<link href="'+ BDR.template_dir_uri +'/dist/styles/main.css" rel="stylesheet" type="text/css" media="print" />');
+      WindowObject.document.write('</head><body>');
+      WindowObject.document.write($(content).html()); //DocumentContainer.innerHTML);
+      WindowObject.document.write('</body></html>');
       
-        return true;
+      WindowObject.document.close();
+          
+
+      setTimeout(function () {
+        WindowObject.focus();
+        WindowObject.print();
+        WindowObject.close();
+      }, 500);
+
+    
+      return true;
   }
 
 

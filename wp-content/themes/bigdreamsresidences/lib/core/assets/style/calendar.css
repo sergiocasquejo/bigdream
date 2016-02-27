@@ -1,0 +1,124 @@
+
+table {
+	table-layout:fixed;
+	width:100%;
+	border:solid 1px #000;
+	border-collapse: collapse;
+}
+table table {
+	table-layout: fixed;
+}
+
+table th, table td {
+	border:1px solid #000;
+	padding:0.5em;
+}
+.not-available {
+	background:#000;
+	background-color:#000;
+	-webkit-print-color-adjust: exact; 
+}
+
+
+#guestCalendarWrapper table thead th {
+    font-size: 11px;
+}
+
+#guestCalendarWrapper .calendar_row {
+    padding:0;
+}
+
+.calendar_row .row_data {
+    height: 40px;
+    position: relative;
+    margin-left: -1px;
+    margin-right: -1px;
+    overflow: hidden;
+    margin-top: -1px;
+}
+
+td.calendar_row table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td.calendar_row table td,
+td.calendar_row table th {
+    height:40px;
+}
+
+.calendar_row .bg-content {
+    width:100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height:100%;
+}
+
+.calendar_row .bg-content td {
+    padding:0;
+}
+
+.text {
+	height: 38px;
+    padding: 2px 10px;
+    background:#F75C05;
+    background-color:#F75C05;
+    color:#FFF;
+    font-size: 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #DA5308;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -webkit-print-color-adjust: exact; 
+}
+
+.text.arrived {
+	background:#0A8415;
+    background-color: #0A8415;
+    border-color: #04630D;
+    -webkit-print-color-adjust: exact; 
+
+}
+
+.text.confirmed {
+	background:#20979D;
+    background-color: #20979D;
+    border-color: #18868C;
+    -webkit-print-color-adjust: exact; 
+}
+
+.text.checkout {
+	background:#B70707;
+    background-color: #B70707;
+    border-color: #940707;
+    -webkit-print-color-adjust: exact; 
+}
+
+td.sun, td.sat {
+    background-color: #FBFBFB;
+    -webkit-print-color-adjust: exact; 
+}
+
+td.room {
+    font-size:12px;
+    background-color: #F3F6FB;
+    font-weight: bold;
+    -webkit-print-color-adjust: exact; 
+}
+
+span.error_field {
+    color: #DC3232;
+    font-size: 11px;
+    display: inline-block;
+    -webkit-print-color-adjust: exact; 
+}
+
+.row {
+    content: '';
+    clear: both;
+    display: block;
+}

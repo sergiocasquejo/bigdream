@@ -193,6 +193,26 @@
 			});
 
 		  return false;
+		})
+		.on('click', '#printCalendar', function(e) {
+			e.preventDefault();
+
+
+			var DocumentContainer = document.getElementById('guestCalendarWrapper');
+       		var WindowObject = window.open('', 'PrintWindow', 'width=750,height=650,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes');
+			WindowObject.document.writeln('<!DOCTYPE html>');
+			WindowObject.document.write('<html><head>');
+			WindowObject.document.write('<link rel="stylesheet" type="text/css" href="'+ BDR.assets +'style/calendar.css" media="print">');
+			WindowObject.document.write('</head><body>');
+			WindowObject.document.write('<div id="guestCalendarWrapper">' + DocumentContainer.innerHTML + '</div>');
+			WindowObject.document.write('</body></html>');
+
+        	setTimeout(function () {
+        		WindowObject.document.close();
+	            WindowObject.focus();
+        		WindowObject.print();
+        		WindowObject.close();
+	        }, 1000);
 		});
 
 
