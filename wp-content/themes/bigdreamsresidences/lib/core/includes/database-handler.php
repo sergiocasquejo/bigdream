@@ -475,6 +475,14 @@ function get_year_sales() {
 	return $amount;	
 }
 
+function get_last_year_sales() {
+	global $wpdb;
+
+	$amount = $wpdb->get_var( "SELECT SUM( amount_paid) FROM ".$wpdb->prefix."bookings WHERE YEAR(date_booked) = YEAR(CURDATE()) - 1 AND payment_status NOT IN ( 'UNPAID' )" );
+
+	return $amount;	
+}
+
 function get_monthly_sales( $output = 'ARRAY_A' ) {
 	global $wpdb;
 

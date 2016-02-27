@@ -46,8 +46,8 @@
             <div class="panel panel-violet">
                 <div class="panel-heading">
                     <div class="col-xs-12 text-center">
-                        <div class="huge"><?php echo nf( (float) get_year_sales() ); ?></div>
-                        <div>Previous Year</div>
+                        <div class="huge"><?php echo nf( (float) get_last_year_sales() ); ?></div>
+                        <div>Last Year</div>
                     </div>
                 </div>
             </div>
