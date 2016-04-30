@@ -49,9 +49,10 @@ function login_logo() { ?>
     	    background-color: #000;
     	 }
         .login h1 a {
-            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/dist/images/logo.png);
+            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/dist/images/logo-medium.jpg);
             background-size: 100%;
             width: 250px;
+            height: 150px;
         }
     </style>
 <?php }

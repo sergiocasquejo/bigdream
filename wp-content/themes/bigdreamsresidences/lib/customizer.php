@@ -40,6 +40,13 @@ function bdr_customize_register($wp_customize) {
 								'label' => __('Upload logo for your header', BDR_TEXT_DOMAIN),
 								'sanitize_callback' => 'esc_url_raw',
 								'type' => 'image'
+							),
+							array(
+								'slug' => 'bdr_mobile_logo',
+								'default' => '',
+								'label' => __('Upload mobile logo for your header', BDR_TEXT_DOMAIN),
+								'sanitize_callback' => 'esc_url_raw',
+								'type' => 'image'
 							)
 						)
 					),

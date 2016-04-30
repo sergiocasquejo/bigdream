@@ -15,7 +15,6 @@
 
 
 .header_top {
-  background-color: #FFF;
     .social-media-icon {
         margin-top: 3px;
         li {
@@ -31,17 +30,21 @@
   .header_left {
     span {
         font-size: 12px;
-        color: #000;
+        color: #FFF;
         margin-right: 15px;
         line-height: 36px;
     }
   }
 }
 
+.header_bottom{
+    min-height:35px;
+}
+
 
 .header_mobile, .header_mobile .header_menu {
     z-index: 999;
-    background-color: $bg-transparent-black;
+    background-color: #000;
 }
 
 
@@ -111,9 +114,14 @@
     float: left;
     line-height: 84px;
     max-width: 300px;
+    position:absolute;
+    .mobile-logo {
+      display:none;
+    }
 }
 
 .header-sticky {
+  top:0;
   position: fixed;
   -webkit-backface-visibility: hidden;
 
@@ -163,6 +171,7 @@
           float:none;
           display:block;
           margin:0;
+          padding:0;
           a {
             display: block;
             color: #fff;
@@ -246,13 +255,20 @@
             background-color:$dark-transparent-black;
           }
         }
+
+        &.current-menu-item {
+          a {
+            color:$yellow;
+          }
+        }
       }
     }
   }
 }
 
 .header_content {
-    background-color: $bg-transparent-black;
+    border-top: solid 3px $yellow;
+    background-color: $bg-black;
     left: 0;
     right: 0;
     top: 0;
@@ -264,6 +280,7 @@
 
 
 .images-slider {
+  position:relative;
 	.slides {
 		li {
 			width: 100%;

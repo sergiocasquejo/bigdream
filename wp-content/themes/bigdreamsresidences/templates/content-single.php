@@ -30,11 +30,11 @@ $rooms_available = get_total_available_rooms( get_the_ID(), booking_data( 'date_
                             <div class="room-detail_form">
                                 <div class="form-group">
                                     <label>Arrive</label>
-                                    <input type="text" name="date_in" id="date_in" class="date form-control" placeholder="Arrive Date" value="<?php echo booking_data( 'date_in' ); ?>" required>
+                                    <input type="text" name="date_in" id="date_in" class="date form-control" placeholder="Arrive Date" value="<?php echo booking_data( 'date_in' ); ?>" required readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Depature</label>
-                                    <input type="text" name="date_out" id="date_out" class="date form-control" placeholder="Departure Date" value="<?php echo booking_data( 'date_out' ); ?>"  required>
+                                    <input type="text" name="date_out" id="date_out" class="date form-control" placeholder="Departure Date" value="<?php echo booking_data( 'date_out' ); ?>"  required readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>No of Room</label>
@@ -83,7 +83,6 @@ $rooms_available = get_total_available_rooms( get_the_ID(), booking_data( 'date_
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs room-detail_tab-header" role="tablist">
                         <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
-                        <li role="presentation"><a href="#aminities" aria-controls="aminities" role="tab" data-toggle="tab">Aminities</a></li>
                         <li role="presentation"><a href="#prices" aria-controls="prices" role="tab" data-toggle="tab">Rates</a></li>
                         <li role="presentation"><a href="#calendar" aria-controls="calendar" role="tab" data-toggle="tab">Calendar</a></li>
                     </ul>
@@ -101,7 +100,6 @@ $rooms_available = get_total_available_rooms( get_the_ID(), booking_data( 'date_
                                         <ul>
                                             <li>Max: <?php the_field( 'max_person' ); ?></li>
                                             <li>Size: <?php the_field( 'room_size' ); ?></li>
-                                            <li>View: <?php the_field( 'view' ); ?></li>
                                             <li>Bed: <?php the_field( 'bed' ); ?></li>
                                         </ul>
                                     </div>
@@ -118,8 +116,6 @@ $rooms_available = get_total_available_rooms( get_the_ID(), booking_data( 'date_
                                 </div>
 
                             </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="aminities">
                             <div class="room-detail_amenities">
                                 <p><?php the_content(); ?></p>
                                 <?php if ( have_rows( 'packages' ) ): ?>

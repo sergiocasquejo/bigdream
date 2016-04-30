@@ -16,9 +16,9 @@
     "main.js": {
       "files": [
         "scripts/vendor/jquery-ui.min.js",
-        "scripts/vendor/jquery.flexslider.js",
+       "scripts/vendor/jquery.flexslider.js",
         "scripts/vendor/isotope.pkgd.min.js",
-        "scripts/vendor/css3-animate-it.js",
+       "scripts/vendor/css3-animate-it.js",
         "scripts/main.js"
       ],
       "main": true

@@ -128,8 +128,9 @@ body {
 }
 /* start booking_room */
 .online_reservation{
-	position: relative;
-	margin-top: -75px;
+	position: absolute;
+	bottom:0;
+	width:100%;
 	z-index: 888;
 	background-color: rgba(255, 255, 255, 0.82);
 }
@@ -137,7 +138,7 @@ body {
 	display: inline-flex;
 }
 .booking_room{
-	padding: 3% 2%;
+	padding: 20px 0 5px 0;
 	float: left;
 }
 

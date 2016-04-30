@@ -16,10 +16,10 @@ function banner_slider_shortcode_handler( $atts, $content = null, $tag) {
 				$output .= '<ul class="slides">';
 					foreach ( $gallery as $i => $g) {
 					$output .= '<li style="background:url( '. $g['banner'] .' );">';
-						$output .= '<div class="banner-info">';
-							$output .= '<h4 class="title">'. $g['title'] .'</h4>';
-							$output .= '<h5 class="title1">'. $g['excerpt'] .'</h5>';
-						$output .= '</div>';
+						// $output .= '<div class="banner-info">';
+						// 	$output .= '<h4 class="title">'. $g['title'] .'</h4>';
+						// 	$output .= '<h5 class="title1">'. $g['excerpt'] .'</h5>';
+						// $output .= '</div>';
 					$output .= '</li>';
 					}
 				$output .= '</ul>';
@@ -53,13 +53,13 @@ function online_reservation_form_shortcode_handler( $atts, $content = null, $tag
 						$output .= '<li class="col-md-3">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>check-in-date:</h5>';
-								$output .= '<input class="date form-control" autocomplete="false" name="date_in" id="date_in" type="text" value="'. booking_data( 'date_in', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false">';
+								$output .= '<input class="date form-control" autocomplete="false" name="date_in" id="date_in" type="text" value="'. booking_data( 'date_in', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false" readonly>';
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<li  class="col-md-3">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>check-out-date:</h5>';
-								$output .= '<input class="date form-control" autocomplete="false" name="date_out" id="date_out" type="text" value="'. booking_data( 'date_out', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false">';
+								$output .= '<input class="date form-control" autocomplete="false" name="date_out" id="date_out" type="text" value="'. booking_data( 'date_out', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false" readonly>';
 							$output .= '</div>';
 						$output .= '</li>';
 						$output .= '<li class="col-md-2">';
@@ -170,7 +170,8 @@ function featured_room_shortcode_handler( $atts, $content = null ) {
 							$output .= '<ul>';
 							$output .= '<li><i class="fa fa-male"></i>Max: '. get_field( 'max_person', $p->ID ) .' Person(s)</li>';
 							$output .= '<li><i class="fa fa-bed"></i>Bed: '. get_field( 'bed', $p->ID ) .'</li>';
-							$output .= '<li><i class="fa fa-eye"></i>View: '. get_field( 'view', $p->ID ) .'</li>';
+							$output .= '<li><i class="fa fa-arrows-alt"></i>Size: '. get_field( 'room_size', $p->ID ) .'</li>';
+		
 							$output .= '</ul>';
 							
 							$output .= '<a href="'. get_permalink( $p->ID ) .'" class="bdr-btn bdr-btn-default">View Details</a>';
@@ -209,7 +210,7 @@ function room_listings_shortcode_handler( $atts, $content = null ) {
                			$output .= '<ul>';
                			$output .= '<li><i class="fa fa-male"></i>Max: '. get_field( 'max_person', $t->ID ) .' Person(s)</li>';
 						$output .= '<li><i class="fa fa-bed"></i>Bed: '. get_field( 'bed', $t->ID ) .'</li>';
-						$output .= '<li><i class="fa fa-eye"></i>View: '. get_field( 'view', $t->ID ) .'</li>';
+						$output .= '<li><i class="fa fa-arrows-alt"></i>Size: '. get_field( 'room_size', $t->ID ) .'</li>';
                			$output .= '</ul>';
                		$output .= '</div>';
                		$output .= '<div class="bot">';

@@ -212,7 +212,7 @@ function admin_custom_init() {
 		'rewrite'           => array( 'slug' => 'room-cat' ),
 	);
 
-	register_taxonomy( 'room_type-cat', array( 'room_type' ), $args );
+	//register_taxonomy( 'room_type-cat', array( 'room_type' ), $args );
 
 
 	$labels = array(
