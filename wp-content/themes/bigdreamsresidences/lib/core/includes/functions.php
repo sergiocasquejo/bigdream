@@ -27,6 +27,13 @@ function get_query_string_for_export() {
 
 }
 
+function get_max_person($id) {
+  $max = (int)get_field('max_person', $id);
+  $max = $max > 0 ? $max : 1;
+
+  return $max;
+}
+
 
 function add_days_to_date( $date, $days ) {
 	return date( 'Y-m-d', strtotime( '+'. $days .' day', strtotime( $date ) ) );
@@ -407,7 +414,10 @@ function javacript_notices($errors = array(), $parent = false) {
  */
 function booking_data($key, $default = '') {
   $booking = isset($_SESSION['_bdr_booking']) ? $_SESSION['_bdr_booking'] : array();
-
+  // unset($_SESSION['_bdr_booking']);
+  // echo '<pre>';
+  // print_r($booking);
+  // echo '</pre>';
   return isset($booking[$key]) ? $booking[$key] : $default;
 }
 
@@ -417,6 +427,42 @@ function get_array_values_by_keys( $data = array(), $keys = array() ) {
     $arr[$k] = array_data($data, $k, '');
   }
   return $arr;
+}
+
+function calculate_amount() {
+
+}
+
+function has_monthly_price($id =  false) {
+  if (!$id) {
+    global $post;
+    $id = $post->ID;
+  }
+
+  return get_field('monthly_price', $id) != '' && get_field('monthly_price', $id) > 0;
+}
+
+function get_monthly_price($id = false) {
+  if (!$id) {
+    global $post;
+    $id = $post->ID;
+  }
+
+  $price = get_field('monthly_price', $id);
+
+  return (float) $price;
+}
+
+function get_room_price_with_nights( $id, $date_in, $date_out ) {
+  $nights = count_nights( $date_in, $date_out );
+
+  if ($nights >= 30 && has_monthly_price( $id ) ) {
+    $subtotal = $room_price = get_monthly_price( $id );
+  } else {
+    $subtotal = get_room_price( $id, $date_in, $date_out ) * $nights;
+  }
+
+  return $subtotal;
 }
 
 /**
@@ -432,7 +478,8 @@ function get_room_price($id = false, $date_in = false, $date_out = false) {
     global $post;
     $id = $post->ID;
   }
-  
+
+
   $price = get_field('price', $id);
 
   if ( $date_in && $date_out ) {
@@ -499,6 +546,20 @@ function the_room_price_html($id = false) {
 }
 
 /**
+ * the_monthly_room_price_html()
+ * 
+ * Print HTML formatted price with currency code
+ * 
+ * @param int $id - Room/Post ID
+ * @return String $formatted_price
+ */
+function the_monthly_room_price_html($id = false) {
+  echo get_monthly_room_price_html($id);
+}
+
+
+
+/**
  * get_room_price_html()
  * 
  * Return HTML formatted price with currency code
@@ -508,6 +569,18 @@ function the_room_price_html($id = false) {
  */
 function get_room_price_html( $id = false ) {
   return sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf(get_room_price($id)));
+}
+
+/**
+ * get_monthly_room_price_html()
+ * 
+ * Return HTML formatted price with currency code
+ * 
+ * @param int $id - Room/Post ID
+ * @return String $formatted_price
+ */
+function get_monthly_room_price_html( $id = false ) {
+  return sprintf('<span class="amount">%s %s</span>', CURRENCY_CODE, nf(get_monthly_price($id)));
 }
 
 /**
@@ -661,7 +734,7 @@ function send_success_booking_notification( $booking_ID ) {
   $d['view'] = get_field( 'view', $d['room_type_ID'] );
 
 
-  $logo = get_template_directory_uri() . '/dist/images/logo.png';
+  $logo = get_template_directory_uri() . '/dist/images/logo-medium.jpg';
   
   include BDR_SYSTEM_DIR . "/emails/success_booking_notification.php";
   $message = ob_get_clean();
@@ -707,17 +780,7 @@ function is_bookable( $room_ID ) {
 }
 
 
-function is_date_and_room_not_available( $room_ID, $from , $to, $booking_ID = 0 ) {
-  
-  $range = get_dates_from_date_range( $from, $to );
-  foreach ( $range as $i => $k ) {
-    if ( is_selected_date_and_room_not_available( $room_ID, format_db_date( $k ), $booking_ID ) > 0 ) {
-      return true;
-    }
-  }
-  
-  return false;
-}
+
 
 
 function media_url( $file, $echo = true ) {
@@ -726,4 +789,56 @@ function media_url( $file, $echo = true ) {
   if ( ! $echo ) return $file;
 
   echo $file;
+}
+
+
+
+
+function calculate_total_amount( $room_type_id, $date_in, $date_out, $no_of_room ) {
+
+  $nights = count_nights( $date_in, $date_out );
+
+  if ($nights >= 30 && has_monthly_price( $room_type_id ) ) {
+    $subtotal = get_monthly_price( $room_type_id );
+  } else {
+    $subtotal = get_room_price( $room_type_id, $date_in, $date_out ) * $nights;
+  }
+
+  return $subtotal * $no_of_room;
+}
+
+/*********************************************************
+* Validation
+**********************************************************/
+
+function has_sufficient_room( $data ) {
+  $total_rooms_suggestion = ceil( $data['no_of_adult'] / get_max_person( $data['room_type_ID'] ) );
+
+  $no_of_rooms_available = get_total_available_rooms( $data['room_type_ID'], $data['date_in'], $data['date_out'] );
+
+  if ( $total_rooms_suggestion > $data['no_of_room'] ) {
+
+    add_this_notices( 'error', 'Number of persons selected needs at least '. 
+      $total_rooms_suggestion . ' room(s) and current available room is '. 
+      $no_of_rooms_available . '.' );
+
+    return false;
+  }
+
+  return true;
+}
+
+function is_date_and_room_not_available( $room_ID, $from , $to, $booking_ID = 0 ) {
+  
+  $range = get_dates_from_date_range( $from, $to );
+  foreach ( $range as $i => $k ) {
+    if ( is_selected_date_and_room_not_available( $room_ID, format_db_date( $k ), $booking_ID ) > 0 ) {
+
+      add_this_notices( 'error', 'Selected room is not available on that date. Please check calendar to see availability.' );
+
+      return true;
+    }
+  }
+  
+  return false;
 }

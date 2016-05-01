@@ -28,11 +28,10 @@
 	.banner-info {
 	    margin: 30% auto 0;
 	}
-
-	.reservation_form {
-	    padding: 3% 0%;
-	    float: left;
+	.success-booking-details .reservation-sidebar {
+		border-right:none;
 	}
+
 }
 
 
@@ -45,12 +44,20 @@
 }
 
 @media screen and (max-width: 425px) {
+	.online_reservation {
+		position:inherit;
+	}
+	
 	.images-slider .slider{
 		display:none;
 	}
 }
 
 @media screen and (max-width: 414px) {
+	body {
+		padding-top: 80px;
+	}
+
 	.header_logo {
 		max-width:250px;
 	}
@@ -83,9 +90,7 @@
 		top:0;
 	}
 
-	.room-banner .sub-banner .text h2 {
-		margin-top: 170px;
-	}
+
 
 	.title1, 
 	.title {
@@ -141,6 +146,8 @@
     		width: 100%;
 		}
 	}
+
+
 }
 
 @media screen and (max-width: 240px ) {

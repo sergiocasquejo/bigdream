@@ -49,20 +49,19 @@ function online_reservation_form_shortcode_handler( $atts, $content = null, $tag
 			$output .= '<div class="reservation_form col-md-12 col-lg-9">';
 			$output .= '<div class="row">';
 			$output .= '<form method="post">';
-					$output .= '<ul>';
-						$output .= '<li class="col-md-3">';
+						$output .= '<div class="col-md-3">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>check-in-date:</h5>';
 								$output .= '<input class="date form-control" autocomplete="false" name="date_in" id="date_in" type="text" value="'. booking_data( 'date_in', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false" readonly>';
 							$output .= '</div>';
-						$output .= '</li>';
-						$output .= '<li  class="col-md-3">';
+						$output .= '</div>';
+						$output .= '<div  class="col-md-3">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>check-out-date:</h5>';
 								$output .= '<input class="date form-control" autocomplete="false" name="date_out" id="date_out" type="text" value="'. booking_data( 'date_out', 'MM/DD/YYYY' ) .'" onfocus="this.value = \'\';" onblur="if (this.value == \'\' ) {this.value = \'MM/DD/YYYY\';}" autocomplete="false" readonly>';
 							$output .= '</div>';
-						$output .= '</li>';
-						$output .= '<li class="col-md-2">';
+						$output .= '</div>';
+						$output .= '<div class="col-lg-2 col-md-1">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>Adults:</h5>';
 								$output .= '<select name="no_of_adult" id="no_of_adult" class="frm-field required  form-control">';
@@ -71,8 +70,8 @@ function online_reservation_form_shortcode_handler( $atts, $content = null, $tag
 									}
 				        		$output .= '</select>';
 							$output .= '</div>';
-						$output .= '</li>';
-						$output .= '<li class="col-md-2">';
+						$output .= '</div>';
+						$output .= '<div class="col-lg-2 col-md-1">';
 							$output .= '<div class="form-group">';
 								$output .= '<h5>Child:</h5>';
 								$output .= '<select name="no_of_child" id="no_of_child" class="frm-field required  form-control">';
@@ -82,15 +81,14 @@ function online_reservation_form_shortcode_handler( $atts, $content = null, $tag
 									}
 				        		$output .= '</select>';
 							$output .= '</div>';
-						$output .= '</li>';
-						$output .= '<li class="col-md-2">';
+						$output .= '</div>';
+						$output .= '<div class="col-lg-2 col-md-1">';
 							$output .= '<div class="date_btn">';
 									$output .= '<input type="hidden" name="action" value="check_availability" />';
 									$output .= '<input type="submit" value="book now" class="bdr-btn bdr-btn-fill-black" />';
 							$output .= '</div>';
-						$output .= '</li>';
+						$output .= '</div>';
 						$output .= '<div class="clear"></div>';
-					$output .= '</ul>';
 				$output .= '</form>';
 				$output .= '</div>';
 			$output .= '</div>';
@@ -171,7 +169,7 @@ function featured_room_shortcode_handler( $atts, $content = null ) {
 							$output .= '<li><i class="fa fa-male"></i>Max: '. get_field( 'max_person', $p->ID ) .' Person(s)</li>';
 							$output .= '<li><i class="fa fa-bed"></i>Bed: '. get_field( 'bed', $p->ID ) .'</li>';
 							$output .= '<li><i class="fa fa-arrows-alt"></i>Size: '. get_field( 'room_size', $p->ID ) .'</li>';
-		
+							$output .= '<li><i class="fa fa-expand"></i>Occupancy: '. get_field( 'occupancy', $p->ID ) .'</li>';
 							$output .= '</ul>';
 							
 							$output .= '<a href="'. get_permalink( $p->ID ) .'" class="bdr-btn bdr-btn-default">View Details</a>';
@@ -211,10 +209,16 @@ function room_listings_shortcode_handler( $atts, $content = null ) {
                			$output .= '<li><i class="fa fa-male"></i>Max: '. get_field( 'max_person', $t->ID ) .' Person(s)</li>';
 						$output .= '<li><i class="fa fa-bed"></i>Bed: '. get_field( 'bed', $t->ID ) .'</li>';
 						$output .= '<li><i class="fa fa-arrows-alt"></i>Size: '. get_field( 'room_size', $t->ID ) .'</li>';
+						$output .= '<li><i class="fa fa-expand"></i>Occupancy: '. get_field( 'occupancy', $t->ID ) .'</li>';
                			$output .= '</ul>';
                		$output .= '</div>';
                		$output .= '<div class="bot">';
-               			$output .= '<span class="price">Starting '. get_room_price_html( $t->ID ) .' /days</span>';
+               			$output .= '<span class="price">Starting '. get_room_price_html( $t->ID ) .' /days';
+               			if ( has_monthly_price( $t->ID ) ) {
+               				$output .= ' & '. get_monthly_room_price_html( $t->ID ) .' /month';
+               			}
+               			$output .= '</span>';
+
                			$output .= '<a href="'.get_permalink( $t->ID ).'" class="bdr-btn bdr-btn-fill-black">VIEW DETAILS</a>';
                		$output .= '</div>';
                 $output .= '</div>';
@@ -279,10 +283,6 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 		                    	$output .= '</div>';
 			                    $output .= '<ul>';
 		                       		$output .= '<li>';
-		                       			$output .= '<span>Room Price</span>';
-		                       			$output .= '<span>'. nf( $room_price ) .'</span>';
-		                       		$output .= '</li>';
-		                       		$output .= '<li>';
 		                       			$output .= '<span>Max</span>';
 		                       			$output .= '<span>'. get_field( 'max_person', $room_type_ID ) .' Person(s)</span>';
 		                       		$output .= '</li>';
@@ -295,12 +295,22 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 			                       		$output .= '<span>'. get_field( 'bed', $room_type_ID ) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
-			                       		$output .= '<span>View</span>';
-			                       		$output .= '<span>'. get_field( 'view', $room_type_ID ) .'</span>';
+			                       		$output .= '<span>Occupancy</span>';
+			                       		$output .= '<span>'. get_field( 'occupancy', $room_type_ID ) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
-		                       			$output .= '<span>Total Room '. booking_data( 'no_of_room' ).'</span>';
-		                       			$output .= '<span>'. nf( $room_price * booking_data( 'no_of_room' ) ).'</span>';
+		                       			$output .= '<span>Room Price</span>';
+		                       			$output .= '<span>'. nf( $room_price ) .'</span>';
+		                       		$output .= '</li>';
+		                       		
+
+		                       		$output .= '<li>';
+		                       			$output .= '<span>Total Nights</span>';
+		                       			$output .= '<span>x '. $nights.'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+		                       			$output .= '<span>Total Rooms</span>';
+		                       			$output .= '<span> x '. booking_data( 'no_of_room' ).'</span>';
 		                       		$output .= '</li>';
 		                        $output .= '</ul>';
 		                    $output .= '</div>';
@@ -349,7 +359,7 @@ function booking_review_shortcode_handler( $atts, $content = null ) {
 	                       		$output .= '</div>';
 	                       	$output .= '</div>';
 	                       	$output .= '<label>Date of Birth<sup>*</sup></label>';
-	                       	$output .= '<input type="text" name="birth_date" class="form-control bdr-calendar" value="'. booking_data( 'birth_date' ) .'" required>';
+	                       	$output .= '<input type="text" name="birth_date" class="form-control bdr-calendar" value="'. booking_data( 'birth_date' ) .'" required readonly>';
 	                       	$output .= '<label>Nationality<sup>*</sup></label>';
 	                       	$output .= '<input type="text" name="nationality" class="form-control" value="'. booking_data( 'nationality' ) .'" required>';
 	                       	$output .= '<div class="row">';
@@ -456,23 +466,17 @@ function contact_us_shortcode_handler() {
 	$output .= '<div class="contact animatedParent"  data-sequence="500">
                     <div class="row">
 
-                        <div class="col-md-6 col-lg-5 animated fadeInLeft" data-id="1">
-
-                            <div class="text">
-                                <p>'. get_theme_mod( 'bdr_contact_us_text' ) .'</p>
+                        <div class="col-md-6 col-lg-6 col-lg-offset-3 animated fadeInRight" data-id="2">
+                            <div class="contact-form">';
+                                $output .= do_shortcode( '[contact-form-7 id="76" title="Contact Us"]' );
+                            $output .= '</div>
+                             <div class="text">
                                 <ul>
                                     <li><i class="fa fa-map-marker"></i> '. get_theme_mod( 'bdr_contact_us_address' ) .'</li>
                                     <li><i class="fa fa-phone"></i> '. get_theme_mod( 'bdr_contact_us_phone' ) .'</li>
                                     <li><i class="fa fa-envelope-o"></i> '. get_theme_mod( 'bdr_contact_us_email' ) .'</li>
                                 </ul>
                             </div>
-
-                        </div>
-
-                        <div class="col-md-6 col-lg-6 col-lg-offset-1 animated fadeInRight" data-id="2">
-                            <div class="contact-form">';
-                                $output .= do_shortcode( '[contact-form-7 id="76" title="Contact Us"]' );
-                            $output .= '</div>
                         </div>
 
                     </div>  
@@ -536,10 +540,7 @@ function success_booking_details() {
 			                    		$output .= '<h2><a>'. get_the_title( $d['room_type_ID']) .'</a></h2>';
 			                    	$output .= '</div>';
 			                    	$output .= '<ul>';
-		                       		$output .= '<li>';
-		                       			$output .= '<span>Room Price</span>';
-		                       			$output .= '<span>'. nf( $room_price) .'</span>';
-		                       		$output .= '</li>';
+		                       		
 		                       		$output .= '<li>';
 		                       			$output .= '<span>Max</span>';
 		                       			$output .= '<span>'. get_field( 'max_person', $d['room_type_ID']) .' Person(s)</span>';
@@ -553,12 +554,21 @@ function success_booking_details() {
 			                       		$output .= '<span>'. get_field( 'bed', $d['room_type_ID']) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
-			                       		$output .= '<span>View</span>';
-			                       		$output .= '<span>'. get_field( 'view', $d['room_type_ID']) .'</span>';
+			                       		$output .= '<span>Occupancy</span>';
+			                       		$output .= '<span>'. get_field( 'occupancy', $d['room_type_ID']) .'</span>';
 		                       		$output .= '</li>';
 		                       		$output .= '<li>';
-		                       			$output .= '<span>Total Room '. booking_data( 'no_of_room' ).'</span>';
-		                       			$output .= '<span>'. nf( $room_price * booking_data( 'no_of_room' ) ).'</span>';
+		                       			$output .= '<span>Room Price</span>';
+		                       			$output .= '<span>'. nf( $room_price) .'</span>';
+		                       		$output .= '</li>';
+		                       		$output .= '<li>';
+			                       		$output .= '<span>Total Nights</span>';
+			                       		$output .= '<span>x '. count_nights( $d['date_in'], $d['date_out']) .'</span>';
+		                       		$output .= '</li>';
+
+		                       		$output .= '<li>';
+		                       			$output .= '<span>Total Room</span>';
+		                       			$output .= '<span>x '. booking_data( 'no_of_room' ) .'</span>';
 		                       		$output .= '</li>';
 		                       		
 		                        $output .= '</ul>';

@@ -72,10 +72,12 @@ if (! class_exists('Booking') ) {
 			$data['date_out'] = format_db_date( $data['date_out'] );
 
 			if ( is_date_and_room_not_available( $data['room_type_ID'], $data['date_in'], $data['date_out'], $data['booking_ID']) ) {
-				add_this_notices( 'error', 'Selected room is not available on that date. Please check calendar to see availability.' );
-
 				return false;
 			} 
+
+			if ( ! has_sufficient_room($data) ) {
+				return false;
+			}
 
 			$val = $this->validate_booking_data( $data );
 
@@ -127,6 +129,7 @@ if (! class_exists('Booking') ) {
 		 * @return none
 		 */
 		public function custom_init() {
+
 			$action = browser_request( 'action' );
 
 			if ( $action != '' ) {
@@ -148,7 +151,7 @@ if (! class_exists('Booking') ) {
 							) 
 						);
 
-						redirect_by_page_path( 'rooms-suits' );
+						redirect_by_page_path( 'rooms' );
 						break;
 
 					case 'book_room':
@@ -162,12 +165,19 @@ if (! class_exists('Booking') ) {
 						}
 
 						if ( is_date_and_room_not_available( $data['room_type_ID'], format_db_date( $data['date_in'] ),  format_db_date( $data['date_out'] ) ) ) {
-							add_this_notices( 'error', 'Selected room is not available on that date. Please check calendar to see availability.' );
+							
+							return;
+						}
+
+						if ( ! has_sufficient_room($data) ) {
 							return;
 						}
 
 						$nights = count_nights( $data['date_in'], $data['date_out'] );
-						$room_price = get_room_price( $data['room_type_ID'], $data['date_in'], $data['date_out'] );
+						
+						$room_price = get_room_price_with_nights( $data['room_type_ID'], $data['date_in'], $data['date_out'] );
+
+						$total_amount = calculate_total_amount( $data['room_type_ID'], $data['date_in'], $data['date_out'], $data['no_of_room'] );
 
 						push_to_booking_session( array(
 							'date_in' 		=> $data['date_in'],
@@ -178,7 +188,7 @@ if (! class_exists('Booking') ) {
 							'no_of_night' 	=> $nights,
 							'no_of_room' => $data['no_of_room'],
 							'room_price' 	=> $room_price,
-							'amount' 		=> $room_price * $data['no_of_room'] * $nights, 
+							'amount' 		=> $total_amount, 
 							'booking_ID' 	=> 0,
 							'amount_paid' 	=> 0,
 							'payment_status' => PAYMENT_DEFAULT_STATUS,
@@ -210,15 +220,13 @@ if (! class_exists('Booking') ) {
 						}
 						break;
 					case 'save_booking':
-
-						
 						if ( isset( $_POST['save_booking_field'] ) && wp_verify_nonce( $_POST['save_booking_field'], 'save_booking_action' ) ) {
 							$info = get_booking_by_id( browser_request( 'bid', 0 ) );
 							$post = array_merge( (array)$info, $_POST );
 
 							$post['no_of_night'] = count_nights( $post['date_in'], $post['date_out'] );
-							$post['room_price'] = get_room_price( $post['room_type_ID'], $post['date_in'], $post['date_out'] );
-							$post['amount'] = $post['room_price'] * $post['no_of_room'] * $post['no_of_night'];
+							$post['room_price'] = get_room_price_with_nights( $post['room_type_ID'], $post['date_in'], $post['date_out'] );
+							$post['amount'] = calculate_total_amount( $post['room_type_ID'], $post['date_in'], $post['date_out'], $post['no_of_room'] );
 							$post['date_booked'] = array_data( $info, 'date_booked' , date( 'Y-m-d H:i:s' ) );
 							$post['type'] = 'RESERVATION';
 							$post['room_code'] = room_code( $post['room_type_ID'] );
@@ -557,11 +565,14 @@ if (! class_exists('Booking') ) {
 				$data = $_GET;
 
 				$no_of_night = count_nights( $data['date_in'], $data['date_out'] );
-				$room_type_ID = $data['room_type_ID'];
+				// $room_type_ID = $data['room_type_ID'];
 
-				$room_price = get_room_price( $room_type_ID, $data['date_in'], $data['date_out'] );
+				// $room_price = get_room_price( $room_type_ID, $data['date_in'], $data['date_out'] );
 
-				$total = $room_price * $data['no_of_room'] * $no_of_night;
+				// $total = $room_price * $data['no_of_room'] * $no_of_night;
+
+				$total = calculate_total_amount( $data['room_type_ID'], $data['date_in'], $data['date_out'], $data['no_of_room'] );
+
 				$output = '';
 				$output .= '<ul>';
 					$output .= '<li>Room Price: <span class="room_price">'. format_price( $room_price, false ) .'</span></li>';

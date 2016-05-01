@@ -59,6 +59,8 @@ function get_all_rooms() {
 	$rooms = get_posts(array(
 			'showposts' => -1,
 			'post_type' => 'room',
+			'orderby' => 'ID',
+			'order' => 'asc',
 			'fields' => 'ids',
 		)
 	);

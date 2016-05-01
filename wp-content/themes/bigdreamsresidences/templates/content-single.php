@@ -24,8 +24,13 @@ $rooms_available = get_total_available_rooms( get_the_ID(), booking_data( 'date_
                             <div class="room-detail_total">
                                 <h6>STARTING ROOM FROM</h6>
                                 <p class="price">
-                                    <?php the_room_price_html(); ?>  /days
+                                    <?php the_room_price_html(); ?>  /day
                                 </p>
+                                <?php if ( has_monthly_price() ): ?>
+                                <p class="price">
+                                    <?php the_monthly_room_price_html(); ?>  /month
+                                </p>
+                                <?php endif; ?>
                             </div>
                             <div class="room-detail_form">
                                 <div class="form-group">
@@ -105,7 +110,7 @@ $rooms_available = get_total_available_rooms( get_the_ID(), booking_data( 'date_
                                     </div>
                                     <?php if ( have_rows( 'services' ) ): ?>
                                     <div class="col-xs-6 col-md-4">
-                                        <h6>SERVICE ROOM</h6>
+                                        <h6>Accommodation</h6>
                                         <ul>
                                             <?php while( have_rows( 'services' ) ): the_row(); ?>
                                             <li><?php the_sub_field( 'title' ); ?></li>
