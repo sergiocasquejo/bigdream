@@ -19,6 +19,27 @@
 	      display:block;
 	    }
 	}
+	.header_menu.active + .menu-bars {
+		span {
+			height:0;
+			&:before, &:after {
+				top:0;
+				right:0;
+			}
+
+			&:before {
+				-webkit-transform: rotate(-45deg);
+				transform: rotate(-45deg);
+			}
+
+			&:after {
+				-webkit-transform: rotate(45deg);
+				transform: rotate(45deg);
+			}
+
+
+		}
+	}
 	
 }
 
@@ -32,6 +53,15 @@
 		border-right:none;
 	}
 
+	.room-detail_tab .room-detail_tab-header li {
+	    display: inline-block;
+	    border: 2px solid #e4e4e4;
+
+	    a {
+	    	padding: 10px;
+    		font-size: 12px;
+	    }
+	}
 }
 
 

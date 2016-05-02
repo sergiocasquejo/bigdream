@@ -18,8 +18,6 @@
       </nav>
       <span class="menu-bars">
           <span></span>
-          <span></span>
-          <span></span>
       </span>
     </div>
   </div>
